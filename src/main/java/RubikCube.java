@@ -23,13 +23,17 @@ public class RubikCube{
 
     public void turnColUp(int col) throws Exception{
         int[] mainCol = main.getCol(col);
-
-
+        RubikSide reversedBack = back.cloneReversed();
         main.setCol(col, bottom.getCol(col));
-
-        bottom.setCol(col, back.getCol(col));
-        back.setCol(col, top.getCol(col));
+        bottom.setCol(col, reversedBack.getCol(col));
+        reversedBack.setCol(col, top.getCol(col));
         top.setCol(col, mainCol);
+        back = reversedBack.cloneReversed();
+        if(col == 0){
+            left.rotateAntiClockwise();
+        }else if(col == (size - 1)){
+            right.rotateClockwise();
+        }
     }
 
     public void turnRowToRight(int row) throws Exception{

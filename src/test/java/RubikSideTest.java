@@ -1,4 +1,5 @@
 import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
@@ -6,7 +7,7 @@ import static org.hamcrest.Matchers.*;
 class RubikSideTest {
 
     @Test
-    public void Create2dRubikSide() throws Exception{
+    public void Create2dRubikSide(){
         RubikSide rubikSide = new RubikSide(2, 1);
         int[] expected = {1, 1};
         assertThat(rubikSide.getRow(0), equalTo(expected));
@@ -14,7 +15,7 @@ class RubikSideTest {
     }
 
     @Test
-    public void Create3dRubikSide() throws Exception{
+    public void Create3dRubikSide(){
         RubikSide rubikSide = new RubikSide(3, 2);
         int[] expected = {2, 2, 2};
         assertThat(rubikSide.getRow(0), equalTo(expected));
@@ -23,6 +24,21 @@ class RubikSideTest {
         assertThat(rubikSide.getCol(0), equalTo(expected));
         assertThat(rubikSide.getCol(1), equalTo(expected));
         assertThat(rubikSide.getCol(2), equalTo(expected));
+    }
+
+    @Test
+    public void Create() throws Exception{
+        int[][] values = {{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
+        RubikSide rubikSide = RubikSide.create(values);
+        assertThat(rubikSide.getCol(0), equalTo(new int[]{1, 4, 7}));
+        assertThat(rubikSide.getCol(1), equalTo(new int[]{2, 5, 8}));
+        assertThat(rubikSide.getCol(2), equalTo(new int[]{3, 6, 9}));
+    }
+
+    @Test
+    public void Create_NotSquare(){
+        int[][] values = {{1, 2, 3}, {4, 5, 6}, {7, 8}};
+        assertThrows(Exception.class, () -> RubikSide.create(values));
     }
 
     @Test

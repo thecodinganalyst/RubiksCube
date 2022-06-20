@@ -1,5 +1,4 @@
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.stream.IntStream;
 
 public class RubikSide{
@@ -13,6 +12,26 @@ public class RubikSide{
                 .boxed()
                 .map(i -> dimension.clone())
                 .toArray(i -> new int[i][]);
+    }
+
+    public static RubikSide create(int[][] values) throws Exception{
+        int rowCount = values.length;
+        for(int[] col: values){
+            if(col.length != rowCount){
+                throw new Exception("RubikSide: values must be a square");
+            }
+        }
+        return new RubikSide(values);
+    }
+
+    private RubikSide(int[][] values){
+        size = values.length;
+        this.values = values;
+    }
+
+    public RubikSide cloneReversed() throws Exception {
+        int[][] reversed = Utils.reverse2dArray(values);
+        return RubikSide.create(reversed);
     }
 
     public int[] getRow(int row){
