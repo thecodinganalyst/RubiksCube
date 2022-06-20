@@ -36,6 +36,21 @@ public class RubikCube{
         }
     }
 
+    public void turnColDown(int col) throws Exception{
+        int[] mainCol = main.getCol(col);
+        RubikSide reversedBack = back.cloneReversed();
+        main.setCol(col, top.getCol(col));
+        top.setCol(col, reversedBack.getCol(col));
+        reversedBack.setCol(col, bottom.getCol(col));
+        bottom.setCol(col, mainCol);
+        back = reversedBack.cloneReversed();
+        if(col == 0){
+            left.rotateClockwise();
+        }else if(col == (size - 1)){
+            right.rotateAntiClockwise();
+        }
+    }
+
     public void turnRowToRight(int row) throws Exception{
         int[] mainTopRow = main.getRow(row);
         main.setRow(row, left.getRow(row));

@@ -109,6 +109,93 @@ public class RubikCubeTest {
     }
 
     @Test
+    public void RubikCube_TurnMidColDown() throws Exception{
+        RubikCube cube = new RubikCube(3);
+        cube.turnColDown(1);
+        assertThat(cube.main.getRow(0), equalTo(new int[]{1, 5, 1}));
+        assertThat(cube.main.getRow(1), equalTo(new int[]{1, 5, 1}));
+        assertThat(cube.main.getRow(2), equalTo(new int[]{1, 5, 1}));
+
+        assertThat(cube.right.getRow(0), equalTo(new int[]{2, 2, 2}));
+        assertThat(cube.right.getRow(1), equalTo(new int[]{2, 2, 2}));
+        assertThat(cube.right.getRow(2), equalTo(new int[]{2, 2, 2}));
+
+        assertThat(cube.back.getRow(0), equalTo(new int[]{3, 6, 3}));
+        assertThat(cube.back.getRow(1), equalTo(new int[]{3, 6, 3}));
+        assertThat(cube.back.getRow(2), equalTo(new int[]{3, 6, 3}));
+
+        assertThat(cube.left.getRow(0), equalTo(new int[]{4, 4, 4}));
+        assertThat(cube.left.getRow(1), equalTo(new int[]{4, 4, 4}));
+        assertThat(cube.left.getRow(2), equalTo(new int[]{4, 4, 4}));
+
+        assertThat(cube.top.getRow(0), equalTo(new int[]{5, 3, 5}));
+        assertThat(cube.top.getRow(1), equalTo(new int[]{5, 3, 5}));
+        assertThat(cube.top.getRow(2), equalTo(new int[]{5, 3, 5}));
+
+        assertThat(cube.bottom.getRow(0), equalTo(new int[]{6, 1, 6}));
+        assertThat(cube.bottom.getRow(1), equalTo(new int[]{6, 1, 6}));
+        assertThat(cube.bottom.getRow(2), equalTo(new int[]{6, 1, 6}));
+    }
+
+    @Test
+    public void RubikCube_TurnLeftColDown() throws Exception{
+        RubikCube cube = new RubikCube(3);
+        cube.turnColDown(0);
+        assertThat(cube.main.getRow(0), equalTo(new int[]{5, 1, 1}));
+        assertThat(cube.main.getRow(1), equalTo(new int[]{5, 1, 1}));
+        assertThat(cube.main.getRow(2), equalTo(new int[]{5, 1, 1}));
+
+        assertThat(cube.right.getRow(0), equalTo(new int[]{2, 2, 2}));
+        assertThat(cube.right.getRow(1), equalTo(new int[]{2, 2, 2}));
+        assertThat(cube.right.getRow(2), equalTo(new int[]{2, 2, 2}));
+
+        assertThat(cube.back.getRow(0), equalTo(new int[]{3, 3, 6}));
+        assertThat(cube.back.getRow(1), equalTo(new int[]{3, 3, 6}));
+        assertThat(cube.back.getRow(2), equalTo(new int[]{3, 3, 6}));
+
+        assertThat(cube.left.getRow(0), equalTo(new int[]{4, 4, 4}));
+        assertThat(cube.left.getRow(1), equalTo(new int[]{4, 4, 4}));
+        assertThat(cube.left.getRow(2), equalTo(new int[]{4, 4, 4}));
+
+        assertThat(cube.top.getRow(0), equalTo(new int[]{3, 5, 5}));
+        assertThat(cube.top.getRow(1), equalTo(new int[]{3, 5, 5}));
+        assertThat(cube.top.getRow(2), equalTo(new int[]{3, 5, 5}));
+
+        assertThat(cube.bottom.getRow(0), equalTo(new int[]{1, 6, 6}));
+        assertThat(cube.bottom.getRow(1), equalTo(new int[]{1, 6, 6}));
+        assertThat(cube.bottom.getRow(2), equalTo(new int[]{1, 6, 6}));
+    }
+
+    @Test
+    public void RubikCube_TurnRightColDown() throws Exception{
+        RubikCube cube = new RubikCube(3);
+        cube.turnColDown(2);
+        assertThat(cube.main.getRow(0), equalTo(new int[]{1, 1, 5}));
+        assertThat(cube.main.getRow(1), equalTo(new int[]{1, 1, 5}));
+        assertThat(cube.main.getRow(2), equalTo(new int[]{1, 1, 5}));
+
+        assertThat(cube.right.getRow(0), equalTo(new int[]{2, 2, 2}));
+        assertThat(cube.right.getRow(1), equalTo(new int[]{2, 2, 2}));
+        assertThat(cube.right.getRow(2), equalTo(new int[]{2, 2, 2}));
+
+        assertThat(cube.back.getRow(0), equalTo(new int[]{6, 3, 3}));
+        assertThat(cube.back.getRow(1), equalTo(new int[]{6, 3, 3}));
+        assertThat(cube.back.getRow(2), equalTo(new int[]{6, 3, 3}));
+
+        assertThat(cube.left.getRow(0), equalTo(new int[]{4, 4, 4}));
+        assertThat(cube.left.getRow(1), equalTo(new int[]{4, 4, 4}));
+        assertThat(cube.left.getRow(2), equalTo(new int[]{4, 4, 4}));
+
+        assertThat(cube.top.getRow(0), equalTo(new int[]{5, 5, 3}));
+        assertThat(cube.top.getRow(1), equalTo(new int[]{5, 5, 3}));
+        assertThat(cube.top.getRow(2), equalTo(new int[]{5, 5, 3}));
+
+        assertThat(cube.bottom.getRow(0), equalTo(new int[]{6, 6, 1}));
+        assertThat(cube.bottom.getRow(1), equalTo(new int[]{6, 6, 1}));
+        assertThat(cube.bottom.getRow(2), equalTo(new int[]{6, 6, 1}));
+    }
+
+    @Test
     public void RubikCube_TurnTopRowToLeft() throws Exception{
         RubikCube cube = new RubikCube(3);
         cube.turnRowToLeft(0);
