@@ -1,4 +1,12 @@
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.function.BinaryOperator;
 import java.util.function.Consumer;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 public class RubikCube{
     public RubikSide main;
@@ -19,6 +27,47 @@ public class RubikCube{
         left = new RubikSide(size, 4);
         top = new RubikSide(size, 5);
         bottom = new RubikSide(size, 6);
+    }
+
+    public boolean check(){
+        List<Integer> valueList = main.getValueList();
+        valueList.addAll(right.getValueList());
+        valueList.addAll(back.getValueList());
+        valueList.addAll(left.getValueList());
+        valueList.addAll(top.getValueList());
+        valueList.addAll(bottom.getValueList());
+        Map<Integer, List<Integer>> result = valueList.stream().collect(Collectors.groupingBy(i -> i));
+        if(result.keySet().size() != 6) return false;
+        int expectedCount = size ^ 2;
+        if(result.get(1).size() != expectedCount) return false;
+        if(result.get(2).size() != expectedCount) return false;
+        if(result.get(3).size() != expectedCount) return false;
+        if(result.get(4).size() != expectedCount) return false;
+        if(result.get(5).size() != expectedCount) return false;
+        if(result.get(6).size() != expectedCount) return false;
+        return true;
+    }
+
+    public void print(){
+        String[] box = join(RubikSide.getEmptyString(size), top.getString());
+        Arrays.stream(box).forEach(System.out::println);
+
+        box = join(left.getString(), main.getString(), right.getString(), back.getString());
+        Arrays.stream(box).forEach(System.out::println);
+
+        box = join(RubikSide.getEmptyString(size), bottom.getString());
+        Arrays.stream(box).forEach(System.out::println);
+
+        System.out.println(" ");
+    }
+
+    private String[] join(String[]... sides){
+        BinaryOperator<String[]> reducer = (a, b) ->
+                IntStream.range(0, a.length)
+                            .boxed()
+                            .map(i -> a[i].concat(" ").concat(b[i]))
+                            .toArray(String[]::new);
+        return Arrays.stream(sides).reduce(reducer).get();
     }
 
     public void turnColUp(int col) throws Exception{

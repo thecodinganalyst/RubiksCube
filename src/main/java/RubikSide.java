@@ -1,8 +1,10 @@
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.stream.IntStream;
 
 public class RubikSide{
-    private int size;
+    private final int size;
     private int[][] values;
 
     public RubikSide(int size, int value){
@@ -11,7 +13,7 @@ public class RubikSide{
         values = IntStream.range(0, size)
                 .boxed()
                 .map(i -> dimension.clone())
-                .toArray(i -> new int[i][]);
+                .toArray(int[][]::new);
     }
 
     public static RubikSide create(int[][] values) throws Exception{
@@ -27,6 +29,17 @@ public class RubikSide{
     private RubikSide(int[][] values){
         size = values.length;
         this.values = values;
+    }
+
+    public List<Integer> getValueList(){
+        List<Integer> answer = new ArrayList<>();
+
+        for (int[] i: values){
+            for(int j: i){
+                answer.add(j);
+            }
+        }
+        return answer;
     }
 
     public RubikSide cloneReversed() throws Exception {
@@ -108,7 +121,21 @@ public class RubikSide{
     }
 
     public void print(){
-        IntStream.range(0, size).forEach(i -> System.out.println(Arrays.toString(values[i])));
+        IntStream.range(0, size)
+                    .forEach(i ->
+                            System.out.println(Arrays.toString(values[i]))
+                    );
+    }
+
+    public static String[] getEmptyString(int size){
+        return IntStream.range(0, size).boxed().map(i -> "         ").toArray(String[]::new);
+    }
+
+    public String[] getString(){
+        return IntStream.range(0, size)
+                .boxed()
+                .map(i -> Arrays.toString(values[i]))
+                .toArray(String[]::new);
     }
 
 }
