@@ -15,6 +15,10 @@ public class RubikCube{
     public RubikSide bottom;
     public int size;
 
+    public enum FACE {
+        MAIN, RIGHT, BACK, LEFT, TOP, BOTTOM
+    }
+
     public Consumer<Integer> actions;
 
     public RubikCube(int size){
@@ -25,6 +29,15 @@ public class RubikCube{
         left = new RubikSide(size, 4);
         top = new RubikSide(size, 5);
         bottom = new RubikSide(size, 6);
+    }
+
+    public RubikSide getFace(FACE face){
+        if(face == FACE.MAIN) return main;
+        if(face == FACE.BACK) return back;
+        if(face == FACE.LEFT) return left;
+        if(face == FACE.RIGHT) return right;
+        if(face == FACE.TOP) return top;
+        return bottom;
     }
 
     public boolean check(){
@@ -56,6 +69,60 @@ public class RubikCube{
         Arrays.stream(box).forEach(System.out::println);
 
         System.out.println(" ");
+    }
+
+    public static FACE getBackFaceOf(FACE face){
+        if(face == FACE.MAIN) return FACE.BACK;
+        if(face == FACE.RIGHT) return FACE.LEFT;
+        if(face == FACE.BACK) return FACE.MAIN;
+        if(face == FACE.LEFT) return FACE.RIGHT;
+        if(face == FACE.TOP) return FACE.BOTTOM;
+        return FACE.TOP;
+    }
+
+    public static FACE getRightFaceOf(FACE face){
+        if(face == FACE.MAIN) return FACE.RIGHT;
+        if(face == FACE.RIGHT) return FACE.BACK;
+        if(face == FACE.BACK) return FACE.LEFT;
+        if(face == FACE.LEFT) return FACE.MAIN;
+        return FACE.RIGHT;
+    }
+
+    public static FACE getLeftFaceOf(FACE face){
+        if(face == FACE.MAIN) return FACE.LEFT;
+        if(face == FACE.RIGHT) return FACE.MAIN;
+        if(face == FACE.BACK) return FACE.RIGHT;
+        if(face == FACE.LEFT) return FACE.BACK;
+        return FACE.LEFT;
+    }
+
+    public static FACE getTopFaceOf(FACE face){
+        if(face == FACE.TOP) return FACE.BACK;
+        if(face == FACE.BOTTOM) return FACE.MAIN;
+        return FACE.TOP;
+    }
+
+    public static FACE getBottomFaceOf(FACE face){
+        if(face == FACE.TOP) return FACE.MAIN;
+        if(face == FACE.BOTTOM) return FACE.BACK;
+        return FACE.BOTTOM;
+    }
+
+    public void face(FACE newFace){
+        Map<FACE, RubikSide> old = Map.of(
+                FACE.MAIN, main.clone(),
+                FACE.RIGHT, right.clone(),
+                FACE.BACK, back.clone(),
+                FACE.LEFT, left.clone(),
+                FACE.TOP, top.clone(),
+                FACE.BOTTOM, bottom.clone()
+        );
+        main = getFace(newFace);
+        right = old.get(getRightFaceOf(newFace));
+        back = old.get(getBackFaceOf(newFace));
+        left = old.get(getLeftFaceOf(newFace));
+        top = old.get(getTopFaceOf(newFace));
+        bottom = old.get(getBottomFaceOf(newFace));
     }
 
     private String[] join(String[]... sides){

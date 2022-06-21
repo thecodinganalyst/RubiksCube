@@ -3,7 +3,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.IntStream;
 
-public class RubikSide{
+public class RubikSide implements Cloneable{
     private final int size;
     private int[][] values;
 
@@ -29,6 +29,11 @@ public class RubikSide{
     private RubikSide(int[][] values){
         size = values.length;
         this.values = values;
+    }
+
+    @Override
+    public RubikSide clone(){
+        return new RubikSide(values);
     }
 
     public List<Integer> getValueList(){
