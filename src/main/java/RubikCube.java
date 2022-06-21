@@ -38,7 +38,7 @@ public class RubikCube{
         valueList.addAll(bottom.getValueList());
         Map<Integer, List<Integer>> result = valueList.stream().collect(Collectors.groupingBy(i -> i));
         if(result.keySet().size() != 6) return false;
-        int expectedCount = size ^ 2;
+        int expectedCount = size * size;
         if(result.get(1).size() != expectedCount) return false;
         if(result.get(2).size() != expectedCount) return false;
         if(result.get(3).size() != expectedCount) return false;

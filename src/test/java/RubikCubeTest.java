@@ -51,6 +51,12 @@ public class RubikCubeTest {
     }
 
     @Test
+    public void RubikCube_Check(){
+        RubikCube cube = new RubikCube(3);
+        assertThat(cube.check(), equalTo(true));
+    }
+
+    @Test
     public void RubikCube_TurnLeftColUp() throws Exception{
         RubikCube cube = new RubikCube(3);
         cube.turnColUp(0);
