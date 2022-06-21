@@ -3,10 +3,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.BinaryOperator;
 import java.util.function.Consumer;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 public class RubikCube{
     public RubikSide main;
@@ -44,8 +42,7 @@ public class RubikCube{
         if(result.get(3).size() != expectedCount) return false;
         if(result.get(4).size() != expectedCount) return false;
         if(result.get(5).size() != expectedCount) return false;
-        if(result.get(6).size() != expectedCount) return false;
-        return true;
+        return result.get(6).size() == expectedCount;
     }
 
     public void print(){

@@ -101,14 +101,14 @@ public class RubikSide{
         }
     }
 
-    public void rotateClockwise() throws Exception{
+    public void rotateClockwise(){
          values = IntStream.range(0, size)
                                     .boxed()
                                     .map(i -> Utils.reverseArray(getCol(i)))
                                     .toArray(int[][]::new);
     }
 
-    public void rotateAntiClockwise() throws Exception{
+    public void rotateAntiClockwise(){
         values = IntStream.rangeClosed(1, size)
                             .boxed()
                             .map(i -> getCol(size - i))
