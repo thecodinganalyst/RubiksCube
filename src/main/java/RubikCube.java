@@ -4,54 +4,56 @@ import java.util.Map;
 import java.util.function.BinaryOperator;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 public class RubikCube{
-    public RubikSide main;
-    public RubikSide right;
-    public RubikSide left;
-    public RubikSide back;
-    public RubikSide top;
-    public RubikSide bottom;
-    public int size;
+    private RubikSide main;
+    private RubikSide right;
+    private RubikSide left;
+    private RubikSide back;
+    private RubikSide top;
+    private RubikSide bottom;
+    private int size;
+    private RubikCubeAction[] allActions;
+
+    public RubikSide getMain() {
+        return main;
+    }
+
+    public RubikSide getRight() {
+        return right;
+    }
+
+    public RubikSide getLeft() {
+        return left;
+    }
+
+    public RubikSide getBack() {
+        return back;
+    }
+
+    public RubikSide getTop() {
+        return top;
+    }
+
+    public RubikSide getBottom() {
+        return bottom;
+    }
+
+    public int getSize() {
+        return size;
+    }
+
+    public RubikCubeAction[] getAllActions() {
+        return allActions;
+    }
 
     public enum FACE {
         MAIN, RIGHT, BACK, LEFT, TOP, BOTTOM
     }
 
-    public enum ACTION {
-        FACE_RIGHT, FACE_BACK, FACE_LEFT, FACE_TOP, FACE_BOTTOM,
-        TURN_TOP_ROW_RIGHT, TURN_TOP_ROW_LEFT,
-        TURN_MIDDLE_ROW_RIGHT, TURN_MIDDLE_ROW_LEFT,
-        TURN_BOTTOM_ROW_RIGHT, TURN_BOTTOM_ROW_LEFT,
-        TURN_LEFT_COL_UP, TURN_LEFT_COL_DOWN,
-        TURN_MIDDLE_COL_UP, TURN_MIDDLE_COL_DOWN,
-        TURN_RIGHT_COL_UP, TURN_RIGHT_COL_DOWN
-    }
-
-    public void doAction(ACTION action) {
-        try{
-            switch (action){
-                case FACE_TOP -> face(FACE.TOP);
-                case FACE_BACK -> face(FACE.BACK);
-                case FACE_BOTTOM -> face(FACE.BOTTOM);
-                case FACE_RIGHT -> face(FACE.RIGHT);
-                case FACE_LEFT -> face(FACE.LEFT);
-                case TURN_TOP_ROW_LEFT -> turnRowToLeft(0);
-                case TURN_TOP_ROW_RIGHT -> turnRowToRight(0);
-                case TURN_MIDDLE_ROW_LEFT -> turnRowToLeft(1);
-                case TURN_MIDDLE_ROW_RIGHT -> turnRowToRight(1);
-                case TURN_BOTTOM_ROW_LEFT -> turnRowToLeft(2);
-                case TURN_BOTTOM_ROW_RIGHT -> turnRowToRight(2);
-                case TURN_LEFT_COL_UP -> turnColUp(0);
-                case TURN_LEFT_COL_DOWN -> turnColDown(0);
-                case TURN_MIDDLE_COL_UP -> turnColUp(1);
-                case TURN_MIDDLE_COL_DOWN -> turnColDown(1);
-                case TURN_RIGHT_COL_UP -> turnColUp(2);
-                case TURN_RIGHT_COL_DOWN -> turnColDown(2);
-            }
-        }catch (Exception e){
-            e.printStackTrace();
-        }
+    public void performAction(RubikCubeAction action) {
+        action.performAction(this);
     }
 
     public RubikCube(int size){
@@ -62,27 +64,31 @@ public class RubikCube{
         left = new RubikSide(size, 4);
         top = new RubikSide(size, 5);
         bottom = new RubikSide(size, 6);
+        allActions = Stream.concat(
+                        Stream.of(FaceAction.allActions()),
+                        Stream.of(TurnAction.allActions(size)))
+                    .toArray(RubikCubeAction[]::new);
     }
 
     public RubikSide getFace(FACE face){
-        if(face == FACE.MAIN) return main;
-        if(face == FACE.BACK) return back;
-        if(face == FACE.LEFT) return left;
-        if(face == FACE.RIGHT) return right;
-        if(face == FACE.TOP) return top;
-        return bottom;
+        if(face == FACE.MAIN) return getMain();
+        if(face == FACE.BACK) return getBack();
+        if(face == FACE.LEFT) return getLeft();
+        if(face == FACE.RIGHT) return getRight();
+        if(face == FACE.TOP) return getTop();
+        return getBottom();
     }
 
     public boolean check(){
-        List<Integer> valueList = main.getValueList();
-        valueList.addAll(right.getValueList());
-        valueList.addAll(back.getValueList());
-        valueList.addAll(left.getValueList());
-        valueList.addAll(top.getValueList());
-        valueList.addAll(bottom.getValueList());
+        List<Integer> valueList = getMain().getValueList();
+        valueList.addAll(getRight().getValueList());
+        valueList.addAll(getBack().getValueList());
+        valueList.addAll(getLeft().getValueList());
+        valueList.addAll(getTop().getValueList());
+        valueList.addAll(getBottom().getValueList());
         Map<Integer, List<Integer>> result = valueList.stream().collect(Collectors.groupingBy(i -> i));
         if(result.keySet().size() != 6) return false;
-        int expectedCount = size * size;
+        int expectedCount = getSize() * getSize();
         if(result.get(1).size() != expectedCount) return false;
         if(result.get(2).size() != expectedCount) return false;
         if(result.get(3).size() != expectedCount) return false;
@@ -92,13 +98,13 @@ public class RubikCube{
     }
 
     public void print(){
-        String[] box = join(RubikSide.getEmptyString(size), top.getString());
+        String[] box = join(RubikSide.getEmptyString(getSize()), getTop().getString());
         Arrays.stream(box).forEach(System.out::println);
 
-        box = join(left.getString(), main.getString(), right.getString(), back.getString());
+        box = join(getLeft().getString(), getMain().getString(), getRight().getString(), getBack().getString());
         Arrays.stream(box).forEach(System.out::println);
 
-        box = join(RubikSide.getEmptyString(size), bottom.getString());
+        box = join(RubikSide.getEmptyString(getSize()), getBottom().getString());
         Arrays.stream(box).forEach(System.out::println);
 
         System.out.println(" ");
@@ -143,12 +149,12 @@ public class RubikCube{
 
     public void face(FACE newFace){
         Map<FACE, RubikSide> old = Map.of(
-                FACE.MAIN, main.clone(),
-                FACE.RIGHT, right.clone(),
-                FACE.BACK, back.clone(),
-                FACE.LEFT, left.clone(),
-                FACE.TOP, top.clone(),
-                FACE.BOTTOM, bottom.clone()
+                FACE.MAIN, getMain().clone(),
+                FACE.RIGHT, getRight().clone(),
+                FACE.BACK, getBack().clone(),
+                FACE.LEFT, getLeft().clone(),
+                FACE.TOP, getTop().clone(),
+                FACE.BOTTOM, getBottom().clone()
         );
         main = getFace(newFace);
         right = old.get(getRightFaceOf(newFace));
@@ -168,58 +174,58 @@ public class RubikCube{
     }
 
     public void turnColUp(int col) throws Exception{
-        int[] mainCol = main.getCol(col);
-        RubikSide reversedBack = back.cloneReversed();
-        main.setCol(col, bottom.getCol(col));
-        bottom.setCol(col, reversedBack.getCol(col));
-        reversedBack.setCol(col, top.getCol(col));
-        top.setCol(col, mainCol);
+        int[] mainCol = getMain().getCol(col);
+        RubikSide reversedBack = getBack().cloneReversed();
+        getMain().setCol(col, getBottom().getCol(col));
+        getBottom().setCol(col, reversedBack.getCol(col));
+        reversedBack.setCol(col, getTop().getCol(col));
+        getTop().setCol(col, mainCol);
         back = reversedBack.cloneReversed();
         if(col == 0){
-            left.rotateAntiClockwise();
-        }else if(col == (size - 1)){
-            right.rotateClockwise();
+            getLeft().rotateAntiClockwise();
+        }else if(col == (getSize() - 1)){
+            getRight().rotateClockwise();
         }
     }
 
     public void turnColDown(int col) throws Exception{
-        int[] mainCol = main.getCol(col);
-        RubikSide reversedBack = back.cloneReversed();
-        main.setCol(col, top.getCol(col));
-        top.setCol(col, reversedBack.getCol(col));
-        reversedBack.setCol(col, bottom.getCol(col));
-        bottom.setCol(col, mainCol);
+        int[] mainCol = getMain().getCol(col);
+        RubikSide reversedBack = getBack().cloneReversed();
+        getMain().setCol(col, getTop().getCol(col));
+        getTop().setCol(col, reversedBack.getCol(col));
+        reversedBack.setCol(col, getBottom().getCol(col));
+        getBottom().setCol(col, mainCol);
         back = reversedBack.cloneReversed();
         if(col == 0){
-            left.rotateClockwise();
-        }else if(col == (size - 1)){
-            right.rotateAntiClockwise();
+            getLeft().rotateClockwise();
+        }else if(col == (getSize() - 1)){
+            getRight().rotateAntiClockwise();
         }
     }
 
     public void turnRowToRight(int row) throws Exception{
-        int[] mainTopRow = main.getRow(row);
-        main.setRow(row, left.getRow(row));
-        left.setRow(row, back.getRow(row));
-        back.setRow(row, right.getRow(row));
-        right.setRow(row, mainTopRow);
+        int[] mainTopRow = getMain().getRow(row);
+        getMain().setRow(row, getLeft().getRow(row));
+        getLeft().setRow(row, getBack().getRow(row));
+        getBack().setRow(row, getRight().getRow(row));
+        getRight().setRow(row, mainTopRow);
         if(row == 0){
-            top.rotateAntiClockwise();
-        }else if(row == (size - 1)){
-            bottom.rotateClockwise();
+            getTop().rotateAntiClockwise();
+        }else if(row == (getSize() - 1)){
+            getBottom().rotateClockwise();
         }
     }
 
     public void turnRowToLeft(int row) throws Exception{
-        int[] mainTopRow = main.getRow(row);
-        main.setRow(row, right.getRow(row));
-        right.setRow(row, back.getRow(row));
-        back.setRow(row, left.getRow(row));
-        left.setRow(row, mainTopRow);
+        int[] mainTopRow = getMain().getRow(row);
+        getMain().setRow(row, getRight().getRow(row));
+        getRight().setRow(row, getBack().getRow(row));
+        getBack().setRow(row, getLeft().getRow(row));
+        getLeft().setRow(row, mainTopRow);
         if(row == 0){
-            top.rotateClockwise();
-        }else if(row == (size - 1)){
-            bottom.rotateAntiClockwise();
+            getTop().rotateClockwise();
+        }else if(row == (getSize() - 1)){
+            getBottom().rotateAntiClockwise();
         }
     }
 }

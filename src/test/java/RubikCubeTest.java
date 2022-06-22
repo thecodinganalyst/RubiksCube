@@ -7,47 +7,48 @@ public class RubikCubeTest {
     @Test
     public void RubikCube_size2() {
         RubikCube cube = new RubikCube(2);
-        assertThat(cube.main.getRow(0), equalTo(new int[]{1, 1}));
-        assertThat(cube.main.getRow(1), equalTo(new int[]{1, 1}));
-        assertThat(cube.right.getRow(0), equalTo(new int[]{2, 2}));
-        assertThat(cube.right.getRow(1), equalTo(new int[]{2, 2}));
-        assertThat(cube.back.getRow(0), equalTo(new int[]{3, 3}));
-        assertThat(cube.back.getRow(1), equalTo(new int[]{3, 3}));
-        assertThat(cube.left.getRow(0), equalTo(new int[]{4, 4}));
-        assertThat(cube.left.getRow(1), equalTo(new int[]{4, 4}));
-        assertThat(cube.top.getRow(0), equalTo(new int[]{5, 5}));
-        assertThat(cube.top.getRow(1), equalTo(new int[]{5, 5}));
-        assertThat(cube.bottom.getRow(0), equalTo(new int[]{6, 6}));
-        assertThat(cube.bottom.getRow(1), equalTo(new int[]{6, 6}));
+        assertThat(cube.getMain().getRow(0), equalTo(new int[]{1, 1}));
+        assertThat(cube.getMain().getRow(1), equalTo(new int[]{1, 1}));
+        assertThat(cube.getRight().getRow(0), equalTo(new int[]{2, 2}));
+        assertThat(cube.getRight().getRow(1), equalTo(new int[]{2, 2}));
+        assertThat(cube.getBack().getRow(0), equalTo(new int[]{3, 3}));
+        assertThat(cube.getBack().getRow(1), equalTo(new int[]{3, 3}));
+        assertThat(cube.getLeft().getRow(0), equalTo(new int[]{4, 4}));
+        assertThat(cube.getLeft().getRow(1), equalTo(new int[]{4, 4}));
+        assertThat(cube.getTop().getRow(0), equalTo(new int[]{5, 5}));
+        assertThat(cube.getTop().getRow(1), equalTo(new int[]{5, 5}));
+        assertThat(cube.getBottom().getRow(0), equalTo(new int[]{6, 6}));
+        assertThat(cube.getBottom().getRow(1), equalTo(new int[]{6, 6}));
+        assertThat(cube.getAllActions().length, equalTo(14));
     }
 
     @Test
     public void RubikCube_TurnMidColUp() throws Exception{
         RubikCube cube = new RubikCube(3);
         cube.turnColUp(1);
-        assertThat(cube.main.getRow(0), equalTo(new int[]{1, 6, 1}));
-        assertThat(cube.main.getRow(1), equalTo(new int[]{1, 6, 1}));
-        assertThat(cube.main.getRow(2), equalTo(new int[]{1, 6, 1}));
+        assertThat(cube.getMain().getRow(0), equalTo(new int[]{1, 6, 1}));
+        assertThat(cube.getMain().getRow(1), equalTo(new int[]{1, 6, 1}));
+        assertThat(cube.getMain().getRow(2), equalTo(new int[]{1, 6, 1}));
 
-        assertThat(cube.right.getRow(0), equalTo(new int[]{2, 2, 2}));
-        assertThat(cube.right.getRow(1), equalTo(new int[]{2, 2, 2}));
-        assertThat(cube.right.getRow(2), equalTo(new int[]{2, 2, 2}));
+        assertThat(cube.getRight().getRow(0), equalTo(new int[]{2, 2, 2}));
+        assertThat(cube.getRight().getRow(1), equalTo(new int[]{2, 2, 2}));
+        assertThat(cube.getRight().getRow(2), equalTo(new int[]{2, 2, 2}));
 
-        assertThat(cube.back.getRow(0), equalTo(new int[]{3, 5, 3}));
-        assertThat(cube.back.getRow(1), equalTo(new int[]{3, 5, 3}));
-        assertThat(cube.back.getRow(2), equalTo(new int[]{3, 5, 3}));
+        assertThat(cube.getBack().getRow(0), equalTo(new int[]{3, 5, 3}));
+        assertThat(cube.getBack().getRow(1), equalTo(new int[]{3, 5, 3}));
+        assertThat(cube.getBack().getRow(2), equalTo(new int[]{3, 5, 3}));
 
-        assertThat(cube.left.getRow(0), equalTo(new int[]{4, 4, 4}));
-        assertThat(cube.left.getRow(1), equalTo(new int[]{4, 4, 4}));
-        assertThat(cube.left.getRow(2), equalTo(new int[]{4, 4, 4}));
+        assertThat(cube.getLeft().getRow(0), equalTo(new int[]{4, 4, 4}));
+        assertThat(cube.getLeft().getRow(1), equalTo(new int[]{4, 4, 4}));
+        assertThat(cube.getLeft().getRow(2), equalTo(new int[]{4, 4, 4}));
 
-        assertThat(cube.top.getRow(0), equalTo(new int[]{5, 1, 5}));
-        assertThat(cube.top.getRow(1), equalTo(new int[]{5, 1, 5}));
-        assertThat(cube.top.getRow(2), equalTo(new int[]{5, 1, 5}));
+        assertThat(cube.getTop().getRow(0), equalTo(new int[]{5, 1, 5}));
+        assertThat(cube.getTop().getRow(1), equalTo(new int[]{5, 1, 5}));
+        assertThat(cube.getTop().getRow(2), equalTo(new int[]{5, 1, 5}));
 
-        assertThat(cube.bottom.getRow(0), equalTo(new int[]{6, 3, 6}));
-        assertThat(cube.bottom.getRow(1), equalTo(new int[]{6, 3, 6}));
-        assertThat(cube.bottom.getRow(2), equalTo(new int[]{6, 3, 6}));
+        assertThat(cube.getBottom().getRow(0), equalTo(new int[]{6, 3, 6}));
+        assertThat(cube.getBottom().getRow(1), equalTo(new int[]{6, 3, 6}));
+        assertThat(cube.getBottom().getRow(2), equalTo(new int[]{6, 3, 6}));
     }
 
     @Test
@@ -93,463 +94,463 @@ public class RubikCubeTest {
     public void RubikCube_FaceRight(){
         RubikCube cube = new RubikCube(3);
         cube.face(RubikCube.FACE.RIGHT);
-        assertThat(cube.main.getRow(0), equalTo(new int[]{2, 2, 2}));
-        assertThat(cube.main.getRow(1), equalTo(new int[]{2, 2, 2}));
-        assertThat(cube.main.getRow(2), equalTo(new int[]{2, 2, 2}));
+        assertThat(cube.getMain().getRow(0), equalTo(new int[]{2, 2, 2}));
+        assertThat(cube.getMain().getRow(1), equalTo(new int[]{2, 2, 2}));
+        assertThat(cube.getMain().getRow(2), equalTo(new int[]{2, 2, 2}));
 
-        assertThat(cube.right.getRow(0), equalTo(new int[]{3, 3, 3}));
-        assertThat(cube.right.getRow(1), equalTo(new int[]{3, 3, 3}));
-        assertThat(cube.right.getRow(2), equalTo(new int[]{3, 3, 3}));
+        assertThat(cube.getRight().getRow(0), equalTo(new int[]{3, 3, 3}));
+        assertThat(cube.getRight().getRow(1), equalTo(new int[]{3, 3, 3}));
+        assertThat(cube.getRight().getRow(2), equalTo(new int[]{3, 3, 3}));
 
-        assertThat(cube.back.getRow(0), equalTo(new int[]{4, 4, 4}));
-        assertThat(cube.back.getRow(1), equalTo(new int[]{4, 4, 4}));
-        assertThat(cube.back.getRow(2), equalTo(new int[]{4, 4, 4}));
+        assertThat(cube.getBack().getRow(0), equalTo(new int[]{4, 4, 4}));
+        assertThat(cube.getBack().getRow(1), equalTo(new int[]{4, 4, 4}));
+        assertThat(cube.getBack().getRow(2), equalTo(new int[]{4, 4, 4}));
 
-        assertThat(cube.left.getRow(0), equalTo(new int[]{1, 1, 1}));
-        assertThat(cube.left.getRow(1), equalTo(new int[]{1, 1, 1}));
-        assertThat(cube.left.getRow(2), equalTo(new int[]{1, 1, 1}));
+        assertThat(cube.getLeft().getRow(0), equalTo(new int[]{1, 1, 1}));
+        assertThat(cube.getLeft().getRow(1), equalTo(new int[]{1, 1, 1}));
+        assertThat(cube.getLeft().getRow(2), equalTo(new int[]{1, 1, 1}));
 
-        assertThat(cube.top.getRow(0), equalTo(new int[]{5, 5, 5}));
-        assertThat(cube.top.getRow(1), equalTo(new int[]{5, 5, 5}));
-        assertThat(cube.top.getRow(2), equalTo(new int[]{5, 5, 5}));
+        assertThat(cube.getTop().getRow(0), equalTo(new int[]{5, 5, 5}));
+        assertThat(cube.getTop().getRow(1), equalTo(new int[]{5, 5, 5}));
+        assertThat(cube.getTop().getRow(2), equalTo(new int[]{5, 5, 5}));
 
-        assertThat(cube.bottom.getRow(0), equalTo(new int[]{6, 6, 6}));
-        assertThat(cube.bottom.getRow(1), equalTo(new int[]{6, 6, 6}));
-        assertThat(cube.bottom.getRow(2), equalTo(new int[]{6, 6, 6}));
+        assertThat(cube.getBottom().getRow(0), equalTo(new int[]{6, 6, 6}));
+        assertThat(cube.getBottom().getRow(1), equalTo(new int[]{6, 6, 6}));
+        assertThat(cube.getBottom().getRow(2), equalTo(new int[]{6, 6, 6}));
     }
 
     @Test
     public void RubikCube_FaceBack(){
         RubikCube cube = new RubikCube(3);
         cube.face(RubikCube.FACE.BACK);
-        assertThat(cube.left.getRow(0), equalTo(new int[]{2, 2, 2}));
-        assertThat(cube.left.getRow(1), equalTo(new int[]{2, 2, 2}));
-        assertThat(cube.left.getRow(2), equalTo(new int[]{2, 2, 2}));
+        assertThat(cube.getLeft().getRow(0), equalTo(new int[]{2, 2, 2}));
+        assertThat(cube.getLeft().getRow(1), equalTo(new int[]{2, 2, 2}));
+        assertThat(cube.getLeft().getRow(2), equalTo(new int[]{2, 2, 2}));
 
-        assertThat(cube.main.getRow(0), equalTo(new int[]{3, 3, 3}));
-        assertThat(cube.main.getRow(1), equalTo(new int[]{3, 3, 3}));
-        assertThat(cube.main.getRow(2), equalTo(new int[]{3, 3, 3}));
+        assertThat(cube.getMain().getRow(0), equalTo(new int[]{3, 3, 3}));
+        assertThat(cube.getMain().getRow(1), equalTo(new int[]{3, 3, 3}));
+        assertThat(cube.getMain().getRow(2), equalTo(new int[]{3, 3, 3}));
 
-        assertThat(cube.right.getRow(0), equalTo(new int[]{4, 4, 4}));
-        assertThat(cube.right.getRow(1), equalTo(new int[]{4, 4, 4}));
-        assertThat(cube.right.getRow(2), equalTo(new int[]{4, 4, 4}));
+        assertThat(cube.getRight().getRow(0), equalTo(new int[]{4, 4, 4}));
+        assertThat(cube.getRight().getRow(1), equalTo(new int[]{4, 4, 4}));
+        assertThat(cube.getRight().getRow(2), equalTo(new int[]{4, 4, 4}));
 
-        assertThat(cube.back.getRow(0), equalTo(new int[]{1, 1, 1}));
-        assertThat(cube.back.getRow(1), equalTo(new int[]{1, 1, 1}));
-        assertThat(cube.back.getRow(2), equalTo(new int[]{1, 1, 1}));
+        assertThat(cube.getBack().getRow(0), equalTo(new int[]{1, 1, 1}));
+        assertThat(cube.getBack().getRow(1), equalTo(new int[]{1, 1, 1}));
+        assertThat(cube.getBack().getRow(2), equalTo(new int[]{1, 1, 1}));
 
-        assertThat(cube.top.getRow(0), equalTo(new int[]{5, 5, 5}));
-        assertThat(cube.top.getRow(1), equalTo(new int[]{5, 5, 5}));
-        assertThat(cube.top.getRow(2), equalTo(new int[]{5, 5, 5}));
+        assertThat(cube.getTop().getRow(0), equalTo(new int[]{5, 5, 5}));
+        assertThat(cube.getTop().getRow(1), equalTo(new int[]{5, 5, 5}));
+        assertThat(cube.getTop().getRow(2), equalTo(new int[]{5, 5, 5}));
 
-        assertThat(cube.bottom.getRow(0), equalTo(new int[]{6, 6, 6}));
-        assertThat(cube.bottom.getRow(1), equalTo(new int[]{6, 6, 6}));
-        assertThat(cube.bottom.getRow(2), equalTo(new int[]{6, 6, 6}));
+        assertThat(cube.getBottom().getRow(0), equalTo(new int[]{6, 6, 6}));
+        assertThat(cube.getBottom().getRow(1), equalTo(new int[]{6, 6, 6}));
+        assertThat(cube.getBottom().getRow(2), equalTo(new int[]{6, 6, 6}));
     }
 
     @Test
     public void RubikCube_FaceLeft(){
         RubikCube cube = new RubikCube(3);
         cube.face(RubikCube.FACE.LEFT);
-        assertThat(cube.back.getRow(0), equalTo(new int[]{2, 2, 2}));
-        assertThat(cube.back.getRow(1), equalTo(new int[]{2, 2, 2}));
-        assertThat(cube.back.getRow(2), equalTo(new int[]{2, 2, 2}));
+        assertThat(cube.getBack().getRow(0), equalTo(new int[]{2, 2, 2}));
+        assertThat(cube.getBack().getRow(1), equalTo(new int[]{2, 2, 2}));
+        assertThat(cube.getBack().getRow(2), equalTo(new int[]{2, 2, 2}));
 
-        assertThat(cube.left.getRow(0), equalTo(new int[]{3, 3, 3}));
-        assertThat(cube.left.getRow(1), equalTo(new int[]{3, 3, 3}));
-        assertThat(cube.left.getRow(2), equalTo(new int[]{3, 3, 3}));
+        assertThat(cube.getLeft().getRow(0), equalTo(new int[]{3, 3, 3}));
+        assertThat(cube.getLeft().getRow(1), equalTo(new int[]{3, 3, 3}));
+        assertThat(cube.getLeft().getRow(2), equalTo(new int[]{3, 3, 3}));
 
-        assertThat(cube.main.getRow(0), equalTo(new int[]{4, 4, 4}));
-        assertThat(cube.main.getRow(1), equalTo(new int[]{4, 4, 4}));
-        assertThat(cube.main.getRow(2), equalTo(new int[]{4, 4, 4}));
+        assertThat(cube.getMain().getRow(0), equalTo(new int[]{4, 4, 4}));
+        assertThat(cube.getMain().getRow(1), equalTo(new int[]{4, 4, 4}));
+        assertThat(cube.getMain().getRow(2), equalTo(new int[]{4, 4, 4}));
 
-        assertThat(cube.right.getRow(0), equalTo(new int[]{1, 1, 1}));
-        assertThat(cube.right.getRow(1), equalTo(new int[]{1, 1, 1}));
-        assertThat(cube.right.getRow(2), equalTo(new int[]{1, 1, 1}));
+        assertThat(cube.getRight().getRow(0), equalTo(new int[]{1, 1, 1}));
+        assertThat(cube.getRight().getRow(1), equalTo(new int[]{1, 1, 1}));
+        assertThat(cube.getRight().getRow(2), equalTo(new int[]{1, 1, 1}));
 
-        assertThat(cube.top.getRow(0), equalTo(new int[]{5, 5, 5}));
-        assertThat(cube.top.getRow(1), equalTo(new int[]{5, 5, 5}));
-        assertThat(cube.top.getRow(2), equalTo(new int[]{5, 5, 5}));
+        assertThat(cube.getTop().getRow(0), equalTo(new int[]{5, 5, 5}));
+        assertThat(cube.getTop().getRow(1), equalTo(new int[]{5, 5, 5}));
+        assertThat(cube.getTop().getRow(2), equalTo(new int[]{5, 5, 5}));
 
-        assertThat(cube.bottom.getRow(0), equalTo(new int[]{6, 6, 6}));
-        assertThat(cube.bottom.getRow(1), equalTo(new int[]{6, 6, 6}));
-        assertThat(cube.bottom.getRow(2), equalTo(new int[]{6, 6, 6}));
+        assertThat(cube.getBottom().getRow(0), equalTo(new int[]{6, 6, 6}));
+        assertThat(cube.getBottom().getRow(1), equalTo(new int[]{6, 6, 6}));
+        assertThat(cube.getBottom().getRow(2), equalTo(new int[]{6, 6, 6}));
     }
 
     @Test
     public void RubikCube_FaceTop(){
         RubikCube cube = new RubikCube(3);
         cube.face(RubikCube.FACE.TOP);
-        assertThat(cube.right.getRow(0), equalTo(new int[]{2, 2, 2}));
-        assertThat(cube.right.getRow(1), equalTo(new int[]{2, 2, 2}));
-        assertThat(cube.right.getRow(2), equalTo(new int[]{2, 2, 2}));
+        assertThat(cube.getRight().getRow(0), equalTo(new int[]{2, 2, 2}));
+        assertThat(cube.getRight().getRow(1), equalTo(new int[]{2, 2, 2}));
+        assertThat(cube.getRight().getRow(2), equalTo(new int[]{2, 2, 2}));
 
-        assertThat(cube.top.getRow(0), equalTo(new int[]{3, 3, 3}));
-        assertThat(cube.top.getRow(1), equalTo(new int[]{3, 3, 3}));
-        assertThat(cube.top.getRow(2), equalTo(new int[]{3, 3, 3}));
+        assertThat(cube.getTop().getRow(0), equalTo(new int[]{3, 3, 3}));
+        assertThat(cube.getTop().getRow(1), equalTo(new int[]{3, 3, 3}));
+        assertThat(cube.getTop().getRow(2), equalTo(new int[]{3, 3, 3}));
 
-        assertThat(cube.left.getRow(0), equalTo(new int[]{4, 4, 4}));
-        assertThat(cube.left.getRow(1), equalTo(new int[]{4, 4, 4}));
-        assertThat(cube.left.getRow(2), equalTo(new int[]{4, 4, 4}));
+        assertThat(cube.getLeft().getRow(0), equalTo(new int[]{4, 4, 4}));
+        assertThat(cube.getLeft().getRow(1), equalTo(new int[]{4, 4, 4}));
+        assertThat(cube.getLeft().getRow(2), equalTo(new int[]{4, 4, 4}));
 
-        assertThat(cube.bottom.getRow(0), equalTo(new int[]{1, 1, 1}));
-        assertThat(cube.bottom.getRow(1), equalTo(new int[]{1, 1, 1}));
-        assertThat(cube.bottom.getRow(2), equalTo(new int[]{1, 1, 1}));
+        assertThat(cube.getBottom().getRow(0), equalTo(new int[]{1, 1, 1}));
+        assertThat(cube.getBottom().getRow(1), equalTo(new int[]{1, 1, 1}));
+        assertThat(cube.getBottom().getRow(2), equalTo(new int[]{1, 1, 1}));
 
-        assertThat(cube.main.getRow(0), equalTo(new int[]{5, 5, 5}));
-        assertThat(cube.main.getRow(1), equalTo(new int[]{5, 5, 5}));
-        assertThat(cube.main.getRow(2), equalTo(new int[]{5, 5, 5}));
+        assertThat(cube.getMain().getRow(0), equalTo(new int[]{5, 5, 5}));
+        assertThat(cube.getMain().getRow(1), equalTo(new int[]{5, 5, 5}));
+        assertThat(cube.getMain().getRow(2), equalTo(new int[]{5, 5, 5}));
 
-        assertThat(cube.back.getRow(0), equalTo(new int[]{6, 6, 6}));
-        assertThat(cube.back.getRow(1), equalTo(new int[]{6, 6, 6}));
-        assertThat(cube.back.getRow(2), equalTo(new int[]{6, 6, 6}));
+        assertThat(cube.getBack().getRow(0), equalTo(new int[]{6, 6, 6}));
+        assertThat(cube.getBack().getRow(1), equalTo(new int[]{6, 6, 6}));
+        assertThat(cube.getBack().getRow(2), equalTo(new int[]{6, 6, 6}));
     }
 
     @Test
     public void RubikCube_FaceBottom(){
         RubikCube cube = new RubikCube(3);
         cube.face(RubikCube.FACE.BOTTOM);
-        assertThat(cube.right.getRow(0), equalTo(new int[]{2, 2, 2}));
-        assertThat(cube.right.getRow(1), equalTo(new int[]{2, 2, 2}));
-        assertThat(cube.right.getRow(2), equalTo(new int[]{2, 2, 2}));
+        assertThat(cube.getRight().getRow(0), equalTo(new int[]{2, 2, 2}));
+        assertThat(cube.getRight().getRow(1), equalTo(new int[]{2, 2, 2}));
+        assertThat(cube.getRight().getRow(2), equalTo(new int[]{2, 2, 2}));
 
-        assertThat(cube.bottom.getRow(0), equalTo(new int[]{3, 3, 3}));
-        assertThat(cube.bottom.getRow(1), equalTo(new int[]{3, 3, 3}));
-        assertThat(cube.bottom.getRow(2), equalTo(new int[]{3, 3, 3}));
+        assertThat(cube.getBottom().getRow(0), equalTo(new int[]{3, 3, 3}));
+        assertThat(cube.getBottom().getRow(1), equalTo(new int[]{3, 3, 3}));
+        assertThat(cube.getBottom().getRow(2), equalTo(new int[]{3, 3, 3}));
 
-        assertThat(cube.left.getRow(0), equalTo(new int[]{4, 4, 4}));
-        assertThat(cube.left.getRow(1), equalTo(new int[]{4, 4, 4}));
-        assertThat(cube.left.getRow(2), equalTo(new int[]{4, 4, 4}));
+        assertThat(cube.getLeft().getRow(0), equalTo(new int[]{4, 4, 4}));
+        assertThat(cube.getLeft().getRow(1), equalTo(new int[]{4, 4, 4}));
+        assertThat(cube.getLeft().getRow(2), equalTo(new int[]{4, 4, 4}));
 
-        assertThat(cube.top.getRow(0), equalTo(new int[]{1, 1, 1}));
-        assertThat(cube.top.getRow(1), equalTo(new int[]{1, 1, 1}));
-        assertThat(cube.top.getRow(2), equalTo(new int[]{1, 1, 1}));
+        assertThat(cube.getTop().getRow(0), equalTo(new int[]{1, 1, 1}));
+        assertThat(cube.getTop().getRow(1), equalTo(new int[]{1, 1, 1}));
+        assertThat(cube.getTop().getRow(2), equalTo(new int[]{1, 1, 1}));
 
-        assertThat(cube.back.getRow(0), equalTo(new int[]{5, 5, 5}));
-        assertThat(cube.back.getRow(1), equalTo(new int[]{5, 5, 5}));
-        assertThat(cube.back.getRow(2), equalTo(new int[]{5, 5, 5}));
+        assertThat(cube.getBack().getRow(0), equalTo(new int[]{5, 5, 5}));
+        assertThat(cube.getBack().getRow(1), equalTo(new int[]{5, 5, 5}));
+        assertThat(cube.getBack().getRow(2), equalTo(new int[]{5, 5, 5}));
 
-        assertThat(cube.main.getRow(0), equalTo(new int[]{6, 6, 6}));
-        assertThat(cube.main.getRow(1), equalTo(new int[]{6, 6, 6}));
-        assertThat(cube.main.getRow(2), equalTo(new int[]{6, 6, 6}));
+        assertThat(cube.getMain().getRow(0), equalTo(new int[]{6, 6, 6}));
+        assertThat(cube.getMain().getRow(1), equalTo(new int[]{6, 6, 6}));
+        assertThat(cube.getMain().getRow(2), equalTo(new int[]{6, 6, 6}));
     }
 
     @Test
     public void RubikCube_TurnLeftColUp() throws Exception{
         RubikCube cube = new RubikCube(3);
         cube.turnColUp(0);
-        assertThat(cube.main.getRow(0), equalTo(new int[]{6, 1, 1}));
-        assertThat(cube.main.getRow(1), equalTo(new int[]{6, 1, 1}));
-        assertThat(cube.main.getRow(2), equalTo(new int[]{6, 1, 1}));
+        assertThat(cube.getMain().getRow(0), equalTo(new int[]{6, 1, 1}));
+        assertThat(cube.getMain().getRow(1), equalTo(new int[]{6, 1, 1}));
+        assertThat(cube.getMain().getRow(2), equalTo(new int[]{6, 1, 1}));
 
-        assertThat(cube.right.getRow(0), equalTo(new int[]{2, 2, 2}));
-        assertThat(cube.right.getRow(1), equalTo(new int[]{2, 2, 2}));
-        assertThat(cube.right.getRow(2), equalTo(new int[]{2, 2, 2}));
+        assertThat(cube.getRight().getRow(0), equalTo(new int[]{2, 2, 2}));
+        assertThat(cube.getRight().getRow(1), equalTo(new int[]{2, 2, 2}));
+        assertThat(cube.getRight().getRow(2), equalTo(new int[]{2, 2, 2}));
 
-        assertThat(cube.back.getRow(0), equalTo(new int[]{3, 3, 5}));
-        assertThat(cube.back.getRow(1), equalTo(new int[]{3, 3, 5}));
-        assertThat(cube.back.getRow(2), equalTo(new int[]{3, 3, 5}));
+        assertThat(cube.getBack().getRow(0), equalTo(new int[]{3, 3, 5}));
+        assertThat(cube.getBack().getRow(1), equalTo(new int[]{3, 3, 5}));
+        assertThat(cube.getBack().getRow(2), equalTo(new int[]{3, 3, 5}));
 
-        assertThat(cube.left.getRow(0), equalTo(new int[]{4, 4, 4}));
-        assertThat(cube.left.getRow(1), equalTo(new int[]{4, 4, 4}));
-        assertThat(cube.left.getRow(2), equalTo(new int[]{4, 4, 4}));
+        assertThat(cube.getLeft().getRow(0), equalTo(new int[]{4, 4, 4}));
+        assertThat(cube.getLeft().getRow(1), equalTo(new int[]{4, 4, 4}));
+        assertThat(cube.getLeft().getRow(2), equalTo(new int[]{4, 4, 4}));
 
-        assertThat(cube.top.getRow(0), equalTo(new int[]{1, 5, 5}));
-        assertThat(cube.top.getRow(1), equalTo(new int[]{1, 5, 5}));
-        assertThat(cube.top.getRow(2), equalTo(new int[]{1, 5, 5}));
+        assertThat(cube.getTop().getRow(0), equalTo(new int[]{1, 5, 5}));
+        assertThat(cube.getTop().getRow(1), equalTo(new int[]{1, 5, 5}));
+        assertThat(cube.getTop().getRow(2), equalTo(new int[]{1, 5, 5}));
 
-        assertThat(cube.bottom.getRow(0), equalTo(new int[]{3, 6, 6}));
-        assertThat(cube.bottom.getRow(1), equalTo(new int[]{3, 6, 6}));
-        assertThat(cube.bottom.getRow(2), equalTo(new int[]{3, 6, 6}));
+        assertThat(cube.getBottom().getRow(0), equalTo(new int[]{3, 6, 6}));
+        assertThat(cube.getBottom().getRow(1), equalTo(new int[]{3, 6, 6}));
+        assertThat(cube.getBottom().getRow(2), equalTo(new int[]{3, 6, 6}));
     }
 
     @Test
     public void RubikCube_TurnRightColUp() throws Exception{
         RubikCube cube = new RubikCube(3);
         cube.turnColUp(2);
-        assertThat(cube.main.getRow(0), equalTo(new int[]{1, 1, 6}));
-        assertThat(cube.main.getRow(1), equalTo(new int[]{1, 1, 6}));
-        assertThat(cube.main.getRow(2), equalTo(new int[]{1, 1, 6}));
+        assertThat(cube.getMain().getRow(0), equalTo(new int[]{1, 1, 6}));
+        assertThat(cube.getMain().getRow(1), equalTo(new int[]{1, 1, 6}));
+        assertThat(cube.getMain().getRow(2), equalTo(new int[]{1, 1, 6}));
 
-        assertThat(cube.right.getRow(0), equalTo(new int[]{2, 2, 2}));
-        assertThat(cube.right.getRow(1), equalTo(new int[]{2, 2, 2}));
-        assertThat(cube.right.getRow(2), equalTo(new int[]{2, 2, 2}));
+        assertThat(cube.getRight().getRow(0), equalTo(new int[]{2, 2, 2}));
+        assertThat(cube.getRight().getRow(1), equalTo(new int[]{2, 2, 2}));
+        assertThat(cube.getRight().getRow(2), equalTo(new int[]{2, 2, 2}));
 
-        assertThat(cube.back.getRow(0), equalTo(new int[]{5, 3, 3}));
-        assertThat(cube.back.getRow(1), equalTo(new int[]{5, 3, 3}));
-        assertThat(cube.back.getRow(2), equalTo(new int[]{5, 3, 3}));
+        assertThat(cube.getBack().getRow(0), equalTo(new int[]{5, 3, 3}));
+        assertThat(cube.getBack().getRow(1), equalTo(new int[]{5, 3, 3}));
+        assertThat(cube.getBack().getRow(2), equalTo(new int[]{5, 3, 3}));
 
-        assertThat(cube.left.getRow(0), equalTo(new int[]{4, 4, 4}));
-        assertThat(cube.left.getRow(1), equalTo(new int[]{4, 4, 4}));
-        assertThat(cube.left.getRow(2), equalTo(new int[]{4, 4, 4}));
+        assertThat(cube.getLeft().getRow(0), equalTo(new int[]{4, 4, 4}));
+        assertThat(cube.getLeft().getRow(1), equalTo(new int[]{4, 4, 4}));
+        assertThat(cube.getLeft().getRow(2), equalTo(new int[]{4, 4, 4}));
 
-        assertThat(cube.top.getRow(0), equalTo(new int[]{5, 5, 1}));
-        assertThat(cube.top.getRow(1), equalTo(new int[]{5, 5, 1}));
-        assertThat(cube.top.getRow(2), equalTo(new int[]{5, 5, 1}));
+        assertThat(cube.getTop().getRow(0), equalTo(new int[]{5, 5, 1}));
+        assertThat(cube.getTop().getRow(1), equalTo(new int[]{5, 5, 1}));
+        assertThat(cube.getTop().getRow(2), equalTo(new int[]{5, 5, 1}));
 
-        assertThat(cube.bottom.getRow(0), equalTo(new int[]{6, 6, 3}));
-        assertThat(cube.bottom.getRow(1), equalTo(new int[]{6, 6, 3}));
-        assertThat(cube.bottom.getRow(2), equalTo(new int[]{6, 6, 3}));
+        assertThat(cube.getBottom().getRow(0), equalTo(new int[]{6, 6, 3}));
+        assertThat(cube.getBottom().getRow(1), equalTo(new int[]{6, 6, 3}));
+        assertThat(cube.getBottom().getRow(2), equalTo(new int[]{6, 6, 3}));
     }
 
     @Test
     public void RubikCube_TurnMidColDown() throws Exception{
         RubikCube cube = new RubikCube(3);
         cube.turnColDown(1);
-        assertThat(cube.main.getRow(0), equalTo(new int[]{1, 5, 1}));
-        assertThat(cube.main.getRow(1), equalTo(new int[]{1, 5, 1}));
-        assertThat(cube.main.getRow(2), equalTo(new int[]{1, 5, 1}));
+        assertThat(cube.getMain().getRow(0), equalTo(new int[]{1, 5, 1}));
+        assertThat(cube.getMain().getRow(1), equalTo(new int[]{1, 5, 1}));
+        assertThat(cube.getMain().getRow(2), equalTo(new int[]{1, 5, 1}));
 
-        assertThat(cube.right.getRow(0), equalTo(new int[]{2, 2, 2}));
-        assertThat(cube.right.getRow(1), equalTo(new int[]{2, 2, 2}));
-        assertThat(cube.right.getRow(2), equalTo(new int[]{2, 2, 2}));
+        assertThat(cube.getRight().getRow(0), equalTo(new int[]{2, 2, 2}));
+        assertThat(cube.getRight().getRow(1), equalTo(new int[]{2, 2, 2}));
+        assertThat(cube.getRight().getRow(2), equalTo(new int[]{2, 2, 2}));
 
-        assertThat(cube.back.getRow(0), equalTo(new int[]{3, 6, 3}));
-        assertThat(cube.back.getRow(1), equalTo(new int[]{3, 6, 3}));
-        assertThat(cube.back.getRow(2), equalTo(new int[]{3, 6, 3}));
+        assertThat(cube.getBack().getRow(0), equalTo(new int[]{3, 6, 3}));
+        assertThat(cube.getBack().getRow(1), equalTo(new int[]{3, 6, 3}));
+        assertThat(cube.getBack().getRow(2), equalTo(new int[]{3, 6, 3}));
 
-        assertThat(cube.left.getRow(0), equalTo(new int[]{4, 4, 4}));
-        assertThat(cube.left.getRow(1), equalTo(new int[]{4, 4, 4}));
-        assertThat(cube.left.getRow(2), equalTo(new int[]{4, 4, 4}));
+        assertThat(cube.getLeft().getRow(0), equalTo(new int[]{4, 4, 4}));
+        assertThat(cube.getLeft().getRow(1), equalTo(new int[]{4, 4, 4}));
+        assertThat(cube.getLeft().getRow(2), equalTo(new int[]{4, 4, 4}));
 
-        assertThat(cube.top.getRow(0), equalTo(new int[]{5, 3, 5}));
-        assertThat(cube.top.getRow(1), equalTo(new int[]{5, 3, 5}));
-        assertThat(cube.top.getRow(2), equalTo(new int[]{5, 3, 5}));
+        assertThat(cube.getTop().getRow(0), equalTo(new int[]{5, 3, 5}));
+        assertThat(cube.getTop().getRow(1), equalTo(new int[]{5, 3, 5}));
+        assertThat(cube.getTop().getRow(2), equalTo(new int[]{5, 3, 5}));
 
-        assertThat(cube.bottom.getRow(0), equalTo(new int[]{6, 1, 6}));
-        assertThat(cube.bottom.getRow(1), equalTo(new int[]{6, 1, 6}));
-        assertThat(cube.bottom.getRow(2), equalTo(new int[]{6, 1, 6}));
+        assertThat(cube.getBottom().getRow(0), equalTo(new int[]{6, 1, 6}));
+        assertThat(cube.getBottom().getRow(1), equalTo(new int[]{6, 1, 6}));
+        assertThat(cube.getBottom().getRow(2), equalTo(new int[]{6, 1, 6}));
     }
 
     @Test
     public void RubikCube_TurnLeftColDown() throws Exception{
         RubikCube cube = new RubikCube(3);
         cube.turnColDown(0);
-        assertThat(cube.main.getRow(0), equalTo(new int[]{5, 1, 1}));
-        assertThat(cube.main.getRow(1), equalTo(new int[]{5, 1, 1}));
-        assertThat(cube.main.getRow(2), equalTo(new int[]{5, 1, 1}));
+        assertThat(cube.getMain().getRow(0), equalTo(new int[]{5, 1, 1}));
+        assertThat(cube.getMain().getRow(1), equalTo(new int[]{5, 1, 1}));
+        assertThat(cube.getMain().getRow(2), equalTo(new int[]{5, 1, 1}));
 
-        assertThat(cube.right.getRow(0), equalTo(new int[]{2, 2, 2}));
-        assertThat(cube.right.getRow(1), equalTo(new int[]{2, 2, 2}));
-        assertThat(cube.right.getRow(2), equalTo(new int[]{2, 2, 2}));
+        assertThat(cube.getRight().getRow(0), equalTo(new int[]{2, 2, 2}));
+        assertThat(cube.getRight().getRow(1), equalTo(new int[]{2, 2, 2}));
+        assertThat(cube.getRight().getRow(2), equalTo(new int[]{2, 2, 2}));
 
-        assertThat(cube.back.getRow(0), equalTo(new int[]{3, 3, 6}));
-        assertThat(cube.back.getRow(1), equalTo(new int[]{3, 3, 6}));
-        assertThat(cube.back.getRow(2), equalTo(new int[]{3, 3, 6}));
+        assertThat(cube.getBack().getRow(0), equalTo(new int[]{3, 3, 6}));
+        assertThat(cube.getBack().getRow(1), equalTo(new int[]{3, 3, 6}));
+        assertThat(cube.getBack().getRow(2), equalTo(new int[]{3, 3, 6}));
 
-        assertThat(cube.left.getRow(0), equalTo(new int[]{4, 4, 4}));
-        assertThat(cube.left.getRow(1), equalTo(new int[]{4, 4, 4}));
-        assertThat(cube.left.getRow(2), equalTo(new int[]{4, 4, 4}));
+        assertThat(cube.getLeft().getRow(0), equalTo(new int[]{4, 4, 4}));
+        assertThat(cube.getLeft().getRow(1), equalTo(new int[]{4, 4, 4}));
+        assertThat(cube.getLeft().getRow(2), equalTo(new int[]{4, 4, 4}));
 
-        assertThat(cube.top.getRow(0), equalTo(new int[]{3, 5, 5}));
-        assertThat(cube.top.getRow(1), equalTo(new int[]{3, 5, 5}));
-        assertThat(cube.top.getRow(2), equalTo(new int[]{3, 5, 5}));
+        assertThat(cube.getTop().getRow(0), equalTo(new int[]{3, 5, 5}));
+        assertThat(cube.getTop().getRow(1), equalTo(new int[]{3, 5, 5}));
+        assertThat(cube.getTop().getRow(2), equalTo(new int[]{3, 5, 5}));
 
-        assertThat(cube.bottom.getRow(0), equalTo(new int[]{1, 6, 6}));
-        assertThat(cube.bottom.getRow(1), equalTo(new int[]{1, 6, 6}));
-        assertThat(cube.bottom.getRow(2), equalTo(new int[]{1, 6, 6}));
+        assertThat(cube.getBottom().getRow(0), equalTo(new int[]{1, 6, 6}));
+        assertThat(cube.getBottom().getRow(1), equalTo(new int[]{1, 6, 6}));
+        assertThat(cube.getBottom().getRow(2), equalTo(new int[]{1, 6, 6}));
     }
 
     @Test
     public void RubikCube_TurnRightColDown() throws Exception{
         RubikCube cube = new RubikCube(3);
         cube.turnColDown(2);
-        assertThat(cube.main.getRow(0), equalTo(new int[]{1, 1, 5}));
-        assertThat(cube.main.getRow(1), equalTo(new int[]{1, 1, 5}));
-        assertThat(cube.main.getRow(2), equalTo(new int[]{1, 1, 5}));
+        assertThat(cube.getMain().getRow(0), equalTo(new int[]{1, 1, 5}));
+        assertThat(cube.getMain().getRow(1), equalTo(new int[]{1, 1, 5}));
+        assertThat(cube.getMain().getRow(2), equalTo(new int[]{1, 1, 5}));
 
-        assertThat(cube.right.getRow(0), equalTo(new int[]{2, 2, 2}));
-        assertThat(cube.right.getRow(1), equalTo(new int[]{2, 2, 2}));
-        assertThat(cube.right.getRow(2), equalTo(new int[]{2, 2, 2}));
+        assertThat(cube.getRight().getRow(0), equalTo(new int[]{2, 2, 2}));
+        assertThat(cube.getRight().getRow(1), equalTo(new int[]{2, 2, 2}));
+        assertThat(cube.getRight().getRow(2), equalTo(new int[]{2, 2, 2}));
 
-        assertThat(cube.back.getRow(0), equalTo(new int[]{6, 3, 3}));
-        assertThat(cube.back.getRow(1), equalTo(new int[]{6, 3, 3}));
-        assertThat(cube.back.getRow(2), equalTo(new int[]{6, 3, 3}));
+        assertThat(cube.getBack().getRow(0), equalTo(new int[]{6, 3, 3}));
+        assertThat(cube.getBack().getRow(1), equalTo(new int[]{6, 3, 3}));
+        assertThat(cube.getBack().getRow(2), equalTo(new int[]{6, 3, 3}));
 
-        assertThat(cube.left.getRow(0), equalTo(new int[]{4, 4, 4}));
-        assertThat(cube.left.getRow(1), equalTo(new int[]{4, 4, 4}));
-        assertThat(cube.left.getRow(2), equalTo(new int[]{4, 4, 4}));
+        assertThat(cube.getLeft().getRow(0), equalTo(new int[]{4, 4, 4}));
+        assertThat(cube.getLeft().getRow(1), equalTo(new int[]{4, 4, 4}));
+        assertThat(cube.getLeft().getRow(2), equalTo(new int[]{4, 4, 4}));
 
-        assertThat(cube.top.getRow(0), equalTo(new int[]{5, 5, 3}));
-        assertThat(cube.top.getRow(1), equalTo(new int[]{5, 5, 3}));
-        assertThat(cube.top.getRow(2), equalTo(new int[]{5, 5, 3}));
+        assertThat(cube.getTop().getRow(0), equalTo(new int[]{5, 5, 3}));
+        assertThat(cube.getTop().getRow(1), equalTo(new int[]{5, 5, 3}));
+        assertThat(cube.getTop().getRow(2), equalTo(new int[]{5, 5, 3}));
 
-        assertThat(cube.bottom.getRow(0), equalTo(new int[]{6, 6, 1}));
-        assertThat(cube.bottom.getRow(1), equalTo(new int[]{6, 6, 1}));
-        assertThat(cube.bottom.getRow(2), equalTo(new int[]{6, 6, 1}));
+        assertThat(cube.getBottom().getRow(0), equalTo(new int[]{6, 6, 1}));
+        assertThat(cube.getBottom().getRow(1), equalTo(new int[]{6, 6, 1}));
+        assertThat(cube.getBottom().getRow(2), equalTo(new int[]{6, 6, 1}));
     }
 
     @Test
     public void RubikCube_TurnTopRowToLeft() throws Exception{
         RubikCube cube = new RubikCube(3);
         cube.turnRowToLeft(0);
-        assertThat(cube.main.getRow(0), equalTo(new int[]{2, 2, 2}));
-        assertThat(cube.main.getRow(1), equalTo(new int[]{1, 1, 1}));
-        assertThat(cube.main.getRow(2), equalTo(new int[]{1, 1, 1}));
+        assertThat(cube.getMain().getRow(0), equalTo(new int[]{2, 2, 2}));
+        assertThat(cube.getMain().getRow(1), equalTo(new int[]{1, 1, 1}));
+        assertThat(cube.getMain().getRow(2), equalTo(new int[]{1, 1, 1}));
 
-        assertThat(cube.right.getRow(0), equalTo(new int[]{3, 3, 3}));
-        assertThat(cube.right.getRow(1), equalTo(new int[]{2, 2, 2}));
-        assertThat(cube.right.getRow(2), equalTo(new int[]{2, 2, 2}));
+        assertThat(cube.getRight().getRow(0), equalTo(new int[]{3, 3, 3}));
+        assertThat(cube.getRight().getRow(1), equalTo(new int[]{2, 2, 2}));
+        assertThat(cube.getRight().getRow(2), equalTo(new int[]{2, 2, 2}));
 
-        assertThat(cube.back.getRow(0), equalTo(new int[]{4, 4, 4}));
-        assertThat(cube.back.getRow(1), equalTo(new int[]{3, 3, 3}));
-        assertThat(cube.back.getRow(2), equalTo(new int[]{3, 3, 3}));
+        assertThat(cube.getBack().getRow(0), equalTo(new int[]{4, 4, 4}));
+        assertThat(cube.getBack().getRow(1), equalTo(new int[]{3, 3, 3}));
+        assertThat(cube.getBack().getRow(2), equalTo(new int[]{3, 3, 3}));
 
-        assertThat(cube.left.getRow(0), equalTo(new int[]{1, 1, 1}));
-        assertThat(cube.left.getRow(1), equalTo(new int[]{4, 4, 4}));
-        assertThat(cube.left.getRow(2), equalTo(new int[]{4, 4, 4}));
+        assertThat(cube.getLeft().getRow(0), equalTo(new int[]{1, 1, 1}));
+        assertThat(cube.getLeft().getRow(1), equalTo(new int[]{4, 4, 4}));
+        assertThat(cube.getLeft().getRow(2), equalTo(new int[]{4, 4, 4}));
 
-        assertThat(cube.top.getRow(0), equalTo(new int[]{5, 5, 5}));
-        assertThat(cube.top.getRow(1), equalTo(new int[]{5, 5, 5}));
-        assertThat(cube.top.getRow(2), equalTo(new int[]{5, 5, 5}));
+        assertThat(cube.getTop().getRow(0), equalTo(new int[]{5, 5, 5}));
+        assertThat(cube.getTop().getRow(1), equalTo(new int[]{5, 5, 5}));
+        assertThat(cube.getTop().getRow(2), equalTo(new int[]{5, 5, 5}));
 
-        assertThat(cube.bottom.getRow(0), equalTo(new int[]{6, 6, 6}));
-        assertThat(cube.bottom.getRow(1), equalTo(new int[]{6, 6, 6}));
-        assertThat(cube.bottom.getRow(2), equalTo(new int[]{6, 6, 6}));
+        assertThat(cube.getBottom().getRow(0), equalTo(new int[]{6, 6, 6}));
+        assertThat(cube.getBottom().getRow(1), equalTo(new int[]{6, 6, 6}));
+        assertThat(cube.getBottom().getRow(2), equalTo(new int[]{6, 6, 6}));
     }
 
     @Test
     public void RubikCube_TurnBottomRowToLeft() throws Exception{
         RubikCube cube = new RubikCube(3);
         cube.turnRowToLeft(2);
-        assertThat(cube.main.getRow(2), equalTo(new int[]{2, 2, 2}));
-        assertThat(cube.main.getRow(1), equalTo(new int[]{1, 1, 1}));
-        assertThat(cube.main.getRow(0), equalTo(new int[]{1, 1, 1}));
+        assertThat(cube.getMain().getRow(2), equalTo(new int[]{2, 2, 2}));
+        assertThat(cube.getMain().getRow(1), equalTo(new int[]{1, 1, 1}));
+        assertThat(cube.getMain().getRow(0), equalTo(new int[]{1, 1, 1}));
 
-        assertThat(cube.right.getRow(2), equalTo(new int[]{3, 3, 3}));
-        assertThat(cube.right.getRow(1), equalTo(new int[]{2, 2, 2}));
-        assertThat(cube.right.getRow(0), equalTo(new int[]{2, 2, 2}));
+        assertThat(cube.getRight().getRow(2), equalTo(new int[]{3, 3, 3}));
+        assertThat(cube.getRight().getRow(1), equalTo(new int[]{2, 2, 2}));
+        assertThat(cube.getRight().getRow(0), equalTo(new int[]{2, 2, 2}));
 
-        assertThat(cube.back.getRow(2), equalTo(new int[]{4, 4, 4}));
-        assertThat(cube.back.getRow(1), equalTo(new int[]{3, 3, 3}));
-        assertThat(cube.back.getRow(0), equalTo(new int[]{3, 3, 3}));
+        assertThat(cube.getBack().getRow(2), equalTo(new int[]{4, 4, 4}));
+        assertThat(cube.getBack().getRow(1), equalTo(new int[]{3, 3, 3}));
+        assertThat(cube.getBack().getRow(0), equalTo(new int[]{3, 3, 3}));
 
-        assertThat(cube.left.getRow(2), equalTo(new int[]{1, 1, 1}));
-        assertThat(cube.left.getRow(1), equalTo(new int[]{4, 4, 4}));
-        assertThat(cube.left.getRow(0), equalTo(new int[]{4, 4, 4}));
+        assertThat(cube.getLeft().getRow(2), equalTo(new int[]{1, 1, 1}));
+        assertThat(cube.getLeft().getRow(1), equalTo(new int[]{4, 4, 4}));
+        assertThat(cube.getLeft().getRow(0), equalTo(new int[]{4, 4, 4}));
 
-        assertThat(cube.top.getRow(0), equalTo(new int[]{5, 5, 5}));
-        assertThat(cube.top.getRow(1), equalTo(new int[]{5, 5, 5}));
-        assertThat(cube.top.getRow(2), equalTo(new int[]{5, 5, 5}));
+        assertThat(cube.getTop().getRow(0), equalTo(new int[]{5, 5, 5}));
+        assertThat(cube.getTop().getRow(1), equalTo(new int[]{5, 5, 5}));
+        assertThat(cube.getTop().getRow(2), equalTo(new int[]{5, 5, 5}));
 
-        assertThat(cube.bottom.getRow(0), equalTo(new int[]{6, 6, 6}));
-        assertThat(cube.bottom.getRow(1), equalTo(new int[]{6, 6, 6}));
-        assertThat(cube.bottom.getRow(2), equalTo(new int[]{6, 6, 6}));
+        assertThat(cube.getBottom().getRow(0), equalTo(new int[]{6, 6, 6}));
+        assertThat(cube.getBottom().getRow(1), equalTo(new int[]{6, 6, 6}));
+        assertThat(cube.getBottom().getRow(2), equalTo(new int[]{6, 6, 6}));
     }
 
     @Test
     public void RubikCube_TurnMiddleRowToLeft() throws Exception{
         RubikCube cube = new RubikCube(3);
         cube.turnRowToLeft(1);
-        assertThat(cube.main.getRow(1), equalTo(new int[]{2, 2, 2}));
-        assertThat(cube.main.getRow(2), equalTo(new int[]{1, 1, 1}));
-        assertThat(cube.main.getRow(0), equalTo(new int[]{1, 1, 1}));
+        assertThat(cube.getMain().getRow(1), equalTo(new int[]{2, 2, 2}));
+        assertThat(cube.getMain().getRow(2), equalTo(new int[]{1, 1, 1}));
+        assertThat(cube.getMain().getRow(0), equalTo(new int[]{1, 1, 1}));
 
-        assertThat(cube.right.getRow(1), equalTo(new int[]{3, 3, 3}));
-        assertThat(cube.right.getRow(2), equalTo(new int[]{2, 2, 2}));
-        assertThat(cube.right.getRow(0), equalTo(new int[]{2, 2, 2}));
+        assertThat(cube.getRight().getRow(1), equalTo(new int[]{3, 3, 3}));
+        assertThat(cube.getRight().getRow(2), equalTo(new int[]{2, 2, 2}));
+        assertThat(cube.getRight().getRow(0), equalTo(new int[]{2, 2, 2}));
 
-        assertThat(cube.back.getRow(1), equalTo(new int[]{4, 4, 4}));
-        assertThat(cube.back.getRow(2), equalTo(new int[]{3, 3, 3}));
-        assertThat(cube.back.getRow(0), equalTo(new int[]{3, 3, 3}));
+        assertThat(cube.getBack().getRow(1), equalTo(new int[]{4, 4, 4}));
+        assertThat(cube.getBack().getRow(2), equalTo(new int[]{3, 3, 3}));
+        assertThat(cube.getBack().getRow(0), equalTo(new int[]{3, 3, 3}));
 
-        assertThat(cube.left.getRow(1), equalTo(new int[]{1, 1, 1}));
-        assertThat(cube.left.getRow(2), equalTo(new int[]{4, 4, 4}));
-        assertThat(cube.left.getRow(0), equalTo(new int[]{4, 4, 4}));
+        assertThat(cube.getLeft().getRow(1), equalTo(new int[]{1, 1, 1}));
+        assertThat(cube.getLeft().getRow(2), equalTo(new int[]{4, 4, 4}));
+        assertThat(cube.getLeft().getRow(0), equalTo(new int[]{4, 4, 4}));
 
-        assertThat(cube.top.getRow(0), equalTo(new int[]{5, 5, 5}));
-        assertThat(cube.top.getRow(1), equalTo(new int[]{5, 5, 5}));
-        assertThat(cube.top.getRow(2), equalTo(new int[]{5, 5, 5}));
+        assertThat(cube.getTop().getRow(0), equalTo(new int[]{5, 5, 5}));
+        assertThat(cube.getTop().getRow(1), equalTo(new int[]{5, 5, 5}));
+        assertThat(cube.getTop().getRow(2), equalTo(new int[]{5, 5, 5}));
 
-        assertThat(cube.bottom.getRow(0), equalTo(new int[]{6, 6, 6}));
-        assertThat(cube.bottom.getRow(1), equalTo(new int[]{6, 6, 6}));
-        assertThat(cube.bottom.getRow(2), equalTo(new int[]{6, 6, 6}));
+        assertThat(cube.getBottom().getRow(0), equalTo(new int[]{6, 6, 6}));
+        assertThat(cube.getBottom().getRow(1), equalTo(new int[]{6, 6, 6}));
+        assertThat(cube.getBottom().getRow(2), equalTo(new int[]{6, 6, 6}));
     }
 
     @Test
     public void RubikCube_TurnTopRowToRight() throws Exception{
         RubikCube cube = new RubikCube(3);
         cube.turnRowToRight(0);
-        assertThat(cube.main.getRow(0), equalTo(new int[]{4, 4, 4}));
-        assertThat(cube.main.getRow(1), equalTo(new int[]{1, 1, 1}));
-        assertThat(cube.main.getRow(2), equalTo(new int[]{1, 1, 1}));
+        assertThat(cube.getMain().getRow(0), equalTo(new int[]{4, 4, 4}));
+        assertThat(cube.getMain().getRow(1), equalTo(new int[]{1, 1, 1}));
+        assertThat(cube.getMain().getRow(2), equalTo(new int[]{1, 1, 1}));
 
-        assertThat(cube.right.getRow(0), equalTo(new int[]{1, 1, 1}));
-        assertThat(cube.right.getRow(1), equalTo(new int[]{2, 2, 2}));
-        assertThat(cube.right.getRow(2), equalTo(new int[]{2, 2, 2}));
+        assertThat(cube.getRight().getRow(0), equalTo(new int[]{1, 1, 1}));
+        assertThat(cube.getRight().getRow(1), equalTo(new int[]{2, 2, 2}));
+        assertThat(cube.getRight().getRow(2), equalTo(new int[]{2, 2, 2}));
 
-        assertThat(cube.back.getRow(0), equalTo(new int[]{2, 2, 2}));
-        assertThat(cube.back.getRow(1), equalTo(new int[]{3, 3, 3}));
-        assertThat(cube.back.getRow(2), equalTo(new int[]{3, 3, 3}));
+        assertThat(cube.getBack().getRow(0), equalTo(new int[]{2, 2, 2}));
+        assertThat(cube.getBack().getRow(1), equalTo(new int[]{3, 3, 3}));
+        assertThat(cube.getBack().getRow(2), equalTo(new int[]{3, 3, 3}));
 
-        assertThat(cube.left.getRow(0), equalTo(new int[]{3, 3, 3}));
-        assertThat(cube.left.getRow(1), equalTo(new int[]{4, 4, 4}));
-        assertThat(cube.left.getRow(2), equalTo(new int[]{4, 4, 4}));
+        assertThat(cube.getLeft().getRow(0), equalTo(new int[]{3, 3, 3}));
+        assertThat(cube.getLeft().getRow(1), equalTo(new int[]{4, 4, 4}));
+        assertThat(cube.getLeft().getRow(2), equalTo(new int[]{4, 4, 4}));
 
-        assertThat(cube.top.getRow(0), equalTo(new int[]{5, 5, 5}));
-        assertThat(cube.top.getRow(1), equalTo(new int[]{5, 5, 5}));
-        assertThat(cube.top.getRow(2), equalTo(new int[]{5, 5, 5}));
+        assertThat(cube.getTop().getRow(0), equalTo(new int[]{5, 5, 5}));
+        assertThat(cube.getTop().getRow(1), equalTo(new int[]{5, 5, 5}));
+        assertThat(cube.getTop().getRow(2), equalTo(new int[]{5, 5, 5}));
 
-        assertThat(cube.bottom.getRow(0), equalTo(new int[]{6, 6, 6}));
-        assertThat(cube.bottom.getRow(1), equalTo(new int[]{6, 6, 6}));
-        assertThat(cube.bottom.getRow(2), equalTo(new int[]{6, 6, 6}));
+        assertThat(cube.getBottom().getRow(0), equalTo(new int[]{6, 6, 6}));
+        assertThat(cube.getBottom().getRow(1), equalTo(new int[]{6, 6, 6}));
+        assertThat(cube.getBottom().getRow(2), equalTo(new int[]{6, 6, 6}));
     }
 
     @Test
     public void RubikCube_TurnBottomRowToRight() throws Exception{
         RubikCube cube = new RubikCube(3);
         cube.turnRowToRight(2);
-        assertThat(cube.main.getRow(2), equalTo(new int[]{4, 4, 4}));
-        assertThat(cube.main.getRow(1), equalTo(new int[]{1, 1, 1}));
-        assertThat(cube.main.getRow(0), equalTo(new int[]{1, 1, 1}));
+        assertThat(cube.getMain().getRow(2), equalTo(new int[]{4, 4, 4}));
+        assertThat(cube.getMain().getRow(1), equalTo(new int[]{1, 1, 1}));
+        assertThat(cube.getMain().getRow(0), equalTo(new int[]{1, 1, 1}));
 
-        assertThat(cube.right.getRow(2), equalTo(new int[]{1, 1, 1}));
-        assertThat(cube.right.getRow(1), equalTo(new int[]{2, 2, 2}));
-        assertThat(cube.right.getRow(0), equalTo(new int[]{2, 2, 2}));
+        assertThat(cube.getRight().getRow(2), equalTo(new int[]{1, 1, 1}));
+        assertThat(cube.getRight().getRow(1), equalTo(new int[]{2, 2, 2}));
+        assertThat(cube.getRight().getRow(0), equalTo(new int[]{2, 2, 2}));
 
-        assertThat(cube.back.getRow(2), equalTo(new int[]{2, 2, 2}));
-        assertThat(cube.back.getRow(1), equalTo(new int[]{3, 3, 3}));
-        assertThat(cube.back.getRow(0), equalTo(new int[]{3, 3, 3}));
+        assertThat(cube.getBack().getRow(2), equalTo(new int[]{2, 2, 2}));
+        assertThat(cube.getBack().getRow(1), equalTo(new int[]{3, 3, 3}));
+        assertThat(cube.getBack().getRow(0), equalTo(new int[]{3, 3, 3}));
 
-        assertThat(cube.left.getRow(2), equalTo(new int[]{3, 3, 3}));
-        assertThat(cube.left.getRow(1), equalTo(new int[]{4, 4, 4}));
-        assertThat(cube.left.getRow(0), equalTo(new int[]{4, 4, 4}));
+        assertThat(cube.getLeft().getRow(2), equalTo(new int[]{3, 3, 3}));
+        assertThat(cube.getLeft().getRow(1), equalTo(new int[]{4, 4, 4}));
+        assertThat(cube.getLeft().getRow(0), equalTo(new int[]{4, 4, 4}));
 
-        assertThat(cube.top.getRow(0), equalTo(new int[]{5, 5, 5}));
-        assertThat(cube.top.getRow(1), equalTo(new int[]{5, 5, 5}));
-        assertThat(cube.top.getRow(2), equalTo(new int[]{5, 5, 5}));
+        assertThat(cube.getTop().getRow(0), equalTo(new int[]{5, 5, 5}));
+        assertThat(cube.getTop().getRow(1), equalTo(new int[]{5, 5, 5}));
+        assertThat(cube.getTop().getRow(2), equalTo(new int[]{5, 5, 5}));
 
-        assertThat(cube.bottom.getRow(0), equalTo(new int[]{6, 6, 6}));
-        assertThat(cube.bottom.getRow(1), equalTo(new int[]{6, 6, 6}));
-        assertThat(cube.bottom.getRow(2), equalTo(new int[]{6, 6, 6}));
+        assertThat(cube.getBottom().getRow(0), equalTo(new int[]{6, 6, 6}));
+        assertThat(cube.getBottom().getRow(1), equalTo(new int[]{6, 6, 6}));
+        assertThat(cube.getBottom().getRow(2), equalTo(new int[]{6, 6, 6}));
     }
 
     @Test
     public void RubikCube_TurnMiddleRowToRight() throws Exception{
         RubikCube cube = new RubikCube(3);
         cube.turnRowToRight(1);
-        assertThat(cube.main.getRow(1), equalTo(new int[]{4, 4, 4}));
-        assertThat(cube.main.getRow(2), equalTo(new int[]{1, 1, 1}));
-        assertThat(cube.main.getRow(0), equalTo(new int[]{1, 1, 1}));
+        assertThat(cube.getMain().getRow(1), equalTo(new int[]{4, 4, 4}));
+        assertThat(cube.getMain().getRow(2), equalTo(new int[]{1, 1, 1}));
+        assertThat(cube.getMain().getRow(0), equalTo(new int[]{1, 1, 1}));
 
-        assertThat(cube.right.getRow(1), equalTo(new int[]{1, 1, 1}));
-        assertThat(cube.right.getRow(2), equalTo(new int[]{2, 2, 2}));
-        assertThat(cube.right.getRow(0), equalTo(new int[]{2, 2, 2}));
+        assertThat(cube.getRight().getRow(1), equalTo(new int[]{1, 1, 1}));
+        assertThat(cube.getRight().getRow(2), equalTo(new int[]{2, 2, 2}));
+        assertThat(cube.getRight().getRow(0), equalTo(new int[]{2, 2, 2}));
 
-        assertThat(cube.back.getRow(1), equalTo(new int[]{2, 2, 2}));
-        assertThat(cube.back.getRow(2), equalTo(new int[]{3, 3, 3}));
-        assertThat(cube.back.getRow(0), equalTo(new int[]{3, 3, 3}));
+        assertThat(cube.getBack().getRow(1), equalTo(new int[]{2, 2, 2}));
+        assertThat(cube.getBack().getRow(2), equalTo(new int[]{3, 3, 3}));
+        assertThat(cube.getBack().getRow(0), equalTo(new int[]{3, 3, 3}));
 
-        assertThat(cube.left.getRow(1), equalTo(new int[]{3, 3, 3}));
-        assertThat(cube.left.getRow(2), equalTo(new int[]{4, 4, 4}));
-        assertThat(cube.left.getRow(0), equalTo(new int[]{4, 4, 4}));
+        assertThat(cube.getLeft().getRow(1), equalTo(new int[]{3, 3, 3}));
+        assertThat(cube.getLeft().getRow(2), equalTo(new int[]{4, 4, 4}));
+        assertThat(cube.getLeft().getRow(0), equalTo(new int[]{4, 4, 4}));
 
-        assertThat(cube.top.getRow(0), equalTo(new int[]{5, 5, 5}));
-        assertThat(cube.top.getRow(1), equalTo(new int[]{5, 5, 5}));
-        assertThat(cube.top.getRow(2), equalTo(new int[]{5, 5, 5}));
+        assertThat(cube.getTop().getRow(0), equalTo(new int[]{5, 5, 5}));
+        assertThat(cube.getTop().getRow(1), equalTo(new int[]{5, 5, 5}));
+        assertThat(cube.getTop().getRow(2), equalTo(new int[]{5, 5, 5}));
 
-        assertThat(cube.bottom.getRow(0), equalTo(new int[]{6, 6, 6}));
-        assertThat(cube.bottom.getRow(1), equalTo(new int[]{6, 6, 6}));
-        assertThat(cube.bottom.getRow(2), equalTo(new int[]{6, 6, 6}));
+        assertThat(cube.getBottom().getRow(0), equalTo(new int[]{6, 6, 6}));
+        assertThat(cube.getBottom().getRow(1), equalTo(new int[]{6, 6, 6}));
+        assertThat(cube.getBottom().getRow(2), equalTo(new int[]{6, 6, 6}));
     }
 }
