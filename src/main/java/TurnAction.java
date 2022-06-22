@@ -3,8 +3,8 @@ import java.util.stream.Stream;
 
 public class TurnAction implements RubikCubeAction{
 
-    public enum DIRECTION { LEFT, RIGHT, UP, DOWN};
-    public enum TURN_TYPE { ROW, COL };
+    public enum DIRECTION { LEFT, RIGHT, UP, DOWN}
+    public enum TURN_TYPE { ROW, COL }
     public int turnPosition;
     public DIRECTION direction;
     public TURN_TYPE turnType;
@@ -45,5 +45,18 @@ public class TurnAction implements RubikCubeAction{
         }catch (Exception e){
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public RubikCubeAction oppositeAction(){
+        if(turnType == TURN_TYPE.COL){
+            if(direction == DIRECTION.UP) return new TurnAction(TURN_TYPE.COL, DIRECTION.DOWN, turnPosition);
+            if(direction == DIRECTION.DOWN) return new TurnAction(TURN_TYPE.COL, DIRECTION.UP, turnPosition);
+        }else if(turnType == TURN_TYPE.ROW){
+            if(direction == DIRECTION.LEFT) return new TurnAction(TURN_TYPE.ROW, DIRECTION.RIGHT, turnPosition);
+            if(direction == DIRECTION.RIGHT) return new TurnAction(TURN_TYPE.ROW, DIRECTION.LEFT, turnPosition);
+        }
+
+        return null;
     }
 }

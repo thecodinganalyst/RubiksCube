@@ -6,8 +6,14 @@ public class RubikSolution {
     public static void main(String[] args) {
         RubikCube cube = new RubikCube(3);
         RubikSolution solution = new RubikSolution();
-        solution.randomActions(cube, 20)
-                .forEach(action -> System.out.println(action.getName()));
+        List<RubikCubeAction> randomActions = solution.randomActions(cube, 20);
+        randomActions.forEach(action -> System.out.println(action.getName()));
+        cube.print();
+        System.out.println(cube.check());
+
+        List<RubikCubeAction> reverseActions = solution.reverseActions(randomActions);
+        reverseActions.forEach(action -> System.out.println(action.getName()));
+        reverseActions.forEach(cube::performAction);
         cube.print();
         System.out.println(cube.check());
     }
@@ -20,5 +26,13 @@ public class RubikSolution {
           rubikCube.performAction(action);
           return action;
         }).toList();
+    }
+
+    public List<RubikCubeAction> reverseActions(List<RubikCubeAction> originalActions){
+        return IntStream.rangeClosed(1, originalActions.size())
+                .boxed()
+                .map(i -> originalActions.get(originalActions.size() - i))
+                .map(RubikCubeAction::oppositeAction)
+                .toList();
     }
 }

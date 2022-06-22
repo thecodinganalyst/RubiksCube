@@ -1,3 +1,5 @@
+import com.sun.source.tree.ReturnTree;
+
 import java.util.Arrays;
 
 public class FaceAction implements RubikCubeAction{
@@ -15,6 +17,10 @@ public class FaceAction implements RubikCubeAction{
                 .toArray(FaceAction[]::new);
     }
 
+    public RubikCube.FACE getFace(){
+        return this.face;
+    }
+
     @Override
     public String getName() {
         return "FACE_" + face.name();
@@ -23,5 +29,15 @@ public class FaceAction implements RubikCubeAction{
     @Override
     public void performAction(RubikCube rubikCube){
         rubikCube.face(face);
+    }
+
+    @Override
+    public RubikCubeAction oppositeAction(){
+        if(face == RubikCube.FACE.BACK) return this;
+        if(face == RubikCube.FACE.RIGHT) return new FaceAction(RubikCube.FACE.LEFT);
+        if(face == RubikCube.FACE.LEFT) return new FaceAction(RubikCube.FACE.RIGHT);
+        if(face == RubikCube.FACE.TOP) return new FaceAction(RubikCube.FACE.BOTTOM);
+        if(face == RubikCube.FACE.BOTTOM) return new FaceAction(RubikCube.FACE.TOP);
+        return null;
     }
 }

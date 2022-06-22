@@ -25,4 +25,15 @@ class FaceActionTest {
     }
 
 
+    @Test
+    void oppositeAction() {
+        Arrays.stream(faceActions).forEach(faceAction -> {
+            FaceAction oppAction = (FaceAction) faceAction.oppositeAction();
+            if(faceAction.getFace() == RubikCube.FACE.BACK) assertThat(oppAction.getFace(), equalTo(RubikCube.FACE.BACK));
+            if(faceAction.getFace() == RubikCube.FACE.RIGHT) assertThat(oppAction.getFace(), equalTo(RubikCube.FACE.LEFT));
+            if(faceAction.getFace() == RubikCube.FACE.LEFT) assertThat(oppAction.getFace(), equalTo(RubikCube.FACE.RIGHT));
+            if(faceAction.getFace() == RubikCube.FACE.TOP) assertThat(oppAction.getFace(), equalTo(RubikCube.FACE.BOTTOM));
+            if(faceAction.getFace() == RubikCube.FACE.BOTTOM) assertThat(oppAction.getFace(), equalTo(RubikCube.FACE.TOP));
+        });
+    }
 }

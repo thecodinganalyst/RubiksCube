@@ -63,4 +63,21 @@ class TurnActionTest {
         });
         assertThat(used.size(), equalTo(0));
     }
+
+    @Test
+    void oppositeAction() {
+        TurnAction[] turnActions = TurnAction.allActions(3);
+        Arrays.stream(turnActions).forEach(turnAction -> {
+            TurnAction.TURN_TYPE turnType = turnAction.turnType;
+            TurnAction.DIRECTION direction = turnAction.direction;
+            int turnPosition = turnAction.turnPosition;
+            TurnAction oppAction = (TurnAction) turnAction.oppositeAction();
+            assertThat(oppAction.turnPosition, equalTo(turnPosition));
+            assertThat(oppAction.turnType, equalTo(turnType));
+            if(direction == TurnAction.DIRECTION.UP) assertThat(oppAction.direction, equalTo(TurnAction.DIRECTION.DOWN));
+            if(direction == TurnAction.DIRECTION.DOWN) assertThat(oppAction.direction, equalTo(TurnAction.DIRECTION.UP));
+            if(direction == TurnAction.DIRECTION.LEFT) assertThat(oppAction.direction, equalTo(TurnAction.DIRECTION.RIGHT));
+            if(direction == TurnAction.DIRECTION.RIGHT) assertThat(oppAction.direction, equalTo(TurnAction.DIRECTION.LEFT));
+        });
+    }
 }
