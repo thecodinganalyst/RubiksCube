@@ -2,7 +2,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BinaryOperator;
-import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -19,7 +18,41 @@ public class RubikCube{
         MAIN, RIGHT, BACK, LEFT, TOP, BOTTOM
     }
 
-    public Consumer<Integer> actions;
+    public enum ACTION {
+        FACE_RIGHT, FACE_BACK, FACE_LEFT, FACE_TOP, FACE_BOTTOM,
+        TURN_TOP_ROW_RIGHT, TURN_TOP_ROW_LEFT,
+        TURN_MIDDLE_ROW_RIGHT, TURN_MIDDLE_ROW_LEFT,
+        TURN_BOTTOM_ROW_RIGHT, TURN_BOTTOM_ROW_LEFT,
+        TURN_LEFT_COL_UP, TURN_LEFT_COL_DOWN,
+        TURN_MIDDLE_COL_UP, TURN_MIDDLE_COL_DOWN,
+        TURN_RIGHT_COL_UP, TURN_RIGHT_COL_DOWN
+    }
+
+    public void doAction(ACTION action) {
+        try{
+            switch (action){
+                case FACE_TOP -> face(FACE.TOP);
+                case FACE_BACK -> face(FACE.BACK);
+                case FACE_BOTTOM -> face(FACE.BOTTOM);
+                case FACE_RIGHT -> face(FACE.RIGHT);
+                case FACE_LEFT -> face(FACE.LEFT);
+                case TURN_TOP_ROW_LEFT -> turnRowToLeft(0);
+                case TURN_TOP_ROW_RIGHT -> turnRowToRight(0);
+                case TURN_MIDDLE_ROW_LEFT -> turnRowToLeft(1);
+                case TURN_MIDDLE_ROW_RIGHT -> turnRowToRight(1);
+                case TURN_BOTTOM_ROW_LEFT -> turnRowToLeft(2);
+                case TURN_BOTTOM_ROW_RIGHT -> turnRowToRight(2);
+                case TURN_LEFT_COL_UP -> turnColUp(0);
+                case TURN_LEFT_COL_DOWN -> turnColDown(0);
+                case TURN_MIDDLE_COL_UP -> turnColUp(1);
+                case TURN_MIDDLE_COL_DOWN -> turnColDown(1);
+                case TURN_RIGHT_COL_UP -> turnColUp(2);
+                case TURN_RIGHT_COL_DOWN -> turnColDown(2);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
 
     public RubikCube(int size){
         this.size = size;
