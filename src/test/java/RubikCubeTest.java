@@ -62,6 +62,18 @@ public class RubikCubeTest {
     }
 
     @Test
+    public void RubikCube_IsComplete() throws Exception {
+        RubikCube cube = new RubikCube(3);
+        assertThat(cube.isComplete(), equalTo(true));
+
+        cube.turnColUp(0);
+        assertThat(cube.isComplete(), equalTo(false));
+
+        cube.turnColDown(0);
+        assertThat(cube.isComplete(), equalTo(true));
+    }
+
+    @Test
     public void RubikCube_GetFace(){
         RubikCube cube = new RubikCube(3);
 

@@ -13,8 +13,8 @@ public class RubikCube{
     private RubikSide back;
     private RubikSide top;
     private RubikSide bottom;
-    private int size;
-    private RubikCubeAction[] allActions;
+    private final int size;
+    private final RubikCubeAction[] allActions;
 
     public RubikSide getMain() {
         return main;
@@ -97,6 +97,15 @@ public class RubikCube{
         return result.get(6).size() == expectedCount;
     }
 
+    public boolean isComplete(){
+        return main.isComplete() &&
+                right.isComplete() &&
+                back.isComplete() &&
+                left.isComplete() &&
+                top.isComplete() &&
+                bottom.isComplete();
+    }
+
     public void print(){
         String[] box = join(RubikSide.getEmptyString(getSize()), getTop().getString());
         Arrays.stream(box).forEach(System.out::println);
@@ -170,7 +179,7 @@ public class RubikCube{
                             .boxed()
                             .map(i -> a[i].concat(" ").concat(b[i]))
                             .toArray(String[]::new);
-        return Arrays.stream(sides).reduce(reducer).get();
+        return Arrays.stream(sides).reduce(reducer).orElseThrow();
     }
 
     public void turnColUp(int col) throws Exception{
