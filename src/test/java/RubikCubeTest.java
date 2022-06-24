@@ -19,7 +19,7 @@ public class RubikCubeTest {
         assertThat(cube.getTop().getRow(1), equalTo(new int[]{5, 5}));
         assertThat(cube.getBottom().getRow(0), equalTo(new int[]{6, 6}));
         assertThat(cube.getBottom().getRow(1), equalTo(new int[]{6, 6}));
-        assertThat(cube.getAllActions().length, equalTo(14));
+        assertThat(cube.getAllActions().length, equalTo(13));
     }
 
     @Test
