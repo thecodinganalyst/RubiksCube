@@ -19,7 +19,7 @@ public class RubikCubeTest {
         assertThat(cube.getTop().getRow(1), equalTo(new int[]{5, 5}));
         assertThat(cube.getBottom().getRow(0), equalTo(new int[]{6, 6}));
         assertThat(cube.getBottom().getRow(1), equalTo(new int[]{6, 6}));
-        assertThat(cube.getAllActions().length, equalTo(13));
+        assertThat(cube.getAllActions().length, equalTo(12));
     }
 
     @Test
@@ -565,4 +565,20 @@ public class RubikCubeTest {
         assertThat(cube.getBottom().getRow(1), equalTo(new int[]{6, 6, 6}));
         assertThat(cube.getBottom().getRow(2), equalTo(new int[]{6, 6, 6}));
     }
+
+    @Test
+    void testClone() throws CloneNotSupportedException {
+        RubikCube cube = new RubikCube(3);
+
+        RubikCube clone1 = cube.clone();
+        cube.randomize();
+
+        assertThat(clone1.getMain().getRow(0), equalTo(new int[]{ 1, 1, 1}));
+        assertThat(clone1.getRight().getRow(1), equalTo(new int[]{ 2, 2, 2}));
+        assertThat(clone1.getBack().getRow(2), equalTo(new int[]{ 3, 3, 3}));
+        assertThat(clone1.getLeft().getCol(0), equalTo(new int[]{ 4, 4, 4}));
+        assertThat(clone1.getTop().getCol(1), equalTo(new int[]{ 5, 5, 5}));
+        assertThat(clone1.getBottom().getCol(2), equalTo(new int[]{ 6, 6, 6}));
+    }
+
 }

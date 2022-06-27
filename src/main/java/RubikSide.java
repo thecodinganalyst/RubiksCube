@@ -32,8 +32,12 @@ public class RubikSide implements Cloneable{
     }
 
     @Override
-    public RubikSide clone(){
-        return new RubikSide(values);
+    public RubikSide clone() throws CloneNotSupportedException {
+        super.clone();
+        int[][] newValues = IntStream.range(0, size).boxed()
+                .map(i -> Arrays.copyOf(values[i], values[i].length))
+                .toArray(int[][]::new);
+        return new RubikSide(newValues);
     }
 
     public List<Integer> getValueList(){

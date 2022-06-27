@@ -65,6 +65,15 @@ class RubikSideTest {
     }
 
     @Test
+    public void RubikSide_Clone() throws Exception{
+        RubikSide side = new RubikSide(3, 1);
+        RubikSide clone = side.clone();
+        side.setRow(0, new int[]{ 2, 2, 2 });
+        assertThat(side.getRow(0), equalTo(new int[]{2, 2, 2}));
+        assertThat(clone.getRow(0), equalTo(new int[]{1, 1, 1}));
+    }
+
+    @Test
     public void RubikSide_SetCols() throws Exception{
         RubikSide rubikSide = new RubikSide(3, 1);
         int[] col0 = {1, 2, 3};

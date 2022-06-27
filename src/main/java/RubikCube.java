@@ -1,12 +1,12 @@
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.function.BinaryOperator;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
-public class RubikCube{
+public class RubikCube implements Cloneable{
     private RubikSide main;
     private RubikSide right;
     private RubikSide left;
@@ -15,6 +15,18 @@ public class RubikCube{
     private RubikSide bottom;
     private final int size;
     private final RubikCubeAction[] allActions;
+
+    @Override
+    public RubikCube clone() throws CloneNotSupportedException {
+        super.clone();
+        return new RubikCube(this.size,
+                getMain().clone(),
+                getRight().clone(),
+                getBack().clone(),
+                getLeft().clone(),
+                getTop().clone(),
+                getBottom().clone());
+    }
 
     public RubikSide getMain() {
         return main;
@@ -64,10 +76,22 @@ public class RubikCube{
         left = new RubikSide(size, 4);
         top = new RubikSide(size, 5);
         bottom = new RubikSide(size, 6);
-        allActions = Stream.concat(
-                        Stream.of(FaceAction.allActions()),
-                        Stream.of(TurnAction.allActions(size)))
-                    .toArray(RubikCubeAction[]::new);
+        allActions = consolidateActions();
+    }
+
+    private RubikCube(int size, RubikSide main, RubikSide right, RubikSide back, RubikSide left, RubikSide top, RubikSide bottom){
+        this.size = size;
+        this.main = main;
+        this.right = right;
+        this.back = back;
+        this.left = left;
+        this.top = top;
+        this.bottom = bottom;
+        allActions = consolidateActions();
+    }
+
+    private RubikCubeAction[] consolidateActions(){
+        return ConsolidatedAction.allActions(size);
     }
 
     public RubikSide getFace(FACE face){
@@ -119,6 +143,16 @@ public class RubikCube{
         System.out.println(" ");
     }
 
+    public void randomize(){
+        Random random = new Random();
+        int randomActionCount = random.nextInt(100);
+        int actionCount = getAllActions().length;
+        IntStream.range(0, randomActionCount).boxed().forEach(i -> {
+            RubikCubeAction action = getAllActions()[random.nextInt(actionCount)];
+            performAction(action);
+        });
+    }
+
     public static FACE getBackFaceOf(FACE face){
         if(face == FACE.MAIN) return FACE.BACK;
         if(face == FACE.RIGHT) return FACE.LEFT;
@@ -157,20 +191,24 @@ public class RubikCube{
     }
 
     public void face(FACE newFace){
-        Map<FACE, RubikSide> old = Map.of(
-                FACE.MAIN, getMain().clone(),
-                FACE.RIGHT, getRight().clone(),
-                FACE.BACK, getBack().clone(),
-                FACE.LEFT, getLeft().clone(),
-                FACE.TOP, getTop().clone(),
-                FACE.BOTTOM, getBottom().clone()
-        );
-        main = getFace(newFace);
-        right = old.get(getRightFaceOf(newFace));
-        back = old.get(getBackFaceOf(newFace));
-        left = old.get(getLeftFaceOf(newFace));
-        top = old.get(getTopFaceOf(newFace));
-        bottom = old.get(getBottomFaceOf(newFace));
+        try{
+            Map<FACE, RubikSide> old = Map.of(
+                    FACE.MAIN, getMain().clone(),
+                    FACE.RIGHT, getRight().clone(),
+                    FACE.BACK, getBack().clone(),
+                    FACE.LEFT, getLeft().clone(),
+                    FACE.TOP, getTop().clone(),
+                    FACE.BOTTOM, getBottom().clone()
+            );
+            main = getFace(newFace);
+            right = old.get(getRightFaceOf(newFace));
+            back = old.get(getBackFaceOf(newFace));
+            left = old.get(getLeftFaceOf(newFace));
+            top = old.get(getTopFaceOf(newFace));
+            bottom = old.get(getBottomFaceOf(newFace));
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     private String[] join(String[]... sides){

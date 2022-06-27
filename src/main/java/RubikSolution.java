@@ -6,16 +6,28 @@ public class RubikSolution {
     public static void main(String[] args) {
         RubikCube cube = new RubikCube(3);
         RubikSolution solution = new RubikSolution();
+        cube.print();
+        System.out.println("Check: " + cube.check());
+        System.out.println("Perfect: " + cube.isComplete());
+
         List<RubikCubeAction> randomActions = solution.randomActions(cube, 20);
         randomActions.forEach(action -> System.out.println(action.getName()));
         cube.print();
-        System.out.println(cube.check());
+        System.out.println("Check: " + cube.check());
 
         List<RubikCubeAction> reverseActions = solution.reverseActions(randomActions);
         reverseActions.forEach(action -> System.out.println(action.getName()));
         reverseActions.forEach(cube::performAction);
         cube.print();
-        System.out.println(cube.check());
+        System.out.println("Check: " + cube.check());
+        System.out.println("Perfect: " + cube.isComplete());
+
+        // Solve the rubik's cube
+        cube.randomize();
+        cube.print();
+        RubikCubeStrategy randomActionStrategy = new RandomActionStrategy(10000, 200, 3);
+        ExecutionSummary executionSummary = randomActionStrategy.execute(cube);
+        executionSummary.print();
     }
 
     public List<RubikCubeAction> randomActions(RubikCube rubikCube, int count){
