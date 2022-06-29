@@ -1,7 +1,12 @@
+package rubikcube.strategy;
+
+import rubikcube.RubikCube;
+import rubikcube.action.RubikCubeAction;
+
 import java.time.Instant;
 import java.util.*;
 
-public class RandomActionStrategy implements RubikCubeStrategy{
+public class RandomActionStrategy implements RubikCubeStrategy {
 
     Random random = new Random();
     int limit;

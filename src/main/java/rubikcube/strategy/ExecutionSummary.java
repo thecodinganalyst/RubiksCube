@@ -1,3 +1,7 @@
+package rubikcube.strategy;
+
+import rubikcube.action.RubikCubeAction;
+
 import java.time.Duration;
 import java.time.Instant;
 import java.util.List;

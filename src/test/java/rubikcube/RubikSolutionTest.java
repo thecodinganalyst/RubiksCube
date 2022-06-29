@@ -1,10 +1,12 @@
-import org.junit.jupiter.api.Test;
+package rubikcube;
 
-import java.util.Arrays;
+import org.junit.jupiter.api.Test;
+import rubikcube.RubikCube;
+import rubikcube.RubikSolution;
+import rubikcube.action.RubikCubeAction;
+
 import java.util.HashSet;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;

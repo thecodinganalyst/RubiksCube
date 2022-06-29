@@ -1,3 +1,5 @@
+package rubikcube;
+
 import java.util.stream.IntStream;
 
 public class Utils {

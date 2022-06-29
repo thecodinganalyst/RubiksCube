@@ -1,7 +1,11 @@
+package rubikcube.action;
+
+import rubikcube.RubikCube;
+
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-public class ConsolidatedAction implements RubikCubeAction{
+public class ConsolidatedAction implements RubikCubeAction {
     
     public enum FACE { TOP_FACE, MAIN_FACE, RIGHT_FACE }
     public enum DIRECTION { CLOCKWISE, ANTI_CLOCKWISE}
@@ -10,7 +14,7 @@ public class ConsolidatedAction implements RubikCubeAction{
     private final int position;
     private final int size;
 
-    private ConsolidatedAction(FACE face, DIRECTION direction, int position, int size){
+    public ConsolidatedAction(FACE face, DIRECTION direction, int position, int size){
         this.face = face;
         this.direction = direction;
         this.position = position;

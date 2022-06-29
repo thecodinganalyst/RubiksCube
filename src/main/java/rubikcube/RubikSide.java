@@ -1,3 +1,5 @@
+package rubikcube;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -20,7 +22,7 @@ public class RubikSide implements Cloneable{
         int rowCount = values.length;
         for(int[] col: values){
             if(col.length != rowCount){
-                throw new Exception("RubikSide: values must be a square");
+                throw new Exception("rubikcube.RubikSide: values must be a square");
             }
         }
         return new RubikSide(values);
@@ -54,6 +56,10 @@ public class RubikSide implements Cloneable{
     public RubikSide cloneReversed() throws Exception {
         int[][] reversed = Utils.reverse2dArray(values);
         return RubikSide.create(reversed);
+    }
+
+    public int getSize(){
+        return size;
     }
 
     public int[] getRow(int row){

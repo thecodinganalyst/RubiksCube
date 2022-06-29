@@ -1,3 +1,10 @@
+package rubikcube;
+
+import rubikcube.action.RubikCubeAction;
+import rubikcube.strategy.ExecutionSummary;
+import rubikcube.strategy.RandomActionStrategy;
+import rubikcube.strategy.ScoringStrategy;
+
 import java.util.List;
 import java.util.Random;
 import java.util.stream.IntStream;
@@ -5,17 +12,17 @@ import java.util.stream.IntStream;
 public class RubikSolution {
     public static void main(String[] args) {
         RubikCube cube = new RubikCube(3);
-        RubikSolution solution = new RubikSolution();
+        rubikcube.RubikSolution solution = new rubikcube.RubikSolution();
         cube.print();
         System.out.println("Check: " + cube.check());
         System.out.println("Perfect: " + cube.isComplete());
 
-        List<RubikCubeAction> randomActions = solution.randomActions(cube, 20);
+        List<rubikcube.action.RubikCubeAction> randomActions = solution.randomActions(cube, 20);
         randomActions.forEach(action -> System.out.println(action.getName()));
         cube.print();
         System.out.println("Check: " + cube.check());
 
-        List<RubikCubeAction> reverseActions = solution.reverseActions(randomActions);
+        List<rubikcube.action.RubikCubeAction> reverseActions = solution.reverseActions(randomActions);
         reverseActions.forEach(action -> System.out.println(action.getName()));
         reverseActions.forEach(cube::performAction);
         cube.print();
@@ -25,9 +32,19 @@ public class RubikSolution {
         // Solve the rubik's cube
         cube.randomize();
         cube.print();
-        RubikCubeStrategy randomActionStrategy = new RandomActionStrategy(10000, 200, 3);
+        RandomActionStrategy randomActionStrategy = new rubikcube.strategy.RandomActionStrategy(10000, 200, 3);
         ExecutionSummary executionSummary = randomActionStrategy.execute(cube);
         executionSummary.print();
+
+        cube.print();
+        ScoringStrategy scoringStrategy = new ScoringStrategy(10000);
+        double score = scoringStrategy.getRubikCubeScore(cube);
+        System.out.println(score);
+        executionSummary = scoringStrategy.execute(cube);
+        executionSummary.print();
+        cube.print();
+        score = scoringStrategy.getRubikCubeScore(cube);
+        System.out.println(score);
     }
 
     public List<RubikCubeAction> randomActions(RubikCube rubikCube, int count){

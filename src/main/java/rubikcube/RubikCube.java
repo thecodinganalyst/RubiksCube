@@ -1,7 +1,9 @@
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+package rubikcube;
+
+import rubikcube.action.ConsolidatedAction;
+import rubikcube.action.RubikCubeAction;
+
+import java.util.*;
 import java.util.function.BinaryOperator;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -101,6 +103,10 @@ public class RubikCube implements Cloneable{
         if(face == FACE.RIGHT) return getRight();
         if(face == FACE.TOP) return getTop();
         return getBottom();
+    }
+
+    public Map<FACE, RubikSide> getAllSides(){
+        return Map.of(FACE.MAIN, getMain(), FACE.RIGHT, getRight(), FACE.BACK, getBack(), FACE.LEFT, getLeft(), FACE.TOP, getTop(), FACE.BOTTOM, getBottom());
     }
 
     public boolean check(){

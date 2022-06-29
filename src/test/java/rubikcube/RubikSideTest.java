@@ -1,4 +1,8 @@
+package rubikcube;
+
 import org.junit.jupiter.api.Test;
+import rubikcube.RubikSide;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 import static org.hamcrest.MatcherAssert.assertThat;
