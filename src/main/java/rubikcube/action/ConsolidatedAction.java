@@ -81,4 +81,12 @@ public class ConsolidatedAction implements RubikCubeAction {
                 position,
                 size);
     }
+
+    @Override
+    public boolean equals(Object obj){
+        if(!obj.getClass().equals(this.getClass())) return false;
+        return this.face.equals(((ConsolidatedAction) obj).face) &&
+                this.position == ((ConsolidatedAction) obj).position &&
+                this.direction.equals(((ConsolidatedAction) obj).direction);
+    }
 }

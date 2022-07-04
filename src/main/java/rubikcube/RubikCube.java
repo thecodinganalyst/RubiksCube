@@ -70,6 +70,10 @@ public class RubikCube implements Cloneable{
         action.performAction(this);
     }
 
+    public void performActionList(List<RubikCubeAction> actionList){
+        actionList.forEach(action -> action.performAction(this));
+    }
+
     public RubikCube(int size){
         this.size = size;
         main = new RubikSide(size, 1);
