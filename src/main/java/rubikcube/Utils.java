@@ -1,5 +1,6 @@
 package rubikcube;
 
+import java.util.Random;
 import java.util.stream.IntStream;
 
 public class Utils {
@@ -20,5 +21,9 @@ public class Utils {
                         .boxed()
                         .map(i -> interim[interim.length - i])
                         .toArray(int[][]::new);
+    }
+
+    public static int getRandom(int min, int max){
+        return new Random().nextInt(max - min + 1) + min;
     }
 }

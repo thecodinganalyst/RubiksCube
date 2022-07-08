@@ -1,11 +1,13 @@
 package rubikcube.action;
 
 import rubikcube.RubikCube;
+import solutioning.strategy.Action;
+import solutioning.strategy.Subject;
 
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-public class TurnAction implements RubikCubeAction{
+public class TurnAction implements Action<RubikCube> {
 
     public enum DIRECTION { LEFT, RIGHT, UP, DOWN}
     public enum TURN_TYPE { ROW, COL }
@@ -37,14 +39,14 @@ public class TurnAction implements RubikCubeAction{
     }
 
     @Override
-    public void performAction(RubikCube rubikCube){
+    public void performAction(Subject<RubikCube> rubikCube){
         try {
             if(turnType == TURN_TYPE.COL){
-                if(direction == DIRECTION.UP) rubikCube.turnColUp(turnPosition);
-                if(direction == DIRECTION.DOWN) rubikCube.turnColDown(turnPosition);
+                if(direction == DIRECTION.UP) ((RubikCube)rubikCube).turnColUp(turnPosition);
+                if(direction == DIRECTION.DOWN) ((RubikCube)rubikCube).turnColDown(turnPosition);
             }else if(turnType == TURN_TYPE.ROW){
-                if(direction == DIRECTION.LEFT) rubikCube.turnRowToLeft(turnPosition);
-                if(direction == DIRECTION.RIGHT) rubikCube.turnRowToRight(turnPosition);
+                if(direction == DIRECTION.LEFT) ((RubikCube)rubikCube).turnRowToLeft(turnPosition);
+                if(direction == DIRECTION.RIGHT) ((RubikCube)rubikCube).turnRowToRight(turnPosition);
             }
         }catch (Exception e){
             e.printStackTrace();
@@ -52,7 +54,7 @@ public class TurnAction implements RubikCubeAction{
     }
 
     @Override
-    public RubikCubeAction oppositeAction(){
+    public Action<RubikCube> oppositeAction(){
         if(turnType == TURN_TYPE.COL){
             if(direction == DIRECTION.UP) return new TurnAction(TURN_TYPE.COL, DIRECTION.DOWN, turnPosition);
             if(direction == DIRECTION.DOWN) return new TurnAction(TURN_TYPE.COL, DIRECTION.UP, turnPosition);

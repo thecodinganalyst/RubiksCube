@@ -1,14 +1,17 @@
 package rubikcube.action;
 
 import rubikcube.RubikCube;
+import solutioning.strategy.Action;
+import solutioning.strategy.Subject;
 
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-public class ConsolidatedAction implements RubikCubeAction {
+    public class ConsolidatedAction implements Action<RubikCube> {
     
     public enum FACE { TOP_FACE, MAIN_FACE, RIGHT_FACE }
     public enum DIRECTION { CLOCKWISE, ANTI_CLOCKWISE}
+
     private final FACE face;
     private final DIRECTION direction;
     private final int position;
@@ -41,8 +44,9 @@ public class ConsolidatedAction implements RubikCubeAction {
     }
 
     @Override
-    public void performAction(RubikCube rubikCube) {
+    public void performAction(Subject<RubikCube> subject) {
         try {
+            RubikCube rubikCube = (RubikCube) subject;
             if (face == FACE.MAIN_FACE){
                 if(direction == DIRECTION.CLOCKWISE) {
                     rubikCube.face(RubikCube.FACE.RIGHT);
@@ -74,7 +78,7 @@ public class ConsolidatedAction implements RubikCubeAction {
     }
 
     @Override
-    public RubikCubeAction oppositeAction() {
+    public Action<RubikCube> oppositeAction() {
         return new ConsolidatedAction(
                 face,
                 direction == DIRECTION.CLOCKWISE ? DIRECTION.ANTI_CLOCKWISE : DIRECTION.CLOCKWISE,
@@ -88,5 +92,21 @@ public class ConsolidatedAction implements RubikCubeAction {
         return this.face.equals(((ConsolidatedAction) obj).face) &&
                 this.position == ((ConsolidatedAction) obj).position &&
                 this.direction.equals(((ConsolidatedAction) obj).direction);
+    }
+
+    public FACE getFace() {
+        return face;
+    }
+
+    public DIRECTION getDirection() {
+        return direction;
+    }
+
+    public int getPosition() {
+        return position;
+    }
+
+    public int getSize() {
+        return size;
     }
 }

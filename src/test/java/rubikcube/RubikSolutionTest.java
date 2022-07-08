@@ -1,9 +1,7 @@
 package rubikcube;
 
 import org.junit.jupiter.api.Test;
-import rubikcube.RubikCube;
-import rubikcube.RubikSolution;
-import rubikcube.action.RubikCubeAction;
+import solutioning.strategy.Action;
 
 import java.util.HashSet;
 import java.util.List;
@@ -17,7 +15,7 @@ class RubikSolutionTest {
     void randomActions_shouldGenerateActionsAsSpecified() {
         RubikSolution solution = new RubikSolution();
         RubikCube cube = new RubikCube(3);
-        List<RubikCubeAction> actions = solution.randomActions(cube, 20);
+        List<Action<RubikCube>> actions = solution.randomActions(cube, 20);
         assertThat(actions.size(), equalTo(20));
         int variations = new HashSet<>(actions).size();
         assertThat(variations, greaterThan(1));
@@ -27,12 +25,12 @@ class RubikSolutionTest {
     void reverseActions() {
         RubikCube cube = new RubikCube(3);
         RubikSolution solution = new RubikSolution();
-        List<RubikCubeAction> randomActions = solution.randomActions(cube, 30);
+        List<Action<RubikCube>> randomActions = solution.randomActions(cube, 30);
         randomActions.forEach(action -> System.out.println(action.getName()));
         cube.print();
         System.out.println(cube.check());
 
-        List<RubikCubeAction> reverseActions = solution.reverseActions(randomActions);
+        List<Action<RubikCube>> reverseActions = solution.reverseActions(randomActions);
         reverseActions.forEach(action -> System.out.println(action.getName()));
         reverseActions.forEach(cube::performAction);
         cube.print();

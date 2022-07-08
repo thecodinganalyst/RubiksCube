@@ -1,10 +1,12 @@
 package rubikcube.action;
 
 import rubikcube.RubikCube;
+import solutioning.strategy.Action;
+import solutioning.strategy.Subject;
 
 import java.util.Arrays;
 
-public class FaceAction implements RubikCubeAction{
+public class FaceAction implements Action<RubikCube> {
 
     private final RubikCube.FACE face;
 
@@ -29,12 +31,12 @@ public class FaceAction implements RubikCubeAction{
     }
 
     @Override
-    public void performAction(RubikCube rubikCube){
-        rubikCube.face(face);
+    public void performAction(Subject<RubikCube> rubikCube){
+        ((RubikCube)rubikCube).face(face);
     }
 
     @Override
-    public RubikCubeAction oppositeAction(){
+    public Action<RubikCube> oppositeAction(){
         if(face == RubikCube.FACE.BACK) return this;
         if(face == RubikCube.FACE.RIGHT) return new FaceAction(RubikCube.FACE.LEFT);
         if(face == RubikCube.FACE.LEFT) return new FaceAction(RubikCube.FACE.RIGHT);

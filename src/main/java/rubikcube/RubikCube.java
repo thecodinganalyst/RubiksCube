@@ -1,14 +1,15 @@
 package rubikcube;
 
 import rubikcube.action.ConsolidatedAction;
-import rubikcube.action.RubikCubeAction;
+import solutioning.strategy.Action;
+import solutioning.strategy.Subject;
 
 import java.util.*;
 import java.util.function.BinaryOperator;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-public class RubikCube implements Cloneable{
+public class RubikCube implements Subject<RubikCube> {
     private RubikSide main;
     private RubikSide right;
     private RubikSide left;
@@ -16,10 +17,10 @@ public class RubikCube implements Cloneable{
     private RubikSide top;
     private RubikSide bottom;
     private final int size;
-    private final RubikCubeAction[] allActions;
+    private final Action<RubikCube>[] allActions;
 
     @Override
-    public RubikCube clone() throws CloneNotSupportedException {
+    public RubikCube clone() throws CloneNotSupportedException{
         super.clone();
         return new RubikCube(this.size,
                 getMain().clone(),
@@ -58,7 +59,7 @@ public class RubikCube implements Cloneable{
         return size;
     }
 
-    public RubikCubeAction[] getAllActions() {
+    public Action<RubikCube>[] getAllActions() {
         return allActions;
     }
 
@@ -66,11 +67,11 @@ public class RubikCube implements Cloneable{
         MAIN, RIGHT, BACK, LEFT, TOP, BOTTOM
     }
 
-    public void performAction(RubikCubeAction action) {
+    public void performAction(Action<RubikCube> action) {
         action.performAction(this);
     }
 
-    public void performActionList(List<RubikCubeAction> actionList){
+    public void performActionList(List<Action<RubikCube>> actionList){
         actionList.forEach(action -> action.performAction(this));
     }
 
@@ -96,7 +97,7 @@ public class RubikCube implements Cloneable{
         allActions = consolidateActions();
     }
 
-    private RubikCubeAction[] consolidateActions(){
+    private Action<RubikCube>[] consolidateActions(){
         return ConsolidatedAction.allActions(size);
     }
 
@@ -158,7 +159,7 @@ public class RubikCube implements Cloneable{
         int randomActionCount = random.nextInt(100);
         int actionCount = getAllActions().length;
         IntStream.range(0, randomActionCount).boxed().forEach(i -> {
-            RubikCubeAction action = getAllActions()[random.nextInt(actionCount)];
+            Action<RubikCube> action = getAllActions()[random.nextInt(actionCount)];
             performAction(action);
         });
     }

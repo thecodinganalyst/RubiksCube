@@ -1,7 +1,12 @@
 package rubikcube;
 
-import rubikcube.action.RubikCubeAction;
-import rubikcube.strategy.*;
+import rubikcube.scoring.RubikCubeScoringByCompletionPercentage;
+import solutioning.strategy.Action;
+import solutioning.strategy.ExecutionSummary;
+import solutioning.strategy.random.RandomActionStrategy;
+import solutioning.strategy.scoring.ForesightScoringStrategy;
+import solutioning.strategy.scoring.ScoringMechanism;
+import solutioning.strategy.scoring.ScoringStrategy;
 
 import java.util.List;
 import java.util.Random;
@@ -11,40 +16,48 @@ public class RubikSolution {
     public static void main(String[] args) throws CloneNotSupportedException {
         RubikCube cube = new RubikCube(3);
         RubikSolution solution = new RubikSolution();
+        ScoringMechanism<RubikCube> scoring = new RubikCubeScoringByCompletionPercentage();
 
-        solution.runActionListAndReverse(cube.clone(), 20);
+//        solution.runActionListAndReverse(cube.clone(), 20);
 
         cube.randomize();
-//        solution.runRandomActionStrategy(cube.clone(), 10000, 100, 3);
+        cube.print();
+        System.out.println(scoring.getScore(cube));
+//        solution.runRandomActionStrategy(cube.clone(), 100, 100, 3);
 //        solution.runScoringStrategy(cube.clone(), 1000);
-        solution.runEnhancedScoringStrategy(cube.clone(), 100, 5);
+        solution.runForesightScoringStrategy(cube.clone(), 300, 5, 10, 5);
 
     }
 
-    public void runEnhancedScoringStrategy(RubikCube cube, int limit, int forkLimit){
-        EnhancedScoringStrategy enhancedScoringStrategy = new EnhancedScoringStrategy(limit, forkLimit);
-        ExecutionSummary executionSummary = enhancedScoringStrategy.execute(cube);
-        cube.print();
-        System.out.println(RubikCubeScoring.getRubikCubeScore(cube));
+    public void runForesightScoringStrategy(RubikCube cube, int limit, int foresightCount, int bestScoreCount, int skipLastScoreCount){
+        ScoringMechanism<RubikCube> scoring = new RubikCubeScoringByCompletionPercentage();
+        ForesightScoringStrategy.ForesightScoringStrategyOptions options = new ForesightScoringStrategy.ForesightScoringStrategyOptions(limit, foresightCount, bestScoreCount, skipLastScoreCount);
+        ForesightScoringStrategy<RubikCube> foresightScoringStrategy = new ForesightScoringStrategy<>(options, scoring);
+        ExecutionSummary<RubikCube> executionSummary = foresightScoringStrategy.execute(cube);
+
         executionSummary.print();
+        cube.print();
+        System.out.println(scoring.getScore(cube));
     }
 
     public void runScoringStrategy(RubikCube cube, int limit){
-        ScoringStrategy scoringStrategy = new ScoringStrategy(limit);
-        double score = RubikCubeScoring.getRubikCubeScore(cube);
+        ScoringMechanism<RubikCube> scoring = new RubikCubeScoringByCompletionPercentage();
+        ScoringStrategy<RubikCube> scoringStrategy = new ScoringStrategy<>(limit, scoring);
+        double score = scoring.getScore(cube);
         System.out.println(score);
-        ExecutionSummary executionSummary = scoringStrategy.execute(cube);
+        ExecutionSummary<RubikCube> executionSummary = scoringStrategy.execute(cube);
         executionSummary.print();
         cube.print();
-        score = RubikCubeScoring.getRubikCubeScore(cube);
+        score = scoring.getScore(cube);
         System.out.println(score);
     }
 
     public void runRandomActionStrategy(RubikCube cube, int limit, int maxSteps, int successCount){
         cube.print();
-        System.out.println(RubikCubeScoring.getRubikCubeScore(cube));
-        RandomActionStrategy randomActionStrategy = new rubikcube.strategy.RandomActionStrategy(limit, maxSteps, successCount);
-        ExecutionSummary executionSummary = randomActionStrategy.execute(cube);
+        ScoringMechanism<RubikCube> scoring = new RubikCubeScoringByCompletionPercentage();
+        System.out.println(scoring.getScore(cube));
+        RandomActionStrategy<RubikCube> randomActionStrategy = new RandomActionStrategy<>(limit, maxSteps, successCount);
+        ExecutionSummary<RubikCube> executionSummary = randomActionStrategy.execute(cube);
         executionSummary.print();
     }
 
@@ -54,12 +67,12 @@ public class RubikSolution {
         System.out.println("Check: " + cube.check());
         System.out.println("Perfect: " + cube.isComplete());
 
-        List<rubikcube.action.RubikCubeAction> randomActions = solution.randomActions(cube, count);
+        List<Action<RubikCube>> randomActions = solution.randomActions(cube, count);
         randomActions.forEach(action -> System.out.println(action.getName()));
         cube.print();
         System.out.println("Check: " + cube.check());
 
-        List<rubikcube.action.RubikCubeAction> reverseActions = solution.reverseActions(randomActions);
+        List<Action<RubikCube>> reverseActions = solution.reverseActions(randomActions);
         reverseActions.forEach(action -> System.out.println(action.getName()));
         reverseActions.forEach(cube::performAction);
         cube.print();
@@ -67,21 +80,21 @@ public class RubikSolution {
         System.out.println("Perfect: " + cube.isComplete());
     }
 
-    public List<RubikCubeAction> randomActions(RubikCube rubikCube, int count){
+    public List<Action<RubikCube>> randomActions(RubikCube rubikCube, int count){
         Random random = new Random();
         int actionCount = rubikCube.getAllActions().length;
         return IntStream.range(0, count).boxed().map(i -> {
-          RubikCubeAction action = rubikCube.getAllActions()[random.nextInt(actionCount)];
+          Action<RubikCube> action = rubikCube.getAllActions()[random.nextInt(actionCount)];
           rubikCube.performAction(action);
           return action;
         }).toList();
     }
 
-    public List<RubikCubeAction> reverseActions(List<RubikCubeAction> originalActions){
+    public List<Action<RubikCube>> reverseActions(List<Action<RubikCube>> originalActions){
         return IntStream.rangeClosed(1, originalActions.size())
                 .boxed()
                 .map(i -> originalActions.get(originalActions.size() - i))
-                .map(RubikCubeAction::oppositeAction)
+                .map(Action::oppositeAction)
                 .toList();
     }
 }

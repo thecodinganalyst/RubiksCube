@@ -1,18 +1,17 @@
-package rubikcube.strategy;
-
-import rubikcube.action.RubikCubeAction;
+package solutioning.strategy;
 
 import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
 
-public class ExecutionSummary {
+public class ExecutionSummary<S> {
+
     boolean successful;
-    List<RubikCubeAction> successSteps = null;
+    List<Action<S>> successSteps = null;
     Instant start;
     Instant end;
 
-    public ExecutionSummary(boolean successful, List<RubikCubeAction> successSteps, Instant start, Instant end){
+    public ExecutionSummary(boolean successful, List<Action<S>> successSteps, Instant start, Instant end){
         this.successful = successful;
         if(successful){
             this.successSteps = successSteps;
@@ -30,5 +29,21 @@ public class ExecutionSummary {
         System.out.println("Start: " + start.toString());
         System.out.println("End: " + end.toString());
         System.out.println("Duration: " + Duration.between(start, end).toMillis() + " milliseconds");
+    }
+
+    public boolean isSuccessful() {
+        return successful;
+    }
+
+    public List<Action<S>> getSuccessSteps() {
+        return successSteps;
+    }
+
+    public Instant getStart() {
+        return start;
+    }
+
+    public Instant getEnd() {
+        return end;
     }
 }

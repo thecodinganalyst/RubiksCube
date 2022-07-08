@@ -1,22 +1,21 @@
-package rubikcube.strategy;
+package rubikcube.scoring;
 
 import rubikcube.RubikCube;
 import rubikcube.RubikSide;
+import solutioning.strategy.Subject;
+import solutioning.strategy.scoring.ScoringMechanism;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-public class RubikCubeScoring {
+public class RubikCubeScoringByCompletionPercentage implements ScoringMechanism<RubikCube> {
 
-    public static double getScoreFromValues(int[] values){
+    public double getScoreFromValues(int[] values){
         Map<Integer, List<Integer>> groups = Arrays.stream(values).boxed().collect(Collectors.groupingBy(value -> value));
         int numerator = groups.keySet().size();
         if (numerator == 1) return 1;
@@ -24,7 +23,7 @@ public class RubikCubeScoring {
         return (double) numerator / (double) values.length;
     }
 
-    public static double getRubikSideCompletionScore(RubikSide rubikSide, Function<Integer, int[]> rubikSideGetValueFunction){
+    public double getRubikSideCompletionScore(RubikSide rubikSide, Function<Integer, int[]> rubikSideGetValueFunction){
         List<int[]> qualifiedValuesList = IntStream.range(0, rubikSide.getSize())
                 .boxed()
                 .map(rubikSideGetValueFunction)
@@ -47,16 +46,16 @@ public class RubikCubeScoring {
         return ((double) maxGroupSize) / rubikSide.getSize();
     }
 
-    public static double getRubikSideAverageScore(RubikSide rubikSide, Function<Integer, int[]> rubikSideGetValueFunction){
+    public double getRubikSideAverageScore(RubikSide rubikSide, Function<Integer, int[]> rubikSideGetValueFunction){
         return IntStream.range(0, rubikSide.getSize())
                 .boxed()
                 .map(rubikSideGetValueFunction)
-                .mapToDouble(RubikCubeScoring::getScoreFromValues)
+                .mapToDouble(this::getScoreFromValues)
                 .average()
                 .orElse(0.0);
     }
 
-    public static double getRubikSideScore(RubikSide rubikSide){
+    public double getRubikSideScore(RubikSide rubikSide){
         double averageRowScore = getRubikSideAverageScore(rubikSide, rubikSide::getRow);
         double rowSimilarityScore = getRubikSideCompletionScore(rubikSide, rubikSide::getRow);
         double rubikSideRowScore = averageRowScore * rowSimilarityScore;
@@ -66,15 +65,21 @@ public class RubikCubeScoring {
         double rubikSideColScore = averageColScore * colSimilarityScore;
 
         return BigDecimal.valueOf(Math.max(rubikSideRowScore, rubikSideColScore))
-                .setScale(3, RoundingMode.HALF_UP)
+                .setScale(5, RoundingMode.HALF_UP)
                 .doubleValue();
     }
 
-    public static double getRubikCubeScore(RubikCube cube){
-        return cube.getAllSides()
+    public Double getRubikCubeScore(RubikCube cube) {
+        double score = cube.getAllSides()
                 .values()
                 .stream()
-                .map(RubikCubeScoring::getRubikSideScore)
+                .map(this::getRubikSideScore)
                 .reduce(0.0, Double::sum) / 6.0;
+        return BigDecimal.valueOf(score).setScale(5, RoundingMode.HALF_UP).doubleValue();
+    }
+
+    @Override
+    public Double getScore(Subject<RubikCube> subject){
+        return getRubikCubeScore((RubikCube) subject);
     }
 }

@@ -20,4 +20,12 @@ class UtilsTest {
         int[][] expected = {{4, 3}, {2, 1}};
         assertThat(Utils.reverse2dArray(arr), equalTo(expected));
     }
+
+    @Test
+    void getRandom() {
+        assertThat(Utils.getRandom(1, 3), lessThanOrEqualTo(3));
+        assertThat(Utils.getRandom(1, 3), greaterThanOrEqualTo(1));
+
+        assertThat(Utils.getRandom(3, 3), equalTo(3));
+    }
 }
