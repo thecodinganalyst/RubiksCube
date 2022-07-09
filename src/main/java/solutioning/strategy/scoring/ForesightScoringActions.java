@@ -1,5 +1,6 @@
 package solutioning.strategy.scoring;
 
+import org.javatuples.Pair;
 import solutioning.strategy.Action;
 import solutioning.strategy.Subject;
 
@@ -26,8 +27,8 @@ public class ForesightScoringActions<S> {
                 Subject<S> clone = result.subject().clone();
                 clone.performAction(action);
                 double score = scoringMechanism.getScore(clone);
-                List<Action<S>> updatedList = new ArrayList<>(result.actionList());
-                updatedList.add(action);
+                List<Pair<Action<S>, Double>> updatedList = new ArrayList<>(result.actionScoreList());
+                updatedList.add(Pair.with(action, score));
                 if(clone.isComplete()) return List.of(new ScoreResult<>(score, updatedList, clone));
                 candidates.add(new ScoreResult<>(score, updatedList, clone));
             }catch (Exception ex){
@@ -50,8 +51,8 @@ public class ForesightScoringActions<S> {
         return scoreResultList;
     }
 
-    public List<Double> getLastFewScoresToSkip(List<ScoreResult<S>> scoreResultList, int skipLastScoreCount){
-        List<Double> scoreList = scoreResultList.stream().map(ScoreResult::score).toList();
+    public List<Double> getLastFewScoresToSkip(ScoreResult<S> scoreResult, int skipLastScoreCount){
+        List<Double> scoreList = scoreResult.getScoreList();
         if(scoreList.size() <= skipLastScoreCount) return scoreList;
         return scoreList.subList(scoreList.size() - skipLastScoreCount, scoreList.size());
     }

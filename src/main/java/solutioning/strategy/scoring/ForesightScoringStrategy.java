@@ -1,5 +1,6 @@
 package solutioning.strategy.scoring;
 
+import org.javatuples.Pair;
 import solutioning.strategy.Action;
 import solutioning.strategy.ExecutionSummary;
 import solutioning.strategy.Subject;
@@ -16,62 +17,50 @@ public class ForesightScoringStrategy<S> extends ScoringStrategy<S> {
     private final int foresightCount;
     private final int bestScoreCount;
     private final int skipLastScoreCount;
-    private final List<Double> scoreList;
     private final ForesightScoringActions<S> foresightScoringActions;
 
-    public ForesightScoringStrategy(ForesightScoringStrategyOptions options, ScoringMechanism<S> scoringMechanism) {
-        super(options.limit(), scoringMechanism);
-        ForesightScoringStrategyOptions defaultOption = ForesightScoringStrategyOptions.DEFAULT();
-        this.foresightCount = options.foresightCount() == null ? defaultOption.foresightCount() : options.foresightCount();
-        this.bestScoreCount = options.bestScoreCount() == null ? defaultOption.bestScoreCount() : options.bestScoreCount();
-        this.skipLastScoreCount = options.skipLastScoreCount() == null ? defaultOption.skipLastScoreCount() : options.skipLastScoreCount();
-        scoreList = new ArrayList<>();
+    public ForesightScoringStrategy(int limit, int foresightCount, int bestScoreCount, int skipLastScoreCount, ScoringMechanism<S> scoringMechanism) {
+        super(limit, scoringMechanism);
+        this.foresightCount = foresightCount;
+        this.bestScoreCount = bestScoreCount;
+        this.skipLastScoreCount = skipLastScoreCount;
         this.foresightScoringActions = new ForesightScoringActions<>(scoringMechanism);
     }
 
-    public List<Action<S>> getActionListWithHighestScore(Subject<S> subject) {
+    public List<Pair<Action<S>, Double>> getActionScoreListWithHighestScore(ScoreResult<S> scoreResult) {
         ForkJoinPool commonPool = ForkJoinPool.commonPool();
-        List<Double> scoresToSkip = getLastFewScoresToSkip();
-
-        ScoringTask<S> scoringTask = new ScoringTask<>(ScoreResult.empty(subject), foresightCount, bestScoreCount, scoresToSkip, foresightScoringActions);
+        List<Double> scoresToSkip = foresightScoringActions.getLastFewScoresToSkip(scoreResult, skipLastScoreCount);
+        ScoringTask<S> scoringTask = new ScoringTask<>(ScoreResult.empty(scoreResult.subject()), foresightCount, bestScoreCount, scoresToSkip, foresightScoringActions);
         ScoreResult<S> result = commonPool.invoke(scoringTask);
-        scoreList.add(result.score());
-        return result.actionList().subList(0, 1);
-    }
 
-    private List<Double> getLastFewScoresToSkip(){
-        if(scoreList.size() <= skipLastScoreCount) return scoreList;
-        return scoreList.subList(scoreList.size() - skipLastScoreCount, scoreList.size());
+        return result.actionScoreList();
     }
 
     @Override
     public ExecutionSummary<S> performBestScoreTrial(Subject<S> subject){
         Instant start = Instant.now();
-        List<Action<S>> actionList = new ArrayList<>();
         boolean found = false;
+        ScoreResult<S> scoreResult = ScoreResult.empty(subject);
 
         System.out.println("Perform best score trial");
         for(int i = 0; i < limit; i++){
             System.out.println("level " + i);
-            List<Action<S>> bestActionList = getActionListWithHighestScore(subject);
+            List<Pair<Action<S>, Double>> bestActionScoreList = getActionScoreListWithHighestScore(scoreResult);
+            List<Action<S>> bestActionList = bestActionScoreList.stream().map(Pair::getValue0).toList();
             subject.performActionList(bestActionList);
-            actionList.addAll(bestActionList);
+            scoreResult.actionScoreList().addAll(bestActionScoreList);
+
             bestActionList.forEach(action -> System.out.println(action.getName()));
             subject.print();
             System.out.println(scoringMechanism.getScore(subject));
+
             if(subject.isComplete()){
                 found = true;
                 break;
             }
         }
         Instant end = Instant.now();
-        return new ExecutionSummary<>(found, found ? actionList : null, start, end);
-    }
-
-    public record ForesightScoringStrategyOptions(Integer limit, Integer foresightCount, Integer bestScoreCount, Integer skipLastScoreCount){
-        public static ForesightScoringStrategyOptions DEFAULT() {
-            return new ForesightScoringStrategyOptions(100, 10, 10, 5);
-        }
+        return new ExecutionSummary<>(found, found ? scoreResult.getActionList() : null, start, end);
     }
 
     public static class ScoringTask<S> extends RecursiveTask<ScoreResult<S>> {
@@ -79,7 +68,6 @@ public class ForesightScoringStrategy<S> extends ScoringStrategy<S> {
         ScoreResult<S> scoreResult;
         int foresightCount;
         int bestScoreCount;
-        Action<S> lastAction;
         List<Double> lastFewScoresToSkip;
         ForesightScoringActions<S> foresightScoringActions;
 
@@ -91,22 +79,13 @@ public class ForesightScoringStrategy<S> extends ScoringStrategy<S> {
             this.foresightScoringActions = foresightScoringActions;
         }
 
-        public ScoringTask(ScoreResult<S> scoreResult, int foresightCount, int bestScoreCount, List<Double> lastFewScoresToSkip, Action<S> lastAction, ForesightScoringActions<S> foresightScoringActions){
-            this.scoreResult = scoreResult;
-            this.foresightCount = foresightCount;
-            this.bestScoreCount = bestScoreCount;
-            this.lastFewScoresToSkip = lastFewScoresToSkip;
-            this.lastAction = lastAction;
-            this.foresightScoringActions = foresightScoringActions;
-        }
-
         @Override
         protected ScoreResult<S> compute() {
             List<ScoreResult<S>> scoreResultList = foresightScoringActions.getRankedResultsForAllPossibleActions(scoreResult);
             scoreResultList = foresightScoringActions.filterScoreResultListByRemovingItemsWithCertainScores(scoreResultList, lastFewScoresToSkip);
             scoreResultList = foresightScoringActions.getBestScore(scoreResultList, bestScoreCount);
             if(scoreResultList.size() == 1) return scoreResultList.get(0);
-            if(scoreResultList.size() > 0 && scoreResultList.get(0).actionList().size() == foresightCount) return scoreResultList.get(0);
+            if(scoreResultList.size() > 0 && scoreResultList.get(0).actionScoreList().size() == foresightCount) return scoreResultList.get(0);
 
             return ForkJoinTask.invokeAll(createSubTasks(scoreResultList))
                     .stream()
@@ -117,7 +96,7 @@ public class ForesightScoringStrategy<S> extends ScoringStrategy<S> {
 
         private List<ScoringTask<S>> createSubTasks(List<ScoreResult<S>> scoreResultList){
             return scoreResultList.stream()
-                    .map(result -> new ScoringTask<>(result, foresightCount, bestScoreCount, lastFewScoresToSkip, result.lastAction(), foresightScoringActions))
+                    .map(result -> new ScoringTask<>(result, foresightCount, bestScoreCount, lastFewScoresToSkip, foresightScoringActions))
                     .collect(Collectors.toList());
         }
 

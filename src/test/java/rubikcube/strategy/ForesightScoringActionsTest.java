@@ -1,5 +1,6 @@
 package rubikcube.strategy;
 
+import org.javatuples.Pair;
 import org.junit.jupiter.api.Test;
 import rubikcube.RubikCube;
 import rubikcube.action.ConsolidatedAction;
@@ -26,7 +27,7 @@ class ForesightScoringActionsTest {
         Action<RubikCube> action2 = new ConsolidatedAction(ConsolidatedAction.FACE.RIGHT_FACE, ConsolidatedAction.DIRECTION.ANTI_CLOCKWISE, 1, 3);
         ScoreResult<RubikCube> scoreResult = new ScoreResult<>(
                 1.2,
-                List.of(action1, action2),
+                List.of(Pair.with(action1, 0.1), Pair.with(action2, 1.2)),
                 rubikCube);
         List<ScoreResult<RubikCube>> scoreResultList = foresightScoringActions.getRankedResultsForAllPossibleActions(scoreResult);
 
@@ -39,7 +40,7 @@ class ForesightScoringActionsTest {
             Double currentScore = result.score();
             assertThat(currentScore, lessThanOrEqualTo(prevScore));
             assertThat(oppLastAction, not(equalTo(scoreResult.lastAction())));
-            assertThat(result.actionList().size(), equalTo(3));
+            assertThat(result.actionScoreList().size(), equalTo(3));
             prevScore = currentScore;
         }
     }
@@ -51,7 +52,7 @@ class ForesightScoringActionsTest {
 
         assertThat(scoreResultList.size(), equalTo(rubikCube.getAllActions().length));
         for(ScoreResult<RubikCube> result: scoreResultList){
-            assertThat(result.actionList().size(), equalTo(1));
+            assertThat(result.actionScoreList().size(), equalTo(1));
         }
         Double prevScore = scoreResultList.get(0).score();
         for(int i = 1; i < scoreResultList.size(); i++){
@@ -127,43 +128,54 @@ class ForesightScoringActionsTest {
 
     @Test
     void getLastFewScoresToSkip_shouldGetLastNScores() {
-        List<ScoreResult<RubikCube>> scoreResultList = List.of(
-                new ScoreResult<>(0.345, null, null),
-                new ScoreResult<>(0.234, null, null),
-                new ScoreResult<>(0.222, null, null),
-                new ScoreResult<>(0.221, null, null),
-                new ScoreResult<>(0.199, null, null),
-                new ScoreResult<>(0.188, null, null),
-                new ScoreResult<>(0.177, null, null),
-                new ScoreResult<>(0.176, null, null)
-        );
-        List<Double> scoreList = foresightScoringActions.getLastFewScoresToSkip(scoreResultList, 5);
+        ScoreResult<RubikCube> scoreResult = new ScoreResult<>(
+                0.345,
+                List.of(
+                        Pair.with(null, 0.176),
+                        Pair.with(null, 0.177),
+                        Pair.with(null, 0.188),
+                        Pair.with(null, 0.199),
+                        Pair.with(null, 0.221),
+                        Pair.with(null, 0.222),
+                        Pair.with(null, 0.234),
+                        Pair.with(null, 0.345)
+                ),
+                null);
+
+        List<Double> scoreList = foresightScoringActions.getLastFewScoresToSkip(scoreResult, 5);
         assertThat(scoreList.size(), equalTo(5));
-        assertThat(scoreList.get(0), equalTo(0.221));
-        assertThat(scoreList.get(1), equalTo(0.199));
-        assertThat(scoreList.get(2), equalTo(0.188));
-        assertThat(scoreList.get(3), equalTo(0.177));
-        assertThat(scoreList.get(4), equalTo(0.176));
+        assertThat(scoreList.get(0), equalTo(0.199));
+        assertThat(scoreList.get(1), equalTo(0.221));
+        assertThat(scoreList.get(2), equalTo(0.222));
+        assertThat(scoreList.get(3), equalTo(0.234));
+        assertThat(scoreList.get(4), equalTo(0.345));
     }
 
     @Test
     void getLastFewScoresToSkip_whenSkipCountIsLessThanListSize_shouldGetScoreOfWholeList() {
-        List<ScoreResult<RubikCube>> scoreResultList = List.of(
-                new ScoreResult<>(0.345, null, null),
-                new ScoreResult<>(0.234, null, null),
-                new ScoreResult<>(0.222, null, null)
-        );
-        List<Double> scoreList = foresightScoringActions.getLastFewScoresToSkip(scoreResultList, 5);
+        ScoreResult<RubikCube> scoreResult = new ScoreResult<>(
+                0.345,
+                List.of(
+                        Pair.with(null, 0.176),
+                        Pair.with(null, 0.177),
+                        Pair.with(null, 0.188)
+                ),
+                null);
+        List<Double> scoreList = foresightScoringActions.getLastFewScoresToSkip(scoreResult, 5);
         assertThat(scoreList.size(), equalTo(3));
-        assertThat(scoreList.get(0), equalTo(0.345));
-        assertThat(scoreList.get(1), equalTo(0.234));
-        assertThat(scoreList.get(2), equalTo(0.222));
+        assertThat(scoreList.get(0), equalTo(0.176));
+        assertThat(scoreList.get(1), equalTo(0.177));
+        assertThat(scoreList.get(2), equalTo(0.188));
     }
 
     @Test
     void getLastFewScoresToSkip_whenListIsEmpty_shouldReturnEmptyList() {
-        List<ScoreResult<RubikCube>> scoreResultList = List.of();
-        List<Double> scoreList = foresightScoringActions.getLastFewScoresToSkip(scoreResultList, 5);
+        ScoreResult<RubikCube> scoreResult = new ScoreResult<>(
+                0.345,
+                List.of(),
+                null);
+
+        List<Double> scoreList = foresightScoringActions.getLastFewScoresToSkip(scoreResult, 5);
         assertThat(scoreList.size(), equalTo(0));
     }
 }

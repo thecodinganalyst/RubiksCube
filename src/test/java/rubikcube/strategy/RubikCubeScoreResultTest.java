@@ -1,5 +1,6 @@
 package rubikcube.strategy;
 
+import org.javatuples.Pair;
 import org.junit.jupiter.api.Test;
 import rubikcube.RubikCube;
 import rubikcube.action.ConsolidatedAction;
@@ -18,14 +19,16 @@ class RubikCubeScoreResultTest {
         ScoreResult<RubikCube> c = new ScoreResult<>(2.4, null, new RubikCube(3));
         List<ScoreResult<RubikCube>> list = List.of(a, b, c);
         List<ScoreResult<RubikCube>> sorted = list.stream().sorted().toList();
-        assertThat(sorted, contains(b, c, a));
+        assertThat(sorted.get(0).score(), equalTo(4.0));
+        assertThat(sorted.get(1).score(), equalTo(2.4));
+        assertThat(sorted.get(2).score(), equalTo(1.2));
     }
 
     @Test
     void empty() {
         ScoreResult<RubikCube> empty = ScoreResult.empty(new RubikCube(3));
         assertThat(empty.score(), equalTo(0.0));
-        assertThat(empty.actionList(), hasSize(0));
+        assertThat(empty.actionScoreList(), hasSize(0));
         RubikCube cube = (RubikCube) empty.subject();
         assertThat(cube.getSize(), equalTo(3));
     }
@@ -35,11 +38,11 @@ class RubikCubeScoreResultTest {
         ScoreResult<RubikCube> scoreResult = new ScoreResult<>(
                 1.2,
                 List.of(
-                        new ConsolidatedAction(ConsolidatedAction.FACE.MAIN_FACE, ConsolidatedAction.DIRECTION.CLOCKWISE, 0, 3),
-                        new ConsolidatedAction(ConsolidatedAction.FACE.TOP_FACE, ConsolidatedAction.DIRECTION.CLOCKWISE, 1, 3),
-                        new ConsolidatedAction(ConsolidatedAction.FACE.RIGHT_FACE, ConsolidatedAction.DIRECTION.ANTI_CLOCKWISE, 2, 3),
-                        new ConsolidatedAction(ConsolidatedAction.FACE.MAIN_FACE, ConsolidatedAction.DIRECTION.CLOCKWISE, 0, 3),
-                        new ConsolidatedAction(ConsolidatedAction.FACE.TOP_FACE, ConsolidatedAction.DIRECTION.ANTI_CLOCKWISE, 2, 3)
+                        Pair.with(new ConsolidatedAction(ConsolidatedAction.FACE.MAIN_FACE, ConsolidatedAction.DIRECTION.CLOCKWISE, 0, 3), 0.01),
+                        Pair.with(new ConsolidatedAction(ConsolidatedAction.FACE.TOP_FACE, ConsolidatedAction.DIRECTION.CLOCKWISE, 1, 3), 0.02),
+                        Pair.with(new ConsolidatedAction(ConsolidatedAction.FACE.RIGHT_FACE, ConsolidatedAction.DIRECTION.ANTI_CLOCKWISE, 2, 3), 0.03),
+                        Pair.with(new ConsolidatedAction(ConsolidatedAction.FACE.MAIN_FACE, ConsolidatedAction.DIRECTION.CLOCKWISE, 0, 3), 0.04),
+                        Pair.with(new ConsolidatedAction(ConsolidatedAction.FACE.TOP_FACE, ConsolidatedAction.DIRECTION.ANTI_CLOCKWISE, 2, 3), 1.2)
                 ),
                 new RubikCube(3));
 
