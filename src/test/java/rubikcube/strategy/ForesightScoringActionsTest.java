@@ -127,7 +127,7 @@ class ForesightScoringActionsTest {
     }
 
     @Test
-    void getLastFewScoresToSkip_shouldGetLastNScores() {
+    void getLastFewScoresToSkip_shouldGetLastNScoresOnlyIfTheyAreDuplicates() {
         ScoreResult<RubikCube> scoreResult = new ScoreResult<>(
                 0.345,
                 List.of(
@@ -137,22 +137,18 @@ class ForesightScoringActionsTest {
                         Pair.with(null, 0.199),
                         Pair.with(null, 0.221),
                         Pair.with(null, 0.222),
-                        Pair.with(null, 0.234),
+                        Pair.with(null, 0.222),
                         Pair.with(null, 0.345)
                 ),
                 null);
 
         List<Double> scoreList = foresightScoringActions.getLastFewScoresToSkip(scoreResult, 5);
-        assertThat(scoreList.size(), equalTo(5));
-        assertThat(scoreList.get(0), equalTo(0.199));
-        assertThat(scoreList.get(1), equalTo(0.221));
-        assertThat(scoreList.get(2), equalTo(0.222));
-        assertThat(scoreList.get(3), equalTo(0.234));
-        assertThat(scoreList.get(4), equalTo(0.345));
+        assertThat(scoreList.size(), equalTo(1));
+        assertThat(scoreList.get(0), equalTo(0.222));
     }
 
     @Test
-    void getLastFewScoresToSkip_whenSkipCountIsLessThanListSize_shouldGetScoreOfWholeList() {
+    void getLastFewScoresToSkip_whenSkipCountIsLessThanListSize_AndNoDuplicates_shouldGetEmptyList() {
         ScoreResult<RubikCube> scoreResult = new ScoreResult<>(
                 0.345,
                 List.of(
@@ -162,10 +158,7 @@ class ForesightScoringActionsTest {
                 ),
                 null);
         List<Double> scoreList = foresightScoringActions.getLastFewScoresToSkip(scoreResult, 5);
-        assertThat(scoreList.size(), equalTo(3));
-        assertThat(scoreList.get(0), equalTo(0.176));
-        assertThat(scoreList.get(1), equalTo(0.177));
-        assertThat(scoreList.get(2), equalTo(0.188));
+        assertThat(scoreList.size(), equalTo(0));
     }
 
     @Test

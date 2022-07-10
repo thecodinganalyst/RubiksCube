@@ -4,8 +4,9 @@ import org.javatuples.Pair;
 import solutioning.strategy.Action;
 import solutioning.strategy.Subject;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class ForesightScoringActions<S> {
 
@@ -53,7 +54,11 @@ public class ForesightScoringActions<S> {
 
     public List<Double> getLastFewScoresToSkip(ScoreResult<S> scoreResult, int skipLastScoreCount){
         List<Double> scoreList = scoreResult.getScoreList();
-        if(scoreList.size() <= skipLastScoreCount) return scoreList;
-        return scoreList.subList(scoreList.size() - skipLastScoreCount, scoreList.size());
+        List<Double> subList = scoreList;
+        if(skipLastScoreCount < subList.size()){
+            subList = scoreList.subList(scoreList.size() - skipLastScoreCount, scoreList.size());
+        }
+        Set<Double> pastScores = new HashSet<>();
+        return subList.stream().filter(i -> !pastScores.add(i)).toList();
     }
 }

@@ -27,13 +27,14 @@ public class ForesightScoringStrategy<S> extends ScoringStrategy<S> {
         this.foresightScoringActions = new ForesightScoringActions<>(scoringMechanism);
     }
 
-    public List<Pair<Action<S>, Double>> getActionScoreListWithHighestScore(ScoreResult<S> scoreResult) {
+    public List<Pair<Action<S>, Double>> getActionScoreWithHighestScore(ScoreResult<S> scoreResult) {
         ForkJoinPool commonPool = ForkJoinPool.commonPool();
         List<Double> scoresToSkip = foresightScoringActions.getLastFewScoresToSkip(scoreResult, skipLastScoreCount);
+        System.out.println("Last few scores to skip: " + scoresToSkip.toString());
         ScoringTask<S> scoringTask = new ScoringTask<>(ScoreResult.empty(scoreResult.subject()), foresightCount, bestScoreCount, scoresToSkip, foresightScoringActions);
         ScoreResult<S> result = commonPool.invoke(scoringTask);
 
-        return result.actionScoreList();
+        return result.actionScoreList().subList(0, 1);
     }
 
     @Override
@@ -45,7 +46,7 @@ public class ForesightScoringStrategy<S> extends ScoringStrategy<S> {
         System.out.println("Perform best score trial");
         for(int i = 0; i < limit; i++){
             System.out.println("level " + i);
-            List<Pair<Action<S>, Double>> bestActionScoreList = getActionScoreListWithHighestScore(scoreResult);
+            List<Pair<Action<S>, Double>> bestActionScoreList = getActionScoreWithHighestScore(scoreResult);
             List<Action<S>> bestActionList = bestActionScoreList.stream().map(Pair::getValue0).toList();
             subject.performActionList(bestActionList);
             scoreResult.actionScoreList().addAll(bestActionScoreList);
