@@ -7,7 +7,7 @@ import solutioning.strategy.Subject;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-    public class ConsolidatedAction implements Action<RubikCube> {
+public class ConsolidatedAction implements Action<RubikCube> {
     
     public enum FACE { TOP_FACE, MAIN_FACE, RIGHT_FACE }
     public enum DIRECTION { CLOCKWISE, ANTI_CLOCKWISE}
