@@ -3,6 +3,7 @@ package rubikcube;
 import rubikcube.scoring.RubikCubeScoringByCompletionPercentage;
 import solutioning.strategy.Action;
 import solutioning.strategy.ExecutionSummary;
+import solutioning.strategy.multiple.MultipleForesightScoringStrategy;
 import solutioning.strategy.random.RandomActionStrategy;
 import solutioning.strategy.scoring.ForesightScoringStrategy;
 import solutioning.strategy.scoring.ScoringMechanism;
@@ -25,8 +26,20 @@ public class RubikSolution {
         System.out.println(scoring.getScore(cube));
 //        solution.runRandomActionStrategy(cube.clone(), 100, 100, 3);
 //        solution.runScoringStrategy(cube.clone(), 1000);
-        solution.runForesightScoringStrategy(cube.clone(), 200, 4, 8, 0.4, 6, 6);
+//        solution.runForesightScoringStrategy(cube.clone(), 300, 5, 8, 0.4, 12, 6);
 
+        solution.runMultipleForesightScoringStrategy(cube.clone(), 200);
+
+    }
+
+    public void runMultipleForesightScoringStrategy(RubikCube cube, int limit){
+        ScoringMechanism<RubikCube> scoring = new RubikCubeScoringByCompletionPercentage();
+        MultipleForesightScoringStrategy<RubikCube> multipleForesightScoringStrategy = new MultipleForesightScoringStrategy<>(limit, scoring);
+        ExecutionSummary<RubikCube> executionSummary = multipleForesightScoringStrategy.execute(cube);
+
+        executionSummary.print();
+        cube.print();
+        System.out.println(scoring.getScore(cube));
     }
 
     public void runForesightScoringStrategy(RubikCube cube, int limit, int foresightCount, int maxForesightCount, Double thresholdScoreToIncreaseForesightCount, int bestScoreCount, int skipLastScoreCount){

@@ -14,12 +14,28 @@ import java.util.stream.Collectors;
 
 public class ForesightScoringStrategy<S> extends ScoringStrategy<S> {
 
-    private final int foresightCount;
-    private final int maxForesightCount;
-    private final int bestScoreCount;
-    private final int skipLastScoreCount;
-    private final Double thresholdScoreToIncreaseForesightCount;
+    private int foresightCount;
+    private int maxForesightCount;
+    private int bestScoreCount;
+    private int skipLastScoreCount;
+    private Double thresholdScoreToIncreaseForesightCount;
     private final ForesightScoringActions<S> foresightScoringActions;
+
+    public static final int DEFAULT_FORESIGHT_COUNT = 4;
+    public static final int DEFAULT_MAX_FORESIGHT_COUNT = 8;
+    public static final int DEFAULT_BEST_SCORE_COUNT = 6;
+    public static final int DEFAULT_SKIP_LAST_SCORE_COUNT = 6;
+    public static final double DEFAULT_THRESHOLD_SCORE_TO_INCREASE_FORESIGHT_COUNT = 0.5;
+
+    public ForesightScoringStrategy(int limit, ScoringMechanism<S> scoringMechanism){
+        super(limit, scoringMechanism);
+        this.foresightCount = DEFAULT_FORESIGHT_COUNT;
+        this.maxForesightCount = DEFAULT_MAX_FORESIGHT_COUNT;
+        this.bestScoreCount = DEFAULT_BEST_SCORE_COUNT;
+        this.skipLastScoreCount = DEFAULT_SKIP_LAST_SCORE_COUNT;
+        this.thresholdScoreToIncreaseForesightCount = DEFAULT_THRESHOLD_SCORE_TO_INCREASE_FORESIGHT_COUNT;
+        this.foresightScoringActions = new ForesightScoringActions<>(scoringMechanism);
+    }
 
     public ForesightScoringStrategy(int limit, int foresightCount, int maxForesightCount, Double thresholdScoreToIncreaseForesightCount, int bestScoreCount, int skipLastScoreCount, ScoringMechanism<S> scoringMechanism) {
         super(limit, scoringMechanism);
@@ -69,6 +85,64 @@ public class ForesightScoringStrategy<S> extends ScoringStrategy<S> {
         return new ExecutionSummary<>(found, found ? scoreResult.getActionList() : null, start, end);
     }
 
+    public int getForesightCount() {
+        return foresightCount;
+    }
+
+    public void setForesightCount(int foresightCount) {
+        this.foresightCount = foresightCount;
+    }
+
+    public int getMaxForesightCount() {
+        return maxForesightCount;
+    }
+
+    public void setMaxForesightCount(int maxForesightCount) {
+        this.maxForesightCount = maxForesightCount;
+    }
+
+    public int getBestScoreCount() {
+        return bestScoreCount;
+    }
+
+    public void setBestScoreCount(int bestScoreCount) {
+        this.bestScoreCount = bestScoreCount;
+    }
+
+    public int getSkipLastScoreCount() {
+        return skipLastScoreCount;
+    }
+
+    public void setSkipLastScoreCount(int skipLastScoreCount) {
+        this.skipLastScoreCount = skipLastScoreCount;
+    }
+
+    public Double getThresholdScoreToIncreaseForesightCount() {
+        return thresholdScoreToIncreaseForesightCount;
+    }
+
+    public void setThresholdScoreToIncreaseForesightCount(Double thresholdScoreToIncreaseForesightCount) {
+        this.thresholdScoreToIncreaseForesightCount = thresholdScoreToIncreaseForesightCount;
+    }
+
+    public int incrementForesightCount(){
+        int incremented = getForesightCount() + 1;
+        setForesightCount(incremented);
+        return incremented;
+    }
+
+    public int incrementMaxForesightCount(){
+        int incremented = getMaxForesightCount() + 1;
+        setMaxForesightCount(incremented);
+        return incremented;
+    }
+
+    public int incrementBestScoreCount(){
+        int incremented = getBestScoreCount() + 1;
+        setBestScoreCount(incremented);
+        return incremented;
+    }
+
     public static class ScoringTask<S> extends RecursiveTask<ScoreResult<S>> {
 
         ScoreResult<S> scoreResult;
@@ -104,9 +178,6 @@ public class ForesightScoringStrategy<S> extends ScoringStrategy<S> {
                 if(scoreResultList.get(0).getActionCount() >= maxForesightCount) return scoreResultList.get(0);
             }
 
-//            if(scoreResultList.size() > 0 && scoreResultList.get(0).getActionScoreList().size() >= foresightCount && scoreResultList.get(0).getScore() > lastScore) return scoreResultList.get(0);
-//            if(scoreResultList.size() > 0 && scoreResultList.get(0).getActionScoreList().size() >= maxForesightCount) return scoreResultList.get(0);
-
             return ForkJoinTask.invokeAll(createSubTasks(scoreResultList))
                     .stream()
                     .map(ForkJoinTask::join)
@@ -119,7 +190,6 @@ public class ForesightScoringStrategy<S> extends ScoringStrategy<S> {
                     .map(result -> new ScoringTask<>(result, foresightCount, maxForesightCount, lastScore, thresholdScoreToIncreaseForesightCount, bestScoreCount, lastFewScoresToSkip, foresightScoringActions))
                     .collect(Collectors.toList());
         }
-
 
     }
 
