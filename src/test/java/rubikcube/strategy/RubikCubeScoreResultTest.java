@@ -19,17 +19,17 @@ class RubikCubeScoreResultTest {
         ScoreResult<RubikCube> c = new ScoreResult<>(2.4, null, new RubikCube(3));
         List<ScoreResult<RubikCube>> list = List.of(a, b, c);
         List<ScoreResult<RubikCube>> sorted = list.stream().sorted().toList();
-        assertThat(sorted.get(0).score(), equalTo(4.0));
-        assertThat(sorted.get(1).score(), equalTo(2.4));
-        assertThat(sorted.get(2).score(), equalTo(1.2));
+        assertThat(sorted.get(0).getScore(), equalTo(4.0));
+        assertThat(sorted.get(1).getScore(), equalTo(2.4));
+        assertThat(sorted.get(2).getScore(), equalTo(1.2));
     }
 
     @Test
     void empty() {
-        ScoreResult<RubikCube> empty = ScoreResult.empty(new RubikCube(3));
-        assertThat(empty.score(), equalTo(0.0));
-        assertThat(empty.actionScoreList(), hasSize(0));
-        RubikCube cube = (RubikCube) empty.subject();
+        ScoreResult<RubikCube> empty = ScoreResult.empty(new RubikCube(3), 1.0);
+        assertThat(empty.getScore(), equalTo(1.0));
+        assertThat(empty.getActionScoreList(), hasSize(0));
+        RubikCube cube = (RubikCube) empty.getSubject();
         assertThat(cube.getSize(), equalTo(3));
     }
 

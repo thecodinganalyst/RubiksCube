@@ -34,13 +34,13 @@ class ForesightScoringActionsTest {
         assertThat(scoreResultList.size(), equalTo(rubikCube.getAllActions().length - 1));
 
         Action<RubikCube> oppLastAction = action2.oppositeAction();
-        Double prevScore = scoreResultList.get(0).score();
+        Double prevScore = scoreResultList.get(0).getScore();
         for (int i = 1; i < scoreResultList.size(); i++) {
             ScoreResult<RubikCube> result = scoreResultList.get(i);
-            Double currentScore = result.score();
+            Double currentScore = result.getScore();
             assertThat(currentScore, lessThanOrEqualTo(prevScore));
             assertThat(oppLastAction, not(equalTo(scoreResult.lastAction())));
-            assertThat(result.actionScoreList().size(), equalTo(3));
+            assertThat(result.getActionScoreList().size(), equalTo(3));
             prevScore = currentScore;
         }
     }
@@ -48,15 +48,15 @@ class ForesightScoringActionsTest {
     @Test
     void getRankedResultsForAllPossibleActions_WhenScoreResultIsEmpty_ShouldHaveSameNumberOfResultsAsNumberOfActions() {
         RubikCube rubikCube = new RubikCube(3);
-        List<ScoreResult<RubikCube>> scoreResultList = foresightScoringActions.getRankedResultsForAllPossibleActions(ScoreResult.empty(rubikCube));
+        List<ScoreResult<RubikCube>> scoreResultList = foresightScoringActions.getRankedResultsForAllPossibleActions(ScoreResult.empty(rubikCube, 1.0));
 
         assertThat(scoreResultList.size(), equalTo(rubikCube.getAllActions().length));
         for(ScoreResult<RubikCube> result: scoreResultList){
-            assertThat(result.actionScoreList().size(), equalTo(1));
+            assertThat(result.getActionScoreList().size(), equalTo(1));
         }
-        Double prevScore = scoreResultList.get(0).score();
+        Double prevScore = scoreResultList.get(0).getScore();
         for(int i = 1; i < scoreResultList.size(); i++){
-            Double currentScore = scoreResultList.get(i).score();
+            Double currentScore = scoreResultList.get(i).getScore();
             assertThat(currentScore, lessThanOrEqualTo(prevScore));
             prevScore = currentScore;
         }
@@ -81,9 +81,9 @@ class ForesightScoringActionsTest {
         List<ScoreResult<RubikCube>> result = foresightScoringActions.filterScoreResultListByRemovingItemsWithCertainScores(scoreResultList, scores);
         assertThat(result.size(), equalTo(6));
         for (ScoreResult<RubikCube> scoreResult: result){
-            assertThat(scoreResult.score(), not(equalTo(0.222)));
-            assertThat(scoreResult.score(), not(equalTo(0.023)));
-            assertThat(scoreResult.score(), not(equalTo(0.010)));
+            assertThat(scoreResult.getScore(), not(equalTo(0.222)));
+            assertThat(scoreResult.getScore(), not(equalTo(0.023)));
+            assertThat(scoreResult.getScore(), not(equalTo(0.010)));
         }
     }
 
@@ -104,11 +104,11 @@ class ForesightScoringActionsTest {
         );
         List<ScoreResult<RubikCube>> results = foresightScoringActions.getBestScore(scoreResultList, 5);
         assertThat(results.size(), equalTo(5));
-        assertThat(results.get(0).score(), equalTo(0.422));
-        assertThat(results.get(1).score(), equalTo(0.323));
-        assertThat(results.get(2).score(), equalTo(0.234));
-        assertThat(results.get(3).score(), equalTo(0.222));
-        assertThat(results.get(4).score(), equalTo(0.222));
+        assertThat(results.get(0).getScore(), equalTo(0.422));
+        assertThat(results.get(1).getScore(), equalTo(0.323));
+        assertThat(results.get(2).getScore(), equalTo(0.234));
+        assertThat(results.get(3).getScore(), equalTo(0.222));
+        assertThat(results.get(4).getScore(), equalTo(0.222));
     }
 
     @Test
@@ -121,9 +121,9 @@ class ForesightScoringActionsTest {
         );
         List<ScoreResult<RubikCube>> results = foresightScoringActions.getBestScore(scoreResultList, 5);
         assertThat(results.size(), equalTo(3));
-        assertThat(results.get(0).score(), equalTo(0.422));
-        assertThat(results.get(1).score(), equalTo(0.323));
-        assertThat(results.get(2).score(), equalTo(0.234));
+        assertThat(results.get(0).getScore(), equalTo(0.422));
+        assertThat(results.get(1).getScore(), equalTo(0.323));
+        assertThat(results.get(2).getScore(), equalTo(0.234));
     }
 
     @Test

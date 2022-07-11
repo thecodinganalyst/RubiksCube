@@ -5,8 +5,6 @@ import solutioning.strategy.Action;
 import solutioning.strategy.Subject;
 
 import java.util.*;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 public class ForesightScoringActions<S> {
 
@@ -22,13 +20,13 @@ public class ForesightScoringActions<S> {
 
         Action<S> lastAction = result.lastAction();
 
-        for(Action<S> action: result.subject().getAllActions()){
+        for(Action<S> action: result.getSubject().getAllActions()){
             try{
                 if(lastAction != null && action.equals(lastAction.oppositeAction())) continue;
-                Subject<S> clone = result.subject().clone();
+                Subject<S> clone = result.getSubject().clone();
                 clone.performAction(action);
                 double score = scoringMechanism.getScore(clone);
-                List<Pair<Action<S>, Double>> updatedList = new ArrayList<>(result.actionScoreList());
+                List<Pair<Action<S>, Double>> updatedList = new ArrayList<>(result.getActionScoreList());
                 updatedList.add(Pair.with(action, score));
                 if(clone.isComplete()) return List.of(new ScoreResult<>(score, updatedList, clone));
                 candidates.add(new ScoreResult<>(score, updatedList, clone));
@@ -41,7 +39,7 @@ public class ForesightScoringActions<S> {
 
     public List<ScoreResult<S>> filterScoreResultListByRemovingItemsWithCertainScores(List<ScoreResult<S>> scoreResultList, List<Double> scoresToRemove){
         return scoreResultList.stream()
-                .filter(scoreResult -> !scoresToRemove.contains(scoreResult.score()))
+                .filter(scoreResult -> !scoresToRemove.contains(scoreResult.getScore()))
                 .toList();
     }
 

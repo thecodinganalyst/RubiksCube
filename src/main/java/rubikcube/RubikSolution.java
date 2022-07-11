@@ -25,13 +25,13 @@ public class RubikSolution {
         System.out.println(scoring.getScore(cube));
 //        solution.runRandomActionStrategy(cube.clone(), 100, 100, 3);
 //        solution.runScoringStrategy(cube.clone(), 1000);
-        solution.runForesightScoringStrategy(cube.clone(), 200, 6, 6, 6);
+        solution.runForesightScoringStrategy(cube.clone(), 200, 4, 8, 0.4, 6, 6);
 
     }
 
-    public void runForesightScoringStrategy(RubikCube cube, int limit, int foresightCount, int bestScoreCount, int skipLastScoreCount){
+    public void runForesightScoringStrategy(RubikCube cube, int limit, int foresightCount, int maxForesightCount, Double thresholdScoreToIncreaseForesightCount, int bestScoreCount, int skipLastScoreCount){
         ScoringMechanism<RubikCube> scoring = new RubikCubeScoringByCompletionPercentage();
-        ForesightScoringStrategy<RubikCube> foresightScoringStrategy = new ForesightScoringStrategy<>(limit, foresightCount, bestScoreCount, skipLastScoreCount, scoring);
+        ForesightScoringStrategy<RubikCube> foresightScoringStrategy = new ForesightScoringStrategy<>(limit, foresightCount, maxForesightCount, thresholdScoreToIncreaseForesightCount, bestScoreCount, skipLastScoreCount, scoring);
         ExecutionSummary<RubikCube> executionSummary = foresightScoringStrategy.execute(cube);
 
         executionSummary.print();

@@ -7,13 +7,37 @@ import solutioning.strategy.Subject;
 import java.util.ArrayList;
 import java.util.List;
 
-public record ScoreResult<S>(
-        Double score,
-        List<Pair<Action<S>, Double>> actionScoreList,
-        Subject<S> subject) implements Comparable<ScoreResult<S>> {
+public class ScoreResult<S> implements Comparable<ScoreResult<S>> {
 
-    public static <S> ScoreResult<S> empty(Subject<S> subject) {
-        return new ScoreResult<>(0.0, new ArrayList<>(), subject);
+    private Double score;
+    private final List<Pair<Action<S>, Double>> actionScoreList;
+    private final Subject<S> subject;
+
+    public ScoreResult(Double score, List<Pair<Action<S>, Double>> actionScoreList, Subject<S> subject){
+        this.score = score;
+        this.actionScoreList = actionScoreList;
+        this.subject = subject;
+    }
+
+    public static <S> ScoreResult<S> empty(Subject<S> subject, Double score) {
+        return new ScoreResult<>(score, new ArrayList<>(), subject);
+    }
+
+    public Double getScore() {
+        return score;
+    }
+
+    public List<Pair<Action<S>, Double>> getActionScoreList() {
+        return actionScoreList;
+    }
+
+    public Subject<S> getSubject() {
+        return subject;
+    }
+
+    public void addActionScore(Pair<Action<S>, Double> actionScore){
+        this.actionScoreList.add(actionScore);
+        this.score = actionScore.getValue1();
     }
 
     public Action<S> lastAction(){
@@ -22,11 +46,15 @@ public record ScoreResult<S>(
     }
 
     public List<Action<S>> getActionList(){
-        return actionScoreList().stream().map(Pair::getValue0).toList();
+        return actionScoreList.stream().map(Pair::getValue0).toList();
     }
 
     public List<Double> getScoreList(){
-        return actionScoreList().stream().map(Pair::getValue1).toList();
+        return actionScoreList.stream().map(Pair::getValue1).toList();
+    }
+
+    public int getActionCount(){
+        return actionScoreList.size();
     }
 
     @Override
