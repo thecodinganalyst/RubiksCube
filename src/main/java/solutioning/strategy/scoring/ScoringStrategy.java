@@ -18,11 +18,11 @@ public class ScoringStrategy<S> implements Strategy<S> {
         this.scoringMechanism = scoringMechanism;
     }
 
-    public Action<S> getActionWithHighestScore(Subject<S> subject){
+    public Action<S> getActionWithHighestScore(Subject<S> subject) throws CloneNotSupportedException {
         double highestScore = 0;
         Action<S> bestAction = null;
         for(Action<S> action: subject.getAllActions()){
-            subject.performAction(action);
+            subject.clone().performAction(action);
             double score = scoringMechanism.getScore(subject);
             if(score > highestScore){
                 highestScore = score;
@@ -33,7 +33,7 @@ public class ScoringStrategy<S> implements Strategy<S> {
         return bestAction;
     }
 
-    public ExecutionSummary<S> performBestScoreTrial(Subject<S> subject){
+    public ExecutionSummary<S> performBestScoreTrial(Subject<S> subject) throws CloneNotSupportedException {
         Instant start = Instant.now();
         List<Action<S>> actionList = new ArrayList<>();
         boolean found = false;
