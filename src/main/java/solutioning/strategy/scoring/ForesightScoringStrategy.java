@@ -168,9 +168,9 @@ public class ForesightScoringStrategy<S> extends ScoringStrategy<S> {
         @Override
         protected ScoreResult<S> compute() {
             List<ScoreResult<S>> scoreResultList = foresightScoringActions.getRankedResultsForAllPossibleActions(scoreResult);
+            if(scoreResultList.size() == 1) return scoreResultList.get(0);
             scoreResultList = foresightScoringActions.filterScoreResultListByRemovingItemsWithCertainScores(scoreResultList, lastFewScoresToSkip);
             scoreResultList = foresightScoringActions.getBestScore(scoreResultList, bestScoreCount);
-            if(scoreResultList.size() == 1) return scoreResultList.get(0);
             if(scoreResultList.size() > 0){
                 if(scoreResultList.get(0).getActionCount() >= foresightCount) {
                     if(scoreResultList.get(0).getScore() < thresholdScoreToIncreaseForesightCount || scoreResultList.get(0).getScore() > lastScore) return scoreResultList.get(0);
