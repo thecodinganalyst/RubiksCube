@@ -1,4 +1,4 @@
-package rubikcube.strategy;
+package rubikcube.scoring;
 
 import org.junit.jupiter.api.Test;
 import rubikcube.RubikCube;

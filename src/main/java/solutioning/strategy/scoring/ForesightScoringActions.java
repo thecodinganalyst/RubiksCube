@@ -28,13 +28,25 @@ public class ForesightScoringActions<S> {
                 double score = scoringMechanism.getScore(clone);
                 List<Pair<Action<S>, Double>> updatedList = new ArrayList<>(result.getActionScoreList());
                 updatedList.add(Pair.with(action, score));
-                if(clone.isComplete()) return List.of(new ScoreResult<>(score, updatedList, clone));
-                candidates.add(new ScoreResult<>(score, updatedList, clone));
+                if(clone.isComplete()) return List.of(new ScoreResult<>(updatedList, clone));
+                candidates.add(new ScoreResult<>(updatedList, clone));
             }catch (Exception ex){
                 ex.printStackTrace();
             }
         }
         return candidates.stream().sorted().toList();
+    }
+
+    public boolean processEnough(List<ScoreResult<S>> scoreResultList, Double thresholdScoreToIncreaseForesightCount, int foresightCount, int maxForesightCount, Double prevScore) {
+
+        if(scoreResultList == null || scoreResultList.size() < 1 || scoreResultList.get(0).getActionCount() == 0) return false;
+
+        ScoreResult<S> bestScoreResult = scoreResultList.get(0);
+        int bestScoreResultActionCount = bestScoreResult.getActionCount();
+        Double bestScore = bestScoreResult.getScore();
+
+        if(bestScoreResultActionCount < foresightCount) return false;
+        return bestScore > prevScore || (bestScore < thresholdScoreToIncreaseForesightCount && bestScoreResultActionCount == foresightCount)|| bestScoreResultActionCount >= maxForesightCount;
     }
 
     public List<ScoreResult<S>> filterScoreResultListByRemovingItemsWithCertainScores(List<ScoreResult<S>> scoreResultList, List<Double> scoresToRemove){

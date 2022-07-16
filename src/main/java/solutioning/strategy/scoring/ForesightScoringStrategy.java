@@ -21,7 +21,7 @@ public class ForesightScoringStrategy<S> extends ScoringStrategy<S> {
     private Double thresholdScoreToIncreaseForesightCount;
     private final ForesightScoringActions<S> foresightScoringActions;
 
-    public static final int DEFAULT_FORESIGHT_COUNT = 4;
+    public static final int DEFAULT_FORESIGHT_COUNT = 5;
     public static final int DEFAULT_MAX_FORESIGHT_COUNT = 8;
     public static final int DEFAULT_BEST_SCORE_COUNT = 6;
     public static final int DEFAULT_SKIP_LAST_SCORE_COUNT = 6;
@@ -51,7 +51,7 @@ public class ForesightScoringStrategy<S> extends ScoringStrategy<S> {
         ForkJoinPool commonPool = ForkJoinPool.commonPool();
         List<Double> scoresToSkip = foresightScoringActions.getLastFewScoresToSkip(scoreResult, skipLastScoreCount);
         System.out.println("Last few scores to skip: " + scoresToSkip.toString());
-        ScoringTask<S> scoringTask = new ScoringTask<>(ScoreResult.empty(scoreResult.getSubject(), scoringMechanism.getScore(scoreResult.getSubject())), foresightCount, maxForesightCount, scoreResult.getScore(), thresholdScoreToIncreaseForesightCount, bestScoreCount, scoresToSkip, foresightScoringActions);
+        ScoringTask<S> scoringTask = new ScoringTask<>(scoreResult.empty(), foresightCount, maxForesightCount, scoreResult.getScore(), thresholdScoreToIncreaseForesightCount, bestScoreCount, scoresToSkip, foresightScoringActions);
         ScoreResult<S> result = commonPool.invoke(scoringTask);
 
         return result.getActionScoreList().get(0);
@@ -61,7 +61,7 @@ public class ForesightScoringStrategy<S> extends ScoringStrategy<S> {
     public ExecutionSummary<S> performBestScoreTrial(Subject<S> subject){
         Instant start = Instant.now();
         boolean found = false;
-        ScoreResult<S> scoreResult = ScoreResult.empty(subject, scoringMechanism.getScore(subject));
+        ScoreResult<S> scoreResult = new ScoreResult<S>(scoringMechanism.getScore(subject), subject);
 
         System.out.println("Perform best score trial");
         for(int i = 0; i < limit; i++){
@@ -71,9 +71,9 @@ public class ForesightScoringStrategy<S> extends ScoringStrategy<S> {
             subject.performAction(bestActionScore.getValue0());
             scoreResult.addActionScore(bestActionScore);
 
-            System.out.println(bestActionScore.getValue0().getName());
+            System.out.println(bestActionScore.getValue0().getName() + " - " + bestActionScore.getValue1());
             subject.print();
-            System.out.println(scoringMechanism.getScore(subject));
+            System.out.println(scoringMechanism.getScore(subject) + " - " + scoreResult.getScore());
             System.out.println("---------------------------------------------------------");
 
             if(subject.isComplete()){
@@ -171,12 +171,7 @@ public class ForesightScoringStrategy<S> extends ScoringStrategy<S> {
             if(scoreResultList.size() == 1) return scoreResultList.get(0);
             scoreResultList = foresightScoringActions.filterScoreResultListByRemovingItemsWithCertainScores(scoreResultList, lastFewScoresToSkip);
             scoreResultList = foresightScoringActions.getBestScore(scoreResultList, bestScoreCount);
-            if(scoreResultList.size() > 0){
-                if(scoreResultList.get(0).getActionCount() >= foresightCount) {
-                    if(scoreResultList.get(0).getScore() < thresholdScoreToIncreaseForesightCount || scoreResultList.get(0).getScore() > lastScore) return scoreResultList.get(0);
-                }
-                if(scoreResultList.get(0).getActionCount() >= maxForesightCount) return scoreResultList.get(0);
-            }
+            if (foresightScoringActions.processEnough(scoreResultList, thresholdScoreToIncreaseForesightCount, foresightCount, maxForesightCount, lastScore)) return scoreResultList.get(0);
 
             return ForkJoinTask.invokeAll(createSubTasks(scoreResultList))
                     .stream()

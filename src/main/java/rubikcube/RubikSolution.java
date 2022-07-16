@@ -26,7 +26,7 @@ public class RubikSolution {
         System.out.println(scoring.getScore(cube));
 //        solution.runRandomActionStrategy(cube.clone(), 100, 100, 3);
 //        solution.runScoringStrategy(cube.clone(), 1000);
-        solution.runForesightScoringStrategy(cube.clone(), 300, 5, 8, 0.4, 6, 6);
+        solution.runForesightScoringStrategy(cube.clone(), 200, 5, 8, 0.4, 6, 6);
 
 //        solution.runMultipleForesightScoringStrategy(cube.clone(), 200);
 

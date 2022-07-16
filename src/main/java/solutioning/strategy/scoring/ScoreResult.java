@@ -13,14 +13,23 @@ public class ScoreResult<S> implements Comparable<ScoreResult<S>> {
     private final List<Pair<Action<S>, Double>> actionScoreList;
     private final Subject<S> subject;
 
-    public ScoreResult(Double score, List<Pair<Action<S>, Double>> actionScoreList, Subject<S> subject){
-        this.score = score;
-        this.actionScoreList = actionScoreList;
+    public ScoreResult(List<Pair<Action<S>, Double>> actionScoreList, Subject<S> subject){
+        this.score = actionScoreList != null && actionScoreList.size() > 0 ? actionScoreList.get(actionScoreList.size() - 1).getValue1() : 0.0;
+        this.actionScoreList = actionScoreList != null ? new ArrayList<>(actionScoreList) : new ArrayList<>();
         this.subject = subject;
     }
 
-    public static <S> ScoreResult<S> empty(Subject<S> subject, Double score) {
-        return new ScoreResult<>(score, new ArrayList<>(), subject);
+    public ScoreResult(Double score, Subject<S> subject){
+        this.score = score;
+        this.actionScoreList = new ArrayList<>();
+        this.subject = subject;
+    }
+
+    public ScoreResult<S> empty(){
+        return new ScoreResult<>(
+                this.score,
+                this.getSubject()
+        );
     }
 
     public Double getScore() {
@@ -54,7 +63,12 @@ public class ScoreResult<S> implements Comparable<ScoreResult<S>> {
     }
 
     public int getActionCount(){
-        return actionScoreList.size();
+        return actionScoreList != null ? actionScoreList.size() : 0;
+    }
+
+    public Pair<Action<S>, Double> getLastActionScore(){
+        if(actionScoreList == null || actionScoreList.size() == 0) return null;
+        return actionScoreList.get(getActionCount() - 1);
     }
 
     @Override
