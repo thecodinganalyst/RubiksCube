@@ -169,16 +169,16 @@ class ForesightScoringActionsTest {
 
     @Test
     void processEnough_whenScoreResultListIsEmpty_shouldReturnFalse() {
-        boolean processEnough = foresightScoringActions.processEnough(null, 0.4, 2, 4, 0.5);
+        boolean processEnough = foresightScoringActions.processEnough(null,  2, 4, 0.5);
         assertThat(processEnough, equalTo(false));
 
         List<ScoreResult<RubikCube>> scoreResultList = new ArrayList<>();
-        processEnough = foresightScoringActions.processEnough(scoreResultList, 0.4, 2, 4, 0.5);
+        processEnough = foresightScoringActions.processEnough(scoreResultList, 2, 4, 0.5);
         assertThat(processEnough, equalTo(false));
 
         RubikCube rubikCube = new RubikCube(3);
         scoreResultList.add(new ScoreResult<>(1.0, rubikCube));
-        processEnough = foresightScoringActions.processEnough(scoreResultList, 0.4, 2, 4, 0.5);
+        processEnough = foresightScoringActions.processEnough(scoreResultList, 2, 4, 0.5);
         assertThat(processEnough, equalTo(false));
     }
 
@@ -190,7 +190,7 @@ class ForesightScoringActionsTest {
         ConsolidatedAction action = Mockito.mock(ConsolidatedAction.class);
         ScoreResult<RubikCube> bestScoreResult = new ScoreResult<>(List.of(Pair.with(action, 0.2)), rubikCube);
         scoreResultList.add(0, bestScoreResult);
-        boolean processEnough = foresightScoringActions.processEnough(scoreResultList, 0.4, 2, 4, 0.5);
+        boolean processEnough = foresightScoringActions.processEnough(scoreResultList, 2, 4, 0.5);
         assertThat(processEnough, equalTo(false));
 
     }
@@ -203,7 +203,7 @@ class ForesightScoringActionsTest {
         ConsolidatedAction action = Mockito.mock(ConsolidatedAction.class);
         ScoreResult<RubikCube> bestScoreResult = new ScoreResult<>(List.of(Pair.with(action, 0.2), Pair.with(action, 0.51)), rubikCube);
         scoreResultList.add(0, bestScoreResult);
-        boolean processEnough = foresightScoringActions.processEnough(scoreResultList, 0.4, 2, 4, 0.5);
+        boolean processEnough = foresightScoringActions.processEnough(scoreResultList, 2, 4, 0.5);
         assertThat(processEnough, equalTo(true));
     }
 
@@ -215,44 +215,20 @@ class ForesightScoringActionsTest {
         ConsolidatedAction action = Mockito.mock(ConsolidatedAction.class);
         ScoreResult<RubikCube> bestScoreResult = new ScoreResult<>(List.of(Pair.with(action, 0.2), Pair.with(action, 0.5)), rubikCube);
         scoreResultList.add(0, bestScoreResult);
-        boolean processEnough = foresightScoringActions.processEnough(scoreResultList, 0.4, 2, 4, 0.5);
+        boolean processEnough = foresightScoringActions.processEnough(scoreResultList, 2, 4, 0.5);
         assertThat(processEnough, equalTo(false));
     }
 
     @Test
-    void processEnough_whenActionCountIsEqualToForesightCountAndLowerThanPrevScoreAndHigherThanThreshold_shouldReturnFalse() {
+    void processEnough_whenActionCountIsEqualToForesightCountAndLowerThanPrevScore_shouldReturnFalse() {
         RubikCube rubikCube = new RubikCube(3);
 
         List<ScoreResult<RubikCube>> scoreResultList = new ArrayList<>();
         ConsolidatedAction action = Mockito.mock(ConsolidatedAction.class);
         ScoreResult<RubikCube> bestScoreResult = new ScoreResult<>(List.of(Pair.with(action, 0.2), Pair.with(action, 0.45)), rubikCube);
         scoreResultList.add(0, bestScoreResult);
-        boolean processEnough = foresightScoringActions.processEnough(scoreResultList, 0.4, 2, 4, 0.5);
+        boolean processEnough = foresightScoringActions.processEnough(scoreResultList, 2, 4, 0.5);
         assertThat(processEnough, equalTo(false));
-    }
-
-    @Test
-    void processEnough_whenActionCountIsEqualToForesightCountAndLowerThanPrevScoreAndEqualToThreshold_shouldReturnFalse() {
-        RubikCube rubikCube = new RubikCube(3);
-
-        List<ScoreResult<RubikCube>> scoreResultList = new ArrayList<>();
-        ConsolidatedAction action = Mockito.mock(ConsolidatedAction.class);
-        ScoreResult<RubikCube> bestScoreResult = new ScoreResult<>(List.of(Pair.with(action, 0.2), Pair.with(action, 0.4)), rubikCube);
-        scoreResultList.add(0, bestScoreResult);
-        boolean processEnough = foresightScoringActions.processEnough(scoreResultList, 0.4, 2, 4, 0.5);
-        assertThat(processEnough, equalTo(false));
-    }
-
-    @Test
-    void processEnough_whenActionCountIsEqualToForesightCountAndLowerThanPrevScoreAndLowerThanThreshold_shouldReturnTrue() {
-        RubikCube rubikCube = new RubikCube(3);
-
-        List<ScoreResult<RubikCube>> scoreResultList = new ArrayList<>();
-        ConsolidatedAction action = Mockito.mock(ConsolidatedAction.class);
-        ScoreResult<RubikCube> bestScoreResult = new ScoreResult<>(List.of(Pair.with(action, 0.2), Pair.with(action, 0.3)), rubikCube);
-        scoreResultList.add(0, bestScoreResult);
-        boolean processEnough = foresightScoringActions.processEnough(scoreResultList, 0.4, 2, 4, 0.5);
-        assertThat(processEnough, equalTo(true));
     }
 
     @Test
@@ -263,19 +239,19 @@ class ForesightScoringActionsTest {
         ConsolidatedAction action = Mockito.mock(ConsolidatedAction.class);
         ScoreResult<RubikCube> bestScoreResult = new ScoreResult<>(List.of(Pair.with(action, 0.2), Pair.with(action, 0.3), Pair.with(action, 0.6)), rubikCube);
         scoreResultList.add(0, bestScoreResult);
-        boolean processEnough = foresightScoringActions.processEnough(scoreResultList, 0.4, 2, 4, 0.5);
+        boolean processEnough = foresightScoringActions.processEnough(scoreResultList, 2, 4, 0.5);
         assertThat(processEnough, equalTo(true));
     }
 
     @Test
-    void processEnough_whenActionCountIsHigherThanForesightCountLowerThanMaxLowerThanPrevScoreLowerThanThreshold_ShouldReturnFalse() {
+    void processEnough_whenActionCountIsHigherThanForesightCountLowerThanMaxLowerThanPrevScore_ShouldReturnFalse() {
         RubikCube rubikCube = new RubikCube(3);
 
         List<ScoreResult<RubikCube>> scoreResultList = new ArrayList<>();
         ConsolidatedAction action = Mockito.mock(ConsolidatedAction.class);
         ScoreResult<RubikCube> bestScoreResult = new ScoreResult<>(List.of(Pair.with(action, 0.2), Pair.with(action, 0.3), Pair.with(action, 0.38)), rubikCube);
         scoreResultList.add(0, bestScoreResult);
-        boolean processEnough = foresightScoringActions.processEnough(scoreResultList, 0.4, 2, 4, 0.5);
+        boolean processEnough = foresightScoringActions.processEnough(scoreResultList,2, 4, 0.5);
         assertThat(processEnough, equalTo(false));
     }
 
@@ -293,7 +269,7 @@ class ForesightScoringActionsTest {
                 Pair.with(action, lastScore)),
         rubikCube);
         scoreResultList.add(0, bestScoreResult);
-        boolean processEnough = foresightScoringActions.processEnough(scoreResultList, 0.4, 2, 4, 0.5);
+        boolean processEnough = foresightScoringActions.processEnough(scoreResultList, 2, 4, 0.5);
         assertThat(processEnough, equalTo(true));
     }
 }

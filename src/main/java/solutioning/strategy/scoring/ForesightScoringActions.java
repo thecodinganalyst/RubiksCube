@@ -37,7 +37,7 @@ public class ForesightScoringActions<S> {
         return candidates.stream().sorted().toList();
     }
 
-    public boolean processEnough(List<ScoreResult<S>> scoreResultList, Double thresholdScoreToIncreaseForesightCount, int foresightCount, int maxForesightCount, Double prevScore) {
+    public boolean processEnough(List<ScoreResult<S>> scoreResultList, int foresightCount, int maxForesightCount, Double prevScore) {
 
         if(scoreResultList == null || scoreResultList.size() < 1 || scoreResultList.get(0).getActionCount() == 0) return false;
 
@@ -46,7 +46,7 @@ public class ForesightScoringActions<S> {
         Double bestScore = bestScoreResult.getScore();
 
         if(bestScoreResultActionCount < foresightCount) return false;
-        return bestScore > prevScore || (bestScore < thresholdScoreToIncreaseForesightCount && bestScoreResultActionCount == foresightCount)|| bestScoreResultActionCount >= maxForesightCount;
+        return bestScore > prevScore || bestScoreResultActionCount >= maxForesightCount;
     }
 
     public List<ScoreResult<S>> filterScoreResultListByRemovingItemsWithCertainScores(List<ScoreResult<S>> scoreResultList, List<Double> scoresToRemove){
