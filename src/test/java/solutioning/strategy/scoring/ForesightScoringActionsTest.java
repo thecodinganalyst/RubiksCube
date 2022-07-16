@@ -125,45 +125,6 @@ class ForesightScoringActionsTest {
     }
 
     @Test
-    void getBestScore_shouldReturnCorrectResults() {
-        RubikCube rubikCube = new RubikCube(3);
-        List<ScoreResult<RubikCube>> scoreResultList = List.of(
-                new ScoreResult<>(0.422, rubikCube),
-                new ScoreResult<>(0.323, rubikCube),
-                new ScoreResult<>(0.234, rubikCube),
-                new ScoreResult<>(0.222, rubikCube),
-                new ScoreResult<>(0.222, rubikCube),
-                new ScoreResult<>(0.121, rubikCube),
-                new ScoreResult<>(0.121, rubikCube),
-                new ScoreResult<>(0.023, rubikCube),
-                new ScoreResult<>(0.010, rubikCube),
-                new ScoreResult<>(0.001, rubikCube)
-        );
-        List<ScoreResult<RubikCube>> results = foresightScoringActions.getBestScore(scoreResultList, 5);
-        assertThat(results.size(), equalTo(5));
-        assertThat(results.get(0).getScore(), equalTo(0.422));
-        assertThat(results.get(1).getScore(), equalTo(0.323));
-        assertThat(results.get(2).getScore(), equalTo(0.234));
-        assertThat(results.get(3).getScore(), equalTo(0.222));
-        assertThat(results.get(4).getScore(), equalTo(0.222));
-    }
-
-    @Test
-    void getBestScore_whenBestScoreCountIsLessThanListSize_shouldReturnAllResults() {
-        RubikCube rubikCube = new RubikCube(3);
-        List<ScoreResult<RubikCube>> scoreResultList = List.of(
-                new ScoreResult<>(0.422, rubikCube),
-                new ScoreResult<>(0.323, rubikCube),
-                new ScoreResult<>(0.234, rubikCube)
-        );
-        List<ScoreResult<RubikCube>> results = foresightScoringActions.getBestScore(scoreResultList, 5);
-        assertThat(results.size(), equalTo(3));
-        assertThat(results.get(0).getScore(), equalTo(0.422));
-        assertThat(results.get(1).getScore(), equalTo(0.323));
-        assertThat(results.get(2).getScore(), equalTo(0.234));
-    }
-
-    @Test
     void getLastFewScoresToSkip_shouldGetLastNScoresOnlyIfTheyAreDuplicates() {
         ScoreResult<RubikCube> scoreResult = new ScoreResult<>(
                 List.of(

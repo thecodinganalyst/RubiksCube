@@ -14,8 +14,6 @@ public class MultipleForesightScoringStrategy<S> implements Strategy<S> {
     private final ScoringMechanism<S> scoringMechanism;
     private int startForesightCount = ForesightScoringStrategy.DEFAULT_FORESIGHT_COUNT;
     private int foresightCountLimit = 12;
-    private int startBestScoreCount = ForesightScoringStrategy.DEFAULT_BEST_SCORE_COUNT;
-    private int bestScoreCountLimit = 17;
 
     public MultipleForesightScoringStrategy(int limit, ScoringMechanism<S> scoringMechanism){
         this.limit = limit;
@@ -29,13 +27,9 @@ public class MultipleForesightScoringStrategy<S> implements Strategy<S> {
         foresightScoringStrategy.setForesightCount(startForesightCount);
         ExecutionSummary<S> executionSummary = new ExecutionSummary<>(false, null, Instant.now(), Instant.now());
 
-        foresightScoringStrategy.setBestScoreCount(startBestScoreCount);
-        while (foresightScoringStrategy.getBestScoreCount() <= bestScoreCountLimit){
-            executionSummary = executeIncrementalForesightCount(foresightScoringStrategy, subject);
-            if(executionSummary.isSuccessful()){
-                return executionSummary;
-            }
-            foresightScoringStrategy.incrementBestScoreCount();
+        executionSummary = executeIncrementalForesightCount(foresightScoringStrategy, subject);
+        if(executionSummary.isSuccessful()){
+            return executionSummary;
         }
 
         return executionSummary;

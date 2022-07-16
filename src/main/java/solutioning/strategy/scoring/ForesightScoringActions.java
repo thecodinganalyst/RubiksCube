@@ -55,13 +55,6 @@ public class ForesightScoringActions<S> {
                 .toList();
     }
 
-    public List<ScoreResult<S>> getBestScore(List<ScoreResult<S>> scoreResultList, int bestScoreCount){
-        if(scoreResultList.size() > bestScoreCount){
-            return scoreResultList.subList(0, bestScoreCount);
-        }
-        return scoreResultList;
-    }
-
     public List<Double> getLastFewScoresToSkip(ScoreResult<S> scoreResult, int skipLastScoreCount){
         List<Double> scoreList = scoreResult.getScoreList();
         List<Double> subList = scoreList;
