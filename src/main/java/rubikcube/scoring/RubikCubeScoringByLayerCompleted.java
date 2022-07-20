@@ -5,6 +5,7 @@ import rubikcube.RubikCube.FACE;
 import solutioning.strategy.Subject;
 
 import java.util.*;
+import java.util.stream.IntStream;
 
 public class RubikCubeScoringByLayerCompleted extends RubikCubeScoringByCompletionPercentage{
 
@@ -131,9 +132,20 @@ public class RubikCubeScoringByLayerCompleted extends RubikCubeScoringByCompleti
         if(!cube.getFace(face).isComplete()) return result;
         result += 1.0;
 
-        result += getMidLevelScore(cube, face, 0);
+        for (int i : midLevelsRequired(cube.getSize())){
+            double score = getMidLevelScore(cube, face, i);
+            result += score;
+            if(score < 1.0) return result;
+        }
+
+        double lastScore = cube.isComplete() ? 1.0 : 0.0;
+        result += lastScore;
 
         return result;
+    }
+
+    public int[] midLevelsRequired(int size){
+        return IntStream.range(0, size - 1).toArray();
     }
 
     public Double getMidLevelScore(RubikCube cube, FACE face, int level){
@@ -149,9 +161,10 @@ public class RubikCubeScoringByLayerCompleted extends RubikCubeScoringByCompleti
         List<FACE> completedFaces = getCompletedFaces(cube);
         if(completedFaces.size() == 0) return getScoreOfSideWithHighestScore(cube);
 
-
-
-        return 1.0;
+        return completedFaces.stream()
+                .map(face -> getRubikCubeScoreForFace(cube, face))
+                .max(Double::compareTo)
+                .orElseThrow();
     }
 
     @Override
