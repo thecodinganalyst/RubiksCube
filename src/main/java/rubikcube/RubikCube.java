@@ -86,7 +86,7 @@ public class RubikCube implements Subject<RubikCube> {
         allActions = consolidateActions();
     }
 
-    private RubikCube(int size, RubikSide main, RubikSide right, RubikSide back, RubikSide left, RubikSide top, RubikSide bottom){
+    public RubikCube(int size, RubikSide main, RubikSide right, RubikSide back, RubikSide left, RubikSide top, RubikSide bottom){
         this.size = size;
         this.main = main;
         this.right = right;
@@ -217,6 +217,37 @@ public class RubikCube implements Subject<RubikCube> {
             left = old.get(getLeftFaceOf(newFace));
             top = old.get(getTopFaceOf(newFace));
             bottom = old.get(getBottomFaceOf(newFace));
+
+            if(newFace == FACE.RIGHT){
+                top.rotateClockwise();
+                bottom.rotateAntiClockwise();
+            }
+            if(newFace == FACE.LEFT){
+                top.rotateAntiClockwise();
+                bottom.rotateClockwise();
+            }
+            if(newFace == FACE.BACK){
+                top.rotateClockwise();
+                top.rotateClockwise();
+                bottom.rotateClockwise();
+                bottom.rotateClockwise();
+            }
+            if(newFace == FACE.TOP){
+                back.rotateClockwise();
+                back.rotateClockwise();
+                top.rotateClockwise();
+                top.rotateClockwise();
+                right.rotateAntiClockwise();
+                left.rotateClockwise();
+            }
+            if(newFace == FACE.BOTTOM){
+                back.rotateAntiClockwise();
+                back.rotateAntiClockwise();
+                right.rotateClockwise();
+                left.rotateAntiClockwise();
+                bottom.rotateClockwise();
+                bottom.rotateClockwise();
+            }
         }catch (Exception e){
             e.printStackTrace();
         }
