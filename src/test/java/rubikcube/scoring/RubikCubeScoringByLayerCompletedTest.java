@@ -360,4 +360,5 @@ class RubikCubeScoringByLayerCompletedTest {
         actual = scoring.getRubikCubeScoreForFace(cube, RubikCube.FACE.MAIN);
         assertThat(actual, equalTo(4.0));
     }
+
 }
