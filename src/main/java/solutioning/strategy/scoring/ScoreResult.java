@@ -46,7 +46,10 @@ public class ScoreResult<S> implements Comparable<ScoreResult<S>> {
 
     public void addActionScore(Pair<Action<S>, Double> actionScore){
         this.actionScoreList.add(actionScore);
-        this.score = actionScore.getValue1();
+        this.score = actionScoreList.stream().reduce(0.0,
+                (acc, item) -> item.getValue1() > acc ? item.getValue1() : acc,
+                (a, b) -> a > b ? a : b
+                );
     }
 
     public Action<S> lastAction(){
