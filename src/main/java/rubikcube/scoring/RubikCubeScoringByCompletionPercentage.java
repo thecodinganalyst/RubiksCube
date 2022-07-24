@@ -8,7 +8,6 @@ import solutioning.strategy.scoring.ScoringMechanism;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.*;
-import java.util.concurrent.RecursiveTask;
 import java.util.function.Function;
 
 import static java.util.stream.Collectors.*;

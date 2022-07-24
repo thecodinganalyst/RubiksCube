@@ -1,6 +1,7 @@
 package rubikcube;
 
-import rubikcube.scoring.RubikCubeScoringByLayerCompleted;
+
+import rubikcube.scoring.RubikCubeScoringByLayerCompletedForMainSideOnly;
 import solutioning.strategy.Action;
 import solutioning.strategy.ExecutionSummary;
 import solutioning.strategy.multiple.MultipleForesightScoringStrategy;
@@ -17,7 +18,7 @@ public class RubikSolution {
     public static void main(String[] args) throws CloneNotSupportedException {
         RubikCube cube = new RubikCube(3);
         RubikSolution solution = new RubikSolution();
-        ScoringMechanism<RubikCube> scoring = new RubikCubeScoringByLayerCompleted();
+        ScoringMechanism<RubikCube> scoring = new RubikCubeScoringByLayerCompletedForMainSideOnly();
 
 //        solution.runActionListAndReverse(cube.clone(), 20);
 
@@ -33,7 +34,7 @@ public class RubikSolution {
     }
 
     public void runMultipleForesightScoringStrategy(RubikCube cube, int limit){
-        ScoringMechanism<RubikCube> scoring = new RubikCubeScoringByLayerCompleted();
+        ScoringMechanism<RubikCube> scoring = new RubikCubeScoringByLayerCompletedForMainSideOnly();
         MultipleForesightScoringStrategy<RubikCube> multipleForesightScoringStrategy = new MultipleForesightScoringStrategy<>(limit, scoring);
         ExecutionSummary<RubikCube> executionSummary = multipleForesightScoringStrategy.execute(cube);
 
@@ -43,7 +44,7 @@ public class RubikSolution {
     }
 
     public void runForesightScoringStrategy(RubikCube cube, int limit, int foresightCount, int maxForesightCount, int skipLastScoreCount){
-        ScoringMechanism<RubikCube> scoring = new RubikCubeScoringByLayerCompleted();
+        ScoringMechanism<RubikCube> scoring = new RubikCubeScoringByLayerCompletedForMainSideOnly();
         ForesightScoringStrategy<RubikCube> foresightScoringStrategy = new ForesightScoringStrategy<>(limit, foresightCount, maxForesightCount, skipLastScoreCount, scoring);
         ExecutionSummary<RubikCube> executionSummary = foresightScoringStrategy.execute(cube);
 
@@ -53,7 +54,7 @@ public class RubikSolution {
     }
 
     public void runScoringStrategy(RubikCube cube, int limit){
-        ScoringMechanism<RubikCube> scoring = new RubikCubeScoringByLayerCompleted();
+        ScoringMechanism<RubikCube> scoring = new RubikCubeScoringByLayerCompletedForMainSideOnly();
         ScoringStrategy<RubikCube> scoringStrategy = new ScoringStrategy<>(limit, scoring);
         double score = scoring.getScore(cube);
         System.out.println(score);
@@ -66,7 +67,7 @@ public class RubikSolution {
 
     public void runRandomActionStrategy(RubikCube cube, int limit, int maxSteps, int successCount){
         cube.print();
-        ScoringMechanism<RubikCube> scoring = new RubikCubeScoringByLayerCompleted();
+        ScoringMechanism<RubikCube> scoring = new RubikCubeScoringByLayerCompletedForMainSideOnly();
         System.out.println(scoring.getScore(cube));
         RandomActionStrategy<RubikCube> randomActionStrategy = new RandomActionStrategy<>(limit, maxSteps, successCount);
         ExecutionSummary<RubikCube> executionSummary = randomActionStrategy.execute(cube);
